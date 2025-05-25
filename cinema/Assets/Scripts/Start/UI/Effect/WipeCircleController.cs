@@ -8,6 +8,19 @@ public class WipeCircleController : MonoBehaviour
     private bool isWiping = false;
     private float timer = 0f;
 
+    void Start()
+    {
+        if (wipeMaterial == null)
+        {
+            Debug.LogError("Wipe material is not assigned.");
+            enabled = false; // スクリプトを無効化
+        }
+        else
+        {
+            wipeMaterial.SetFloat("_Radius", 2f); // 初期状態の半径を設定
+        }
+    }
+
     void Update()
     {
         if (isWiping)
@@ -18,7 +31,7 @@ public class WipeCircleController : MonoBehaviour
             wipeMaterial.SetFloat("_Radius", radius);
 
             if (t >= 1f)
-            {
+            {   
                 isWiping = false;
             }
         }

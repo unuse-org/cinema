@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: wipeCircle
-  m_Shader: {fileID: 4800000, guid: fdadc8e619bc34ccf9165b36f552ae8e, type: 3}
+  m_Shader: {fileID: 4800000, guid: 5bc63a90ec97a4c11b0e42526a40b85a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
