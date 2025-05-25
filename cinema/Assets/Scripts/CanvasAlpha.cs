@@ -28,7 +28,7 @@ public class CanvasAlpha : MonoBehaviour
             if (canvasGroup != null)
             {
                 // アルファ値を徐々に0にする
-                StartCoroutine(FadeOutCanvas(canvasGroup, 1f)); // 1秒かけてフェードアウト
+                StartCoroutine(FadeOutCanvas(canvasGroup, 0.7f)); // 1秒かけてフェードアウト
             }
             else
             {

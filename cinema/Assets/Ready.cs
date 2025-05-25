@@ -25,10 +25,11 @@ public class Ready : MonoBehaviour
         if (textDisplay != null && textDisplay.EndTextDisplayFlag == 1 && openningFlag == 0)
         {
             openningFlag = 1; // 一度だけ音楽を流すためのフラグ
+            Invoke("SetDirectionalLight", 1.5f);
             PlayAudio();
 
             // シーン変更フラグを立てる
-            Invoke("SetChangeSceneFlag", 4f);
+            Invoke("SetChangeSceneFlag", 5f);
         }
     }
 
@@ -38,10 +39,8 @@ public class Ready : MonoBehaviour
         if (audioSource != null && !audioSource.isPlaying)
         {
             //1秒後に音楽を流す
-            audioSource.PlayDelayed(1f);
+            audioSource.PlayDelayed(2.5f);
             audioSource.Play();
-
-            SetDirectionalLight();
         }
         else
         {

@@ -34,7 +34,11 @@ public class TextDisplay : MonoBehaviour
         }
         else
         {
-           EndTextDisplayFlag = 1; 
+            Invoke("EndTextDisplay", 2f);
         }
     }      
+    void EndTextDisplay()
+    {
+        EndTextDisplayFlag = 1;
+    }
 }
