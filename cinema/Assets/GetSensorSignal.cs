@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+
 public class GetSensorSignal : MonoBehaviour
 {
     // 現在の状態と直前の状態を保持
@@ -74,7 +75,7 @@ public class GetSensorSignal : MonoBehaviour
         if ((step1Passed && currentState != 3 && currentState != 4 && currentState != 5) ||
             (step2Passed && currentState != 4 && currentState != 5))
         {
-            Debug.LogWarning("⚠️ Invalid input. Resetting steps.");
+            // Debug.LogWarning("⚠️ Invalid input. Resetting steps.");
             ResetSteps();
         }
 
@@ -82,20 +83,23 @@ public class GetSensorSignal : MonoBehaviour
         if (currentState == 3)
         {
             step1Passed = true;
-            Debug.Log("Step 1 Passed: State is 3");
+            // Debug.Log("Step 1 Passed: State is 3");
         }
 
         // ステップ2：Step1通過後にFilm Load（4）なら通過
         if (step1Passed && !step2Passed && currentState == 4)
         {
             step2Passed = true;
-            Debug.Log("Step 2 Passed: State is 4 (after Step 1)");
+            // Debug.Log("Step 2 Passed: State is 4 (after Step 1)");
         }
 
         // ステップ3：Step1・2通過後にProject（5）で完了
         if (step1Passed && step2Passed && currentState == 5)
         {
-            Debug.Log("✅ Step 3 Passed: State is 5 (after Step 1 & 2). All steps complete!");
+            // Debug.Log("✅ Step 3 Passed: State is 5 (after Step 1 & 2). All steps complete!");
+
+            // ☑️太田スコア計算関数へ移動
+            score();
 
             // 完了メッセージを表示
             if (statusText != null)
@@ -119,7 +123,7 @@ public class GetSensorSignal : MonoBehaviour
     {
         step1Passed = false;
         step2Passed = false;
-        Debug.Log("🔄 Steps reset.");
+        //Debug.Log("🔄 Steps reset.");
     }
 
     // 指定のTextMeshProテキストをduration秒で透明にフェードアウト
@@ -137,5 +141,22 @@ public class GetSensorSignal : MonoBehaviour
         }
 
         tmpText.alpha = 0f; // 最後に完全に非表示
+    }
+
+    void score()
+    {
+        //☑️太田「ここで正しい映画がつけられているかを識別する」
+        getcolorsensorsignal sensorScript = GetComponent<getcolorsensorsignal>();
+        bool result = sensorScript.CheckSchedule();
+        if (result)
+        {
+            //太田メモ📝：ここに映画が正しい場合のスコア判定を記入予定
+            Debug.Log("✅ スケジュールが一致しました！");
+        }
+        else
+        {
+            //太田メモ📝：ここに映画が違う場合のスコア判定を記入予定
+            Debug.Log("❌ スケジュールが一致しません！");
+        }
     }
 }
