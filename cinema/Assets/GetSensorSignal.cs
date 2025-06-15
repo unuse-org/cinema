@@ -19,6 +19,11 @@ public class GetSensorSignal : MonoBehaviour
     // 現在動作中のフェードアウト用コルーチン
     private Coroutine fadeCoroutine;
 
+    public int score;
+
+    private ChangeSceneManager changeSceneManager;
+    //[SerializeField] private SceneChanger sceneChanger;
+
     // 各状態番号に対応するメッセージ（インデックス1〜5を使用）
     private string[] stateMessages = {
         "", // index 0は未使用
@@ -28,6 +33,11 @@ public class GetSensorSignal : MonoBehaviour
         "Film Load",             // 4
         "Project"                // 5
     };
+
+    void Start()
+    {
+        int score = PlayerPrefs.GetInt("score", 0);       // デフォルト値を0
+    }
 
     // 毎フレーム実行
     void Update()
@@ -99,7 +109,7 @@ public class GetSensorSignal : MonoBehaviour
             // Debug.Log("✅ Step 3 Passed: State is 5 (after Step 1 & 2). All steps complete!");
 
             // ☑️太田スコア計算関数へ移動
-            score();
+            scorecount();
 
             // 完了メッセージを表示
             if (statusText != null)
@@ -143,7 +153,7 @@ public class GetSensorSignal : MonoBehaviour
         tmpText.alpha = 0f; // 最後に完全に非表示
     }
 
-    void score()
+    void scorecount()
     {
         //☑️太田「ここで正しい映画がつけられているかを識別する」
         getcolorsensorsignal sensorScript = GetComponent<getcolorsensorsignal>();
@@ -152,11 +162,35 @@ public class GetSensorSignal : MonoBehaviour
         {
             //太田メモ📝：ここに映画が正しい場合のスコア判定を記入予定
             Debug.Log("✅ スケジュールが一致しました！");
+            score += 1000;
+            // シーン内にあるSceneManagerという名前のオブジェクトを探して、SceneChangerコンポーネントを取得
+            GameObject sceneManagerObj = GameObject.Find("SceneManager");
+            if (sceneManagerObj != null)
+            {
+                changeSceneManager = sceneManagerObj.GetComponent<ChangeSceneManager>();
+                changeSceneManager.LoadScene();
+            }
+            else
+            {
+                Debug.LogError("SceneManager オブジェクトが見つかりません");
+            }
         }
         else
         {
             //太田メモ📝：ここに映画が違う場合のスコア判定を記入予定
             Debug.Log("❌ スケジュールが一致しません！");
+            score -= 100;
+            // シーン内にあるSceneManagerという名前のオブジェクトを探して、SceneChangerコンポーネントを取得
+            GameObject sceneManagerObj = GameObject.Find("SceneManager");
+            if (sceneManagerObj != null)
+            {
+                changeSceneManager = sceneManagerObj.GetComponent<ChangeSceneManager>();
+                changeSceneManager.LoadScene();
+            }
+            else
+            {
+                Debug.LogError("SceneManager オブジェクトが見つかりません");
+            }
         }
     }
 }

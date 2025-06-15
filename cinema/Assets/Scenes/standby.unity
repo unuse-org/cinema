@@ -1081,8 +1081,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 4900000, guid: 3c711a3c9a32f4f6887f09170316ad55, type: 3}
   timeText: {fileID: 374084238}
-  day: "\u6708"
+  weekday: "\u6708"
   index: 1
+  score: 0
   realSecondsUntilStart: 20
 --- !u!1001 &379478132
 PrefabInstance:
@@ -2742,6 +2743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusText: {fileID: 2039014578}
+  score: 0
 --- !u!4 &1035313759
 Transform:
   m_ObjectHideFlags: 0
@@ -3222,7 +3224,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Main
+  m_text: standby
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3909,14 +3911,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4ff281900c6e4b7ead61d773d3e5a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rawImage: {fileID: 1738529922}
-  videoPlayer: {fileID: 1738529921}
-  videoClips:
-  - {fileID: 32900000, guid: c5418b45ebbf341dc960165635cbf997, type: 3}
-  - {fileID: 32900000, guid: 66b7e90836f5e4ef78859d332120164d, type: 3}
-  - {fileID: 32900000, guid: 5459681faf23b47f686763cad4369625, type: 3}
-  - {fileID: 32900000, guid: 6b076a05eec0d4a8f9cc0ea86f8f2114, type: 3}
-  - {fileID: 32900000, guid: 4a5541fd6c2b84f0fb25ab30461dc905, type: 3}
 --- !u!1 &1768515772
 GameObject:
   m_ObjectHideFlags: 0
