@@ -33,8 +33,10 @@ public class TimeManager : MonoBehaviour
     public TMP_Text timeText; // 現在時刻を表示するテキストUI
 
     [Header("設定")]
-    public string day = "月"; // 対象の曜日（例：月）
+    public string weekday = "月"; // 対象の曜日（例：月）
     public int index = 1;     // 対象のインデックス（例：1）
+    public int score;
+
 
     [Header("進行スピード（秒で開始時間になる）")]
 
@@ -50,6 +52,21 @@ public class TimeManager : MonoBehaviour
 
     void Start()
     {
+        // PlayerPrefsに保存されたデータを読み込む
+        int weekday = PlayerPrefs.GetInt("weekday", -1);  // デフォルト値を-1（データが無ければ）
+        int index = PlayerPrefs.GetInt("index", -1);      // デフォルト値を-1
+        int score = PlayerPrefs.GetInt("score", 0);       // デフォルト値を0
+
+        // データが読み込めたかどうかを確認
+        if (weekday != -1 && index != -1)
+        {
+            Debug.Log($"データ読み込み成功: weekday={weekday}, index={index}, score={score}");
+        }
+        else
+        {
+            Debug.LogWarning("データが読み込めませんでした。");
+        }
+        
         LoadSchedule();      // JSONファイルを読み込む
         SetupInitialTime();  // 初期時刻を設定する
     }
@@ -89,7 +106,7 @@ public class TimeManager : MonoBehaviour
     {
         if (schedule == null) return;
 
-        List<MovieEntry> todaySchedule = GetDaySchedule(day); // 曜日ごとのスケジュールを取得
+        List<MovieEntry> todaySchedule = GetDaySchedule(weekday); // 曜日ごとのスケジュールを取得
         if (todaySchedule == null) return;
 
         // 指定されたインデックスの映画を取得
