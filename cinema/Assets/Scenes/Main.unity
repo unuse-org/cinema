@@ -930,8 +930,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 4900000, guid: 3c711a3c9a32f4f6887f09170316ad55, type: 3}
   timeText: {fileID: 374084238}
-  day: "\u6708"
+  weekday: "\u6708"
   index: 1
+  score: 0
   realSecondsUntilStart: 20
 --- !u!1 &422255712
 GameObject:
@@ -2272,7 +2273,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1035313759}
-  - component: {fileID: 1035313758}
   - component: {fileID: 1035313760}
   m_Layer: 0
   m_Name: gamesystem
@@ -2281,19 +2281,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1035313758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1035313757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e402c748363a482c972d4c5d3b350a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusText: {fileID: 2039014578}
 --- !u!4 &1035313759
 Transform:
   m_ObjectHideFlags: 0
@@ -2318,10 +2305,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1035313757}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4d65431bf0dc48d2bc04426e2fff87e, type: 3}
+  m_Script: {fileID: 11500000, guid: cf72b088496e84cf895284db060656bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jsonFile: {fileID: 4900000, guid: 3c711a3c9a32f4f6887f09170316ad55, type: 3}
+  signalText: {fileID: 2039014578}
 --- !u!1001 &1195877063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3130,7 +3117,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1738529919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 125}
   m_LocalScale: {x: 23.57746, y: 6.3033767, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3152,7 +3139,7 @@ VideoPlayer:
   m_VideoClip: {fileID: 32900000, guid: a98c47ad935404957ad07004dc2431bc, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
-  m_TargetCamera: {fileID: 0}
+  m_TargetCamera: {fileID: 648319541}
   m_TargetTexture: {fileID: 0}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}

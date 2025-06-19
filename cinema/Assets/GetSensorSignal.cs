@@ -2,6 +2,20 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+/*加速度センサー処理プログラム
+
+    加速度センサーからの値を受け付けるプログラム
+    シーン移動のメインシステムでもある
+
+定義場所：スタンバイシーン
+内容：
+
+    加速度センサーの値に応じて、画面全体にUIを表示する
+    上映までのステップを用意し、すべてのステップが完了次第、メインシーンに移動
+    シーン移動する際、スコアを計算し、保存する
+
+
+*/
 
 public class GetSensorSignal : MonoBehaviour
 {
@@ -20,6 +34,7 @@ public class GetSensorSignal : MonoBehaviour
     private Coroutine fadeCoroutine;
 
     public int score;
+    private int index;
 
     private ChangeSceneManager changeSceneManager;
     //[SerializeField] private SceneChanger sceneChanger;
@@ -37,6 +52,8 @@ public class GetSensorSignal : MonoBehaviour
     void Start()
     {
         int score = PlayerPrefs.GetInt("score", 0);       // デフォルト値を0
+        index = PlayerPrefs.GetInt("index");
+        //Debug.Log("シーン読み込み時"+index);
     }
 
     // 毎フレーム実行
@@ -78,14 +95,13 @@ public class GetSensorSignal : MonoBehaviour
     }
 
     // 入力された状態が正しい順序かを確認し、ステップ進行またはリセット
-    // ☑️太田「ここがメインシステム。ステップが完了次第mainシーンに移動するよ」
+    // ☑️太田「ここがメインシステム。ステップが完了次第mainシーンに移動する」
     void CheckStateSequence()
     {
         // 不正な入力（ステップ1/2を飛ばすなど）でステップリセット
         if ((step1Passed && currentState != 3 && currentState != 4 && currentState != 5) ||
             (step2Passed && currentState != 4 && currentState != 5))
         {
-            // Debug.LogWarning("⚠️ Invalid input. Resetting steps.");
             ResetSteps();
         }
 
@@ -93,24 +109,17 @@ public class GetSensorSignal : MonoBehaviour
         if (currentState == 3)
         {
             step1Passed = true;
-            // Debug.Log("Step 1 Passed: State is 3");
         }
 
         // ステップ2：Step1通過後にFilm Load（4）なら通過
         if (step1Passed && !step2Passed && currentState == 4)
         {
             step2Passed = true;
-            // Debug.Log("Step 2 Passed: State is 4 (after Step 1)");
         }
 
         // ステップ3：Step1・2通過後にProject（5）で完了
         if (step1Passed && step2Passed && currentState == 5)
         {
-            // Debug.Log("✅ Step 3 Passed: State is 5 (after Step 1 & 2). All steps complete!");
-
-            // ☑️太田スコア計算関数へ移動
-            scorecount();
-
             // 完了メッセージを表示
             if (statusText != null)
             {
@@ -123,8 +132,8 @@ public class GetSensorSignal : MonoBehaviour
 
                 fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f));
             }
-
-            ResetSteps(); // ステップ状態を初期化
+            // ☑️太田スコア計算関数へ移動
+            scorecount();
         }
     }
 
@@ -155,42 +164,38 @@ public class GetSensorSignal : MonoBehaviour
 
     void scorecount()
     {
+        ResetSteps(); // ステップ状態を初期化
+
         //☑️太田「ここで正しい映画がつけられているかを識別する」
         getcolorsensorsignal sensorScript = GetComponent<getcolorsensorsignal>();
         bool result = sensorScript.CheckSchedule();
         if (result)
         {
-            //太田メモ📝：ここに映画が正しい場合のスコア判定を記入予定
             Debug.Log("✅ スケジュールが一致しました！");
             score += 1000;
-            // シーン内にあるSceneManagerという名前のオブジェクトを探して、SceneChangerコンポーネントを取得
-            GameObject sceneManagerObj = GameObject.Find("SceneManager");
-            if (sceneManagerObj != null)
-            {
-                changeSceneManager = sceneManagerObj.GetComponent<ChangeSceneManager>();
-                changeSceneManager.LoadScene();
-            }
-            else
-            {
-                Debug.LogError("SceneManager オブジェクトが見つかりません");
-            }
         }
         else
         {
-            //太田メモ📝：ここに映画が違う場合のスコア判定を記入予定
             Debug.Log("❌ スケジュールが一致しません！");
             score -= 100;
-            // シーン内にあるSceneManagerという名前のオブジェクトを探して、SceneChangerコンポーネントを取得
-            GameObject sceneManagerObj = GameObject.Find("SceneManager");
-            if (sceneManagerObj != null)
-            {
-                changeSceneManager = sceneManagerObj.GetComponent<ChangeSceneManager>();
-                changeSceneManager.LoadScene();
-            }
-            else
-            {
-                Debug.LogError("SceneManager オブジェクトが見つかりません");
-            }
+        }
+        //スコア計算処理＆index関数の更新
+        index += 1;
+        PlayerPrefs.SetInt("index", index);
+        PlayerPrefs.SetInt("score", score);
+        //Debug.Log("移動前"+index);
+
+        // シーン内にあるSceneManagerという名前のオブジェクトを探して、SceneChangerコンポーネントを取得
+        GameObject sceneManagerObj = GameObject.Find("SceneManager");
+        if (sceneManagerObj != null)
+        {
+            changeSceneManager = sceneManagerObj.GetComponent<ChangeSceneManager>();
+            //ここでシーン移動実行
+            changeSceneManager.LoadScene();
+        }
+        else
+        {
+            Debug.LogError("SceneManager オブジェクトが見つかりません");
         }
     }
 }

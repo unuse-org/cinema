@@ -3,6 +3,17 @@ using TMPro;
 using System.Collections.Generic;
 using System;
 
+/* スタンバイシーンの時間管理プログラム
+
+定義場所：スタンバイシーン
+内容：
+
+    jsonファイルからスケジュールを取得
+    TitleDataInitializer.csで定義した曜日、シーン番号を取得
+    取得した曜日のシーン番号を検索し、その10分前の時間からタイマーを開始する【UI表示も行う】
+
+*/
+
 // 映画の1件分の情報を表すクラス（インデックス、タイトル、時間、開始時間）
 [System.Serializable]
 public class MovieEntry
@@ -60,11 +71,11 @@ public class TimeManager : MonoBehaviour
         // データが読み込めたかどうかを確認
         if (weekday != -1 && index != -1)
         {
-            Debug.Log($"データ読み込み成功: weekday={weekday}, index={index}, score={score}");
+            //Debug.Log($"データ読み込み成功: weekday={weekday}, index={index}, score={score}");
         }
         else
         {
-            Debug.LogWarning("データが読み込めませんでした。");
+            //Debug.LogWarning("データが読み込めませんでした。");
         }
         
         LoadSchedule();      // JSONファイルを読み込む
@@ -90,7 +101,7 @@ public class TimeManager : MonoBehaviour
     {
         if (jsonFile == null)
         {
-            Debug.LogError("JSONファイルが指定されていません。");
+            //Debug.LogError("JSONファイルが指定されていません。");
             return;
         }
 

@@ -1,12 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*カラーセンサー処理プログラム
+
+定義場所：スタンバイシーン
+内容：
+
+    色と対応した映画名をリスト型で定義
+    jsonファイルから、映画名を取得
+    カラーセンサーから値を常時取得し、認識している色を保存
+    GetSensorSignal.csから呼ばれた時、保存している色と対応する映画の色を比較し、比較内容を返す
+
+*/
 public class getcolorsensorsignal : MonoBehaviour
 {
     [SerializeField] private TextAsset jsonFile;
 
     private string[] movieTitles = { "フクロウ仮面", "チョコミント" };
     private int lastSignal = -1;
+
+    private int index;
+    private int weekday;
 
     [System.Serializable]
     public class ScheduleItem
@@ -31,13 +45,15 @@ public class getcolorsensorsignal : MonoBehaviour
 
     void Start()
     {
+        index = PlayerPrefs.GetInt("index");
+        weekday = PlayerPrefs.GetInt("weekday");
         if (jsonFile != null)
         {
             scheduleData = JsonUtility.FromJson<DaySchedule>(jsonFile.text);
         }
         else
         {
-            Debug.LogError("jsonFile が設定されていません。");
+            //Debug.LogError("jsonFile が設定されていません。");
         }
     }
 
@@ -52,23 +68,35 @@ public class getcolorsensorsignal : MonoBehaviour
 
     public bool CheckSchedule()
     {
-        if (scheduleData == null || scheduleData.月 == null || scheduleData.月.Count < 1)
+        //index番号とweekdayの番号から、曜日とシーン番号を参照し、タイトルを取得
+        List<ScheduleItem> selectedDay = null;
+        switch (weekday)
         {
-            Debug.LogError("スケジュールデータが正しく読み込まれていません。");
+            case 0: selectedDay = scheduleData.月; break; // 月曜日
+            case 1: selectedDay = scheduleData.火; break; // 火曜日
+            case 2: selectedDay = scheduleData.水; break; // 水曜日
+            case 3: selectedDay = scheduleData.木; break; // 木曜日
+            case 4: selectedDay = scheduleData.金; break; // 金曜日
+        }
+        if (selectedDay != null && index >= 0 && index < selectedDay.Count)
+        {
+            string jsonTitle = selectedDay[index].title; // インデックスに対応するタイトルを取得
+            Debug.Log(jsonTitle);
+
+            string currentTitle = movieTitles[lastSignal];
+
+            Debug.Log($"比較: JSON = {jsonTitle}, 選択 = {currentTitle}");
+
+            // メイン関数用に、映画番号を保存
+            PlayerPrefs.SetInt("movie", lastSignal);
+            //Debug.Log(lastSignal);
+
+            return jsonTitle == currentTitle;
+        }
+        else
+        {
+            Debug.LogWarning("無効な曜日またはインデックス");
             return false;
         }
-
-        if (lastSignal < 0 || lastSignal >= movieTitles.Length)
-        {
-            Debug.LogWarning("lastSignal の値が無効です: " + lastSignal);
-            return false;
-        }
-
-        string jsonTitle = scheduleData.月[0].title; // 月曜日 index 1番目（0-based index）
-        string currentTitle = movieTitles[lastSignal];
-
-        Debug.Log($"比較: JSON = {jsonTitle}, 選択 = {currentTitle}");
-
-        return jsonTitle == currentTitle;
     }
 }
