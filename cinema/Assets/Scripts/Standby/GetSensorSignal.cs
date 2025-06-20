@@ -33,7 +33,7 @@ public class GetSensorSignal : MonoBehaviour
     // 現在動作中のフェードアウト用コルーチン
     private Coroutine fadeCoroutine;
 
-    public int score;
+    private int score;
     private int index;
 
     private ChangeSceneManager changeSceneManager;
@@ -51,7 +51,7 @@ public class GetSensorSignal : MonoBehaviour
 
     void Start()
     {
-        int score = PlayerPrefs.GetInt("score", 0);       // デフォルト値を0
+        score = PlayerPrefs.GetInt("score");       // デフォルト値を0
         index = PlayerPrefs.GetInt("index");
         //Debug.Log("シーン読み込み時"+index);
     }
@@ -172,17 +172,20 @@ public class GetSensorSignal : MonoBehaviour
         if (result)
         {
             Debug.Log("✅ スケジュールが一致しました！");
-            score += 1000;
+            score += 3;
+            Debug.Log(score);
         }
         else
         {
             Debug.Log("❌ スケジュールが一致しません！");
-            score -= 100;
+            score -= 3;
+            //Debug.Log(score);
         }
         //スコア計算処理＆index関数の更新
         index += 1;
         PlayerPrefs.SetInt("index", index);
         PlayerPrefs.SetInt("score", score);
+        PlayerPrefs.Save();
         //Debug.Log("移動前"+index);
 
         // シーン内にあるSceneManagerという名前のオブジェクトを探して、SceneChangerコンポーネントを取得
@@ -190,12 +193,34 @@ public class GetSensorSignal : MonoBehaviour
         if (sceneManagerObj != null)
         {
             changeSceneManager = sceneManagerObj.GetComponent<ChangeSceneManager>();
-            //ここでシーン移動実行
-            changeSceneManager.LoadScene();
+            StartCoroutine(ProcessRoutine());
         }
         else
         {
             Debug.LogError("SceneManager オブジェクトが見つかりません");
         }
+    }
+    // コルーチン：LightDimmerの終了を待ってから処理を再開
+    private IEnumerator ProcessRoutine()
+    {
+        Debug.Log("暗転開始...");
+
+        LightDimmer dimmer = FindObjectOfType<LightDimmer>();
+        if (dimmer != null)
+        {
+            // dimmingが終わるまで処理を待つ
+            yield return StartCoroutine(dimmer.StartDimming());
+        }
+        else
+        {
+            Debug.LogWarning("LightDimmerが見つかりません。");
+            yield break;
+        }
+
+        // 暗転後の処理をここに書く
+        Debug.Log("暗転終了。次の処理開始！");
+        // 例えば：BGM再生や敵出現など
+        //ここでシーン移動実行
+        changeSceneManager.LoadScene();
     }
 }

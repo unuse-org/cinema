@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a277ead81a9740288cd4377c1d1efb9, type: 3}
+  m_Name: ObjectStateDatabase
+  m_EditorClassIdentifier: 
+  states:
+  - id: human19
+    isActive: 0
+  - id: human13
+    isActive: 0
+  - id: human1
+    isActive: 0
+  - id: human2
+    isActive: 0
+  - id: human6
+    isActive: 0
+  - id: human4
+    isActive: 0
+  - id: human23
+    isActive: 1
+  - id: human3
+    isActive: 0
+  - id: human7
+    isActive: 0
+  - id: human30
+    isActive: 0
+  - id: human5
+    isActive: 1
+  - id: human32
+    isActive: 0
+  - id: human28
+    isActive: 1
+  - id: human31
+    isActive: 0
+  - id: human12
+    isActive: 1
+  - id: human18
+    isActive: 0
+  - id: human21
+    isActive: 1
+  - id: human27
+    isActive: 0
+  - id: human0
+    isActive: 1
+  - id: human25
+    isActive: 0
+  - id: human8
+    isActive: 1
+  - id: human26
+    isActive: 1
+  - id: human10
+    isActive: 0
+  - id: human20
+    isActive: 1
+  - id: human34
+    isActive: 1
+  - id: human22
+    isActive: 0
+  - id: human16
+    isActive: 1
+  - id: human29
+    isActive: 1
+  - id: human15
+    isActive: 0
+  - id: human9
+    isActive: 0
+  - id: human33
+    isActive: 1
+  - id: human24
+    isActive: 0
+  - id: human11
+    isActive: 1
+  - id: human17
+    isActive: 0
+  - id: human14
+    isActive: 1

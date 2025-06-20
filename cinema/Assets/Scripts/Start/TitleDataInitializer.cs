@@ -21,7 +21,7 @@ public class TitleDataInitializer : MonoBehaviour
 
             int weekday = Random.Range(1, 6);  // 1〜5の乱数
             int index = 1;
-            int score = 0;
+            int score = 15;
 
             // PlayerPrefsにデータを保存
             PlayerPrefs.SetInt("weekday", weekday);
@@ -40,12 +40,13 @@ public class TitleDataInitializer : MonoBehaviour
 
             int weekday = Random.Range(1, 6);  // 1〜5の乱数
             int index = 1;
-            int score = 0;
+            int score = 15;
 
             // 中身を初期化して再設定
             PlayerPrefs.SetInt("weekday", weekday);
             PlayerPrefs.SetInt("index", index);
             PlayerPrefs.SetInt("score", score);
+            // Debug.Log(score);
 
             // 保存を確定
             PlayerPrefs.Save();

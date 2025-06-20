@@ -81,7 +81,7 @@ public class getcolorsensorsignal : MonoBehaviour
         if (selectedDay != null && index >= 0 && index < selectedDay.Count)
         {
             string jsonTitle = selectedDay[index].title; // インデックスに対応するタイトルを取得
-            Debug.Log(jsonTitle);
+            //Debug.Log(jsonTitle);
 
             string currentTitle = movieTitles[lastSignal];
 
@@ -89,6 +89,8 @@ public class getcolorsensorsignal : MonoBehaviour
 
             // メイン関数用に、映画番号を保存
             PlayerPrefs.SetInt("movie", lastSignal);
+            Debug.Log("movieIndex000"+lastSignal);
+            PlayerPrefs.Save();
             //Debug.Log(lastSignal);
 
             return jsonTitle == currentTitle;
