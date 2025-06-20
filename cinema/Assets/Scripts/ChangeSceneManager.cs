@@ -46,12 +46,18 @@ public class ChangeSceneManager : MonoBehaviour
         }
     }
 
-    private void LoadScene()
+    //☑️太田：他スクリプトから参照するため、パブリックに変更
+    public void LoadScene()
     {
         if (SceneManager.GetActiveScene().name == "Start")
         {
             SceneManager.LoadScene("Ready");
-        }else if (SceneManager.GetActiveScene().name == "Ready")
+        }
+        else if (SceneManager.GetActiveScene().name == "Ready")
+        {
+            SceneManager.LoadScene("standby");
+        }
+        else if (SceneManager.GetActiveScene().name == "standby")
         {
             SceneManager.LoadScene("Main");
         }

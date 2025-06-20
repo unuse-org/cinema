@@ -2232,6 +2232,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1130253407}
   m_CullTransparentMesh: 1
+--- !u!1 &1299153136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1299153138}
+  - component: {fileID: 1299153137}
+  m_Layer: 0
+  m_Name: csvinstans
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1299153137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299153136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e76c6c90f9e34836bc351e629f02cf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1299153138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299153136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.9547086, y: 4.0434666, z: 1.6494635}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1330503196
 GameObject:
   m_ObjectHideFlags: 0
@@ -2985,7 +3029,6 @@ GameObject:
   - component: {fileID: 1738529923}
   - component: {fileID: 1738529922}
   - component: {fileID: 1738529921}
-  - component: {fileID: 1738529924}
   m_Layer: 5
   m_Name: RawImage
   m_TagString: Untagged
@@ -3083,26 +3126,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1738529919}
   m_CullTransparentMesh: 1
---- !u!114 &1738529924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738529919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4ff281900c6e4b7ead61d773d3e5a15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rawImage: {fileID: 1738529922}
-  videoPlayer: {fileID: 1738529921}
-  videoClips:
-  - {fileID: 32900000, guid: a98c47ad935404957ad07004dc2431bc, type: 3}
-  - {fileID: 32900000, guid: c137bc925ac374b4ba566a2b5b9b02e6, type: 3}
-  - {fileID: 32900000, guid: e6eafd0f0d4c547ae9885a3335497af1, type: 3}
-  - {fileID: 32900000, guid: d3662fcb2d9a54393896ce0658e90dcb, type: 3}
-  - {fileID: 32900000, guid: e34bf2591580146f3bc77a6abd64670d, type: 3}
 --- !u!1 &1768515772
 GameObject:
   m_ObjectHideFlags: 0
@@ -3730,3 +3753,4 @@ SceneRoots:
   - {fileID: 839674320}
   - {fileID: 1338752092}
   - {fileID: 1597656979}
+  - {fileID: 1299153138}

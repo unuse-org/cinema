@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Ready.unity
     guid: 2a4eeee92231f4c0b9977aa60079497f
   - enabled: 1
+    path: Assets/Scenes/standby.unity
+    guid: da7004cde77b8488d99e5dacde04fbf5
+  - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 9b8545e35184746b3b11efdeab43284a
   - enabled: 1
