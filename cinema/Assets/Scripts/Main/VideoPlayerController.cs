@@ -10,11 +10,13 @@ public class VideoPlayerController : MonoBehaviour
     [SerializeField] private VideoClip[] videoClips = new VideoClip[5]; // 動画を5本設定
 
     private int index;
+    private int movieIndex;
 
     void Start()
     {
         // PlayerPrefsからmovie番号（0〜4）を取得（初期値0）
-        int movieIndex = PlayerPrefs.GetInt("movie", 0); 
+        movieIndex = PlayerPrefs.GetInt("movie");
+        //Debug.Log("movieIndex"+movieIndex);
 
         index = PlayerPrefs.GetInt("index");
         //Debug.Log("index = " +index);
@@ -45,8 +47,8 @@ public class VideoPlayerController : MonoBehaviour
     void OnVideoFinished(VideoPlayer vp)
     {
         //再生終了後、シーン移動処理
-        Debug.Log("動画の再生が終了しました（movie: " + PlayerPrefs.GetInt("movie", 1) + "）");
-        if (index == 5)
+        //Debug.Log("動画の再生が終了しました（movie: " + PlayerPrefs.GetInt("movie", 1) + "）");
+        if (index == 6)
         {
             SceneManager.LoadScene("End");
         }
