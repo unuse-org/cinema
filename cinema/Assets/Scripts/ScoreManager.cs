@@ -1,0 +1,16 @@
+using UnityEngine;
+using TMPro;
+
+public class ScoreManager : MonoBehaviour
+{
+    [SerializeField] private TextMeshProUGUI scoreText;
+
+    void Start()
+    {
+        // PlayerPrefsから"score"を取得（なければ0）
+        int score = PlayerPrefs.GetInt("score", 0);
+
+        // UIに表示
+        scoreText.text = "Score: " + score.ToString();
+    }
+}

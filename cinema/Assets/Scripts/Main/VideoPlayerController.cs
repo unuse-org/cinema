@@ -16,7 +16,7 @@ public class VideoPlayerController : MonoBehaviour
     {
         // PlayerPrefsからmovie番号（0〜4）を取得（初期値0）
         movieIndex = PlayerPrefs.GetInt("movie");
-        Debug.Log("movieIndex"+movieIndex);
+        //Debug.Log("movieIndex"+movieIndex);
 
         index = PlayerPrefs.GetInt("index");
         //Debug.Log("index = " +index);

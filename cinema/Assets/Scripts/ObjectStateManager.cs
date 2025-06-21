@@ -1,12 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections; // ← これが必要
+using TMPro;
 
 public class ObjectStateManager : MonoBehaviour
 {
     [SerializeField] private ObjectStateDatabase stateDatabase;
     [SerializeField] private string objectIdPrefix = "human"; // オブジェクト名の接頭辞
     [SerializeField] private int objectCount = 35;  // 管理するオブジェクト数
+
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     private List<string> objectIds = new List<string>();  // オブジェクトIDのリスト
     private List<GameObject> managedObjects = new List<GameObject>();  // 管理対象のオブジェクトリスト
@@ -29,9 +32,9 @@ public class ObjectStateManager : MonoBehaviour
 
     void InitializeObjectStates()
     {
-        // int score = PlayerPrefs.GetInt("score", 0);
+        int score = PlayerPrefs.GetInt("score", 0);
 
-        int score = 15;
+        //int score = 15;
         
         managedObjects = new List<GameObject>();  // managedObjects が null であれば初期化
 
@@ -146,8 +149,8 @@ public class ObjectStateManager : MonoBehaviour
         int currentActiveCount = activeIndices.Count;
         int diff = score - currentActiveCount;
 
-        Debug.Log($"[Debug] 現在アクティブな数（差分処理前）: {currentActiveCount}");
-        Debug.Log($"[Debug] スコア = {score}, 差分 = {diff}");
+        //Debug.Log($"[Debug] 現在アクティブな数（差分処理前）: {currentActiveCount}");
+        //Debug.Log($"[Debug] スコア = {score}, 差分 = {diff}");
 
         // アクティブにするオブジェクト数が足りない場合
         if (diff > 0)
