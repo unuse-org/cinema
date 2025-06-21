@@ -1,0 +1,18 @@
+{
+  "movies": [
+    {
+      "movieIndex": 1,
+      "movieName": "映画A",
+      "scoreStartTime": 10.5,
+      "scoreEndTime": 60.2,
+      "scoreCondition": true
+    },
+    {
+      "movieIndex": 2,
+      "movieName": "映画B",
+      "scoreStartTime": 25.0,
+      "scoreEndTime": 90.0,
+      "scoreCondition": false
+    }
+  ]
+}
