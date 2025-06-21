@@ -42,11 +42,11 @@ public class GetSensorSignal : MonoBehaviour
     // 各状態番号に対応するメッセージ（インデックス1〜5を使用）
     private string[] stateMessages = {
         "", // index 0は未使用
-        "Reverse Projection",    // 1
-        "Rewind",                // 2
-        "Stop",                  // 3
-        "Film Load",             // 4
-        "Project"                // 5
+        "逆転映写",    // 1
+        "逆転",                // 2
+        "停止",                  // 3
+        "フィルムそう入",             // 4
+        "映写"                // 5
     };
 
     void Start()
