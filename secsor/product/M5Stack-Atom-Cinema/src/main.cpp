@@ -87,7 +87,7 @@ void loop() {
     Serial.printf("Status: %d\n", status);
 
     char message[64];
-    sprintf(message, "Status: %d", status);
+    sprintf(message, "%d", status);
     
     // 送信先のIPアドレスとポート番号にメッセージを送信
     for (int i = 0; i < 3; i++)
