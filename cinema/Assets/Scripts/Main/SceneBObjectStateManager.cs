@@ -37,9 +37,9 @@ public class SceneBObjectStateManager : MonoBehaviour
 
     void ApplyDiffBasedActivation()
     {
-        //int score = PlayerPrefs.GetInt("score", 0);
+        int score = PlayerPrefs.GetInt("score", 0);
 
-        int score = 18;
+        // int score = 18;
 
         List<int> activeIndices = new();
         List<int> inactiveIndices = new();
