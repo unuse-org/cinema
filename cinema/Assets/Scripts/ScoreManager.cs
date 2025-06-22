@@ -11,6 +11,6 @@ public class ScoreManager : MonoBehaviour
         int score = PlayerPrefs.GetInt("score", 0);
 
         // UIに表示
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = "人数" + score.ToString();
     }
 }
