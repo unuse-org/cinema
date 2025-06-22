@@ -93,6 +93,7 @@ void loop() {
     for (int i = 0; i < numTargets; i++)
     {
       sendUdpMessage(targetIPs[i], targetPort, message);
+      delay(40);
     }
   }
 
