@@ -64,13 +64,13 @@ public class MovieDataLoader : MonoBehaviour
 
                 if (isInTimeRange && isConditionMatched)
                 {
-                    Debug.Log($"✅ 条件一致: {movie.movieName} | 時間: {currentTime:F2}s | 条件: {inputCondition}");
+                    //Debug.Log($"✅ 条件一致: {movie.movieName} | 時間: {currentTime:F2}s | 条件: {inputCondition}");
                     return true;
                 }
                 else
                 {
-                    Debug.Log($"⛔ 条件不一致: {movie.movieName} | 時間: {currentTime:F2}s | 条件: {inputCondition} " +
-                            $"(期待値: {movie.scoreCondition}, 範囲: {movie.scoreStartTime}〜{movie.scoreEndTime})");
+                    //Debug.Log($"⛔ 条件不一致: {movie.movieName} | 時間: {currentTime:F2}s | 条件: {inputCondition} " +
+                        //$"(期待値: {movie.scoreCondition}, 範囲: {movie.scoreStartTime}〜{movie.scoreEndTime})");
                     return false;
                 }
             }

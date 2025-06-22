@@ -19,7 +19,7 @@ public class getcolorsensorsignal : MonoBehaviour
 
     private SR_Color colorSensor;
 
-    private string[] movieTitles = { "フクロウ仮面", "チョコミント" };
+    private string[] movieTitles = { "フクロウ仮面", "チョコミント","こえかけ","クリムゾン","鯨の声","サメ遊戯" };
     private int lastSignal = -1;
 
     private int index;
@@ -58,33 +58,35 @@ public class getcolorsensorsignal : MonoBehaviour
         {
             //Debug.LogError("jsonFile が設定されていません。");
         }
-        if (M5_Color != null)
-        {
-            colorSensor = M5_Color.GetComponent<SR_Color>();
-            if (colorSensor == null)
-            {
-                Debug.LogError("SR_Color コンポーネントが M5_Color オブジェクトに見つかりません.");
-            }
-        }
-        else
-        {
-            Debug.LogError("M5_Color オブジェクトが設定されていません．");
-        }
+
+        //センサー処理☑️今だけFalse
+        // if (M5_Color != null)
+        // {
+        //     colorSensor = M5_Color.GetComponent<SR_Color>();
+        //     if (colorSensor == null)
+        //     {
+        //         Debug.LogError("SR_Color コンポーネントが M5_Color オブジェクトに見つかりません.");
+        //     }
+        // }
+        // else
+        // {
+        //     Debug.LogError("M5_Color オブジェクトが設定されていません．");
+        // }
     }
 
     void Update()
     {
         // //
-        // if (Input.GetKeyDown(KeyCode.Alpha6)) lastSignal = 0;
-        // else if (Input.GetKeyDown(KeyCode.Alpha7)) lastSignal = 1;
-        // else if (Input.GetKeyDown(KeyCode.Alpha8)) lastSignal = 2;
-        // else if (Input.GetKeyDown(KeyCode.Alpha9)) lastSignal = 3;
-        // else if (Input.GetKeyDown(KeyCode.Alpha0)) lastSignal = 4;
-        if(colorSensor != null)
-        {
-            lastSignal = colorSensor.color; // カラーセンサーからの信号を取得
-            Debug.Log("カラーセンサーからの信号: " + lastSignal);
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha6)) lastSignal = 0;
+        else if (Input.GetKeyDown(KeyCode.Alpha7)) lastSignal = 1;
+        else if (Input.GetKeyDown(KeyCode.Alpha8)) lastSignal = 2;
+        else if (Input.GetKeyDown(KeyCode.Alpha9)) lastSignal = 3;
+        else if (Input.GetKeyDown(KeyCode.Alpha0)) lastSignal = 4;
+        // if(colorSensor != null)
+        // {
+        //     lastSignal = colorSensor.color; // カラーセンサーからの信号を取得
+        //     Debug.Log("カラーセンサーからの信号: " + lastSignal);
+        // }
     }
 
     public bool CheckSchedule()
