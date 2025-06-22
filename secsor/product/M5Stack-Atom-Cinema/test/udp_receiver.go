@@ -9,7 +9,7 @@ const (
 	// 受信待ちするIPアドレス
 	listenIP = "0.0.0.0"
 	// 受信待ちするポート番号
-	listenPort = 12345
+	listenPort = 12346
 	// 受信バッファのサイズ
 	bufferSize = 1024
 )
