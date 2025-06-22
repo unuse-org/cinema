@@ -10,7 +10,12 @@ uint32_t dispColor(uint8_t r, uint8_t g, uint8_t b) {
 // -------- ユーザー設定項目 --------
 const char *ssid = "TP-Link_B308";
 const char *password = "29640393";
-const IPAddress targetIP(192, 168, 0, 140);
+const IPAddress targetIPs[] = {
+  IPAddress(192, 168, 0, 140), //新美
+  IPAddress(192, 168, 0, 53), //新美
+  IPAddress(192, 168, 0, 99), //柴田
+  IPAddress(192, 168, 0, 26), //太田
+}
 const int targetPort = 12345;
 // ------------------------------------
 
@@ -84,7 +89,11 @@ void loop() {
     char message[64];
     sprintf(message, "Status: %d", status);
     
-    sendUdpMessage(targetIP, targetPort, message);
+    // 送信先のIPアドレスとポート番号にメッセージを送信
+    for (int i = 0; i < numTargets; i++)
+    {
+      sendUdpMessage(targetIPs[i], targetPort, message);
+    }
   }
 
   delay(500);

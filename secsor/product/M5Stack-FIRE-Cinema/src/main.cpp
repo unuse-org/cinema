@@ -9,7 +9,15 @@ const char *ssid = "TP-Link_B308";
 const char *password = "29640393";
 
 // 送信先のIPアドレスとポート番号
-const IPAddress targetIP(192, 168, 0, 140); // 受信側PCのIPアドレス
+const IPAddress targetIPs[] = {
+  IPAddress(192, 168, 0, 140), //新美
+  IPAddress(192, 168, 0, 53), //新美
+  IPAddress(192, 168, 0, 99), //柴田
+  IPAddress(192, 168, 0, 26), //太田
+};
+
+const int numTargets = sizeof(targetIPs) / sizeof(targetIPs[0]);
+
 const int targetPort = 12345;
 // ------------------------------------
 
@@ -143,7 +151,10 @@ void loop() {
   // UDPでflagcharのみを送信
   snprintf(message, sizeof(message), "%c", flagChar);
   // 送信先のIPアドレスとポート番号にメッセージを送信
-  sendUdpMessage(targetIP, targetPort, message);
+  for (int i = 0; i < numTargets; i++)
+  {
+    sendUdpMessage(targetIPs[i], targetPort, message);
+  }
 
   delay(500); // 0.5秒ごとに送信
 }
