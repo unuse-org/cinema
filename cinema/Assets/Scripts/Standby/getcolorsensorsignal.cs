@@ -17,7 +17,7 @@ public class getcolorsensorsignal : MonoBehaviour
     [SerializeField] private TextAsset jsonFile;
     [SerializeField] private GameObject M5_Color;
 
-    private SR_Color colorSensor;
+    //private SR_Color colorSensor;
 
     private string[] movieTitles = { "フクロウ仮面", "チョコミント","こえかけ","クリムゾン","鯨の声","サメ遊戯" };
     private int lastSignal = -1;
@@ -93,13 +93,14 @@ public class getcolorsensorsignal : MonoBehaviour
     {
         //index番号とweekdayの番号から、曜日とシーン番号を参照し、タイトルを取得
         List<ScheduleItem> selectedDay = null;
+        Debug.Log(weekday);
         switch (weekday)
         {
-            case 0: selectedDay = scheduleData.月; break; // 月曜日
-            case 1: selectedDay = scheduleData.火; break; // 火曜日
-            case 2: selectedDay = scheduleData.水; break; // 水曜日
-            case 3: selectedDay = scheduleData.木; break; // 木曜日
-            case 4: selectedDay = scheduleData.金; break; // 金曜日
+            case 1: selectedDay = scheduleData.月; break; // 月曜日
+            case 2: selectedDay = scheduleData.火; break; // 火曜日
+            case 3: selectedDay = scheduleData.水; break; // 水曜日
+            case 4: selectedDay = scheduleData.木; break; // 木曜日
+            case 5: selectedDay = scheduleData.金; break; // 金曜日
         }
         if (selectedDay != null && index >= 0 && index < selectedDay.Count)
         {
@@ -112,7 +113,7 @@ public class getcolorsensorsignal : MonoBehaviour
 
             // メイン関数用に、映画番号を保存
             PlayerPrefs.SetInt("movie", lastSignal);
-            Debug.Log("movieIndex000"+lastSignal);
+            Debug.Log("movieIndex000" + lastSignal);
             PlayerPrefs.Save();
             //Debug.Log(lastSignal);
 

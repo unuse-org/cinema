@@ -6606,6 +6606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   listenPort: 12345
   receivedTextUI: {fileID: 1563089560}
+  isReceiving: 0
 --- !u!1001 &1508557058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9507,7 +9508,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2120868898
 MonoBehaviour:
   m_ObjectHideFlags: 0
