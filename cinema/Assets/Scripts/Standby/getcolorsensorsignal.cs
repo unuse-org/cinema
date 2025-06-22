@@ -18,7 +18,7 @@ public class getcolorsensorsignal : MonoBehaviour
     [SerializeField] private GameObject M5_Color;
     //private SR_Color colorSensor;
 
-    private string[] movieTitles = { "フクロウ仮面", "チョコミント","こえかけ","花火","ウィンフ","あばば" };
+    private string[] movieTitles = { "フクロウ仮面", "チョコミント","こえかけ","クリムゾン","鯨の声","サメ遊戯" };
     private int lastSignal = -1;
 
     private int index;
