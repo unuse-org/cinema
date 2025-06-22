@@ -28,6 +28,7 @@ public class VideoPlayerManager : MonoBehaviour
 
     private int movieIndex;
     private int sceneIndex;
+    private int score;
 
     void Awake()
     {
@@ -51,6 +52,7 @@ public class VideoPlayerManager : MonoBehaviour
 
         movieIndex = PlayerPrefs.GetInt("movie", 0);
         sceneIndex = PlayerPrefs.GetInt("index", 0);
+        score = PlayerPrefs.GetInt("score", 0);
 
         Debug.Log($"Loaded movieIndex: {movieIndex}, sceneIndex: {sceneIndex}");
 
@@ -119,11 +121,18 @@ public class VideoPlayerManager : MonoBehaviour
             double currentTime = loader.GetComponent<UnityEngine.Video.VideoPlayer>()?.time ?? 0.0;
 
             // 条件（ここでは例として true）
-            bool inputCondition = true;
+            bool inputCondition = false;
 
             bool result = loader.CheckMovieCondition((float)currentTime, inputCondition);
 
             Debug.Log($"🎬 判定結果: {(result ? "成功" : "失敗")}");
+
+            if (result)
+            {
+                score += 3;
+                PlayerPrefs.SetInt("score", score);
+                PlayerPrefs.Save();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -145,6 +154,13 @@ public class VideoPlayerManager : MonoBehaviour
             bool result = loader.CheckMovieCondition((float)currentTime, inputCondition);
 
             Debug.Log($"🎬 判定結果: {(result ? "成功" : "失敗")}");
+
+            if (result)
+            {
+                score += 3;
+                PlayerPrefs.SetInt("score", score);
+                PlayerPrefs.Save();
+            }
         }
         // ✅ 再生時間表示処理
         UpdateVideoTimeDisplay();
