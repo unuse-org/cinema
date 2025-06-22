@@ -29,7 +29,7 @@ void setup() {
   delay(50);
 
   Serial.begin(115200);
-  while (!Serial);
+  // while (!Serial);
 
   Serial.print("Starting WiFi connection to ");
   Serial.println(ssid);
