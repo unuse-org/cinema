@@ -70,7 +70,7 @@ public class MovieDataLoader : MonoBehaviour
                 else
                 {
                     //Debug.Log($"⛔ 条件不一致: {movie.movieName} | 時間: {currentTime:F2}s | 条件: {inputCondition} " +
-                            //$"(期待値: {movie.scoreCondition}, 範囲: {movie.scoreStartTime}〜{movie.scoreEndTime})");
+                        //$"(期待値: {movie.scoreCondition}, 範囲: {movie.scoreStartTime}〜{movie.scoreEndTime})");
                     return false;
                 }
             }
