@@ -12,12 +12,12 @@ using UnityEngine;
     GetSensorSignal.csから呼ばれた時、保存している色と対応する映画の色を比較し、比較内容を返す
 
 */
-public class getcolorsensorsignal : MonoBehaviour
+public class getColorSensorSignalWifi : MonoBehaviour
 {
     [SerializeField] private TextAsset jsonFile;
     [SerializeField] private GameObject M5_Color;
 
-    private SR_Color colorSensor;
+    private UdpReceiver colorSensor;
 
     private string[] movieTitles = { "フクロウ仮面", "チョコミント" };
     private int lastSignal = -1;
@@ -60,7 +60,7 @@ public class getcolorsensorsignal : MonoBehaviour
         }
         if (M5_Color != null)
         {
-            colorSensor = M5_Color.GetComponent<SR_Color>();
+            colorSensor = M5_Color.GetComponent<UdpReceiver>();
             if (colorSensor == null)
             {
                 Debug.LogError("SR_Color コンポーネントが M5_Color オブジェクトに見つかりません.");
