@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; 
-using TMPro; // TextMeshProを使用するために必要
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class VideoPlayerManager : MonoBehaviour
 {
+    [Header("必須参照")]
     [Tooltip("動画を表示するRawImageをここに設定してください。")]
     [SerializeField] private RawImage rawImage;
 
@@ -14,21 +15,29 @@ public class VideoPlayerManager : MonoBehaviour
     [Tooltip("再生する動画クリップをここに設定してください（最大5本）。")]
     [SerializeField] private VideoClip[] videoClips = new VideoClip[5];
 
-    // --- 変更点 ---
-    [Tooltip("再生速度の各段階を設定してください。中央（等倍）を含め3段階です。")]
-    [SerializeField] private float[] playbackSpeeds = { 0.5f, 1.0f, 2.0f }; // スロー(0.5x), 等倍(1.0x), 早送り(2.0x)
-    [Tooltip("現在の再生速度を表示するUIテキスト (TextMeshPro) を設定してください。")]
+    [Tooltip("再生速度を表示するUIテキスト (TextMeshPro) を設定してください。")]
     [SerializeField] private TextMeshProUGUI speedDisplayText;
 
     [Tooltip("再生時間を表示するUIテキスト (TextMeshPro) を設定してください。")]
     [SerializeField] private TextMeshProUGUI videoTimeText;
 
-    private int currentSpeedIndex = 1; // 初期速度はplaybackSpeeds配列のインデックス1 (等倍) に設定
-    // --- ここまで変更点 ---
+    private int currentSpeedIndex = 1; // 現在の通常再生速度（等倍）
 
     private int movieIndex;
     private int sceneIndex;
     private int score;
+
+    [Header("アクシデント制御")]
+    [Tooltip("1本の動画で発生する最小アクシデント回数")]
+    [SerializeField] private int minAccidentCount = 1;
+
+    [Tooltip("1本の動画で発生する最大アクシデント回数")]
+    [SerializeField] private int maxAccidentCount = 2;
+
+    private int accidentTargetCount = 0;
+    private int accidentCount = 0;
+    private double nextAccidentTime = -1;
+    private bool accidentActive = false;
 
     void Awake()
     {
@@ -47,7 +56,7 @@ public class VideoPlayerManager : MonoBehaviour
 
         if (speedDisplayText == null)
         {
-            Debug.LogWarning("Speed Display Text (TMP) が設定されていません。Inspectorで設定してください。再生速度のUI表示は行われません。");
+            Debug.LogWarning("Speed Display Text (TMP) が設定されていません。再生速度のUI表示は行われません。");
         }
 
         movieIndex = PlayerPrefs.GetInt("movie", 0);
@@ -75,14 +84,17 @@ public class VideoPlayerManager : MonoBehaviour
             Debug.LogWarning($"VideoClip at index {clipToPlayIndex} は設定されていません！ movieIndex: {movieIndex}");
         }
 
-        // 初期速度を適用し、UIを更新
-        SetPlaybackSpeed(playbackSpeeds[currentSpeedIndex]);
+        SetPlaybackSpeed(1f);
     }
 
     void OnVideoPrepared(VideoPlayer vp)
     {
-        //Debug.Log("動画の準備が完了しました。再生を開始します。");
         videoPlayer.Play();
+
+        // アクシデント回数を決定（1～2回）
+        accidentTargetCount = Random.Range(minAccidentCount, maxAccidentCount + 1);
+        accidentCount = 0;
+        ScheduleNextAccident();
     }
 
     void OnVideoFinished(VideoPlayer vp)
@@ -100,112 +112,76 @@ public class VideoPlayerManager : MonoBehaviour
 
     void Update()
     {
-        /*太田☑️ここに左加速度センサーの処理を入れる
-                下のプログラムはデバッグ用
-        
-        
-        
-        */
-        // デバッグ用: 左右の矢印キーで再生速度を変更
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        // センサー入力再現（矢印キー）＋アクシデント解除
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            AdjustSpeed(-1); // 速度を低下
-            // MovieDataLoader を取得
-            MovieDataLoader loader = FindObjectOfType<MovieDataLoader>();
-            if (loader == null)
+            if (accidentActive)
             {
-                Debug.LogError("MovieDataLoader が見つかりません！");
-                return;
+                Debug.Log("🎮 センサー入力（デバッグ）：ユーザーが対処行動を実行");
+
+                accidentActive = false;
+                SetPlaybackSpeed(1f);
+                Debug.Log("✅ アクシデント解除：速度を通常（x1.0）に戻しました");
+                ScheduleNextAccident();
             }
-            // VideoPlayerController などから現在再生中の時間を取得
-            double currentTime = loader.GetComponent<UnityEngine.Video.VideoPlayer>()?.time ?? 0.0;
-
-            // 条件（ここでは例として true）
-            bool inputCondition = false;
-
-            bool result = loader.CheckMovieCondition((float)currentTime, inputCondition);
-
-            Debug.Log($"🎬 判定結果: {(result ? "成功" : "失敗")}");
-
-            if (result)
+            else
             {
-                score += 3;
-                PlayerPrefs.SetInt("score", score);
-                PlayerPrefs.Save();
+                // アクシデントが発生していないのに入力された場合
+                Debug.Log("⚠️ センサー入力がありましたが、アクシデントは発生していません。無視します。");
             }
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+
+        // アクシデント発生チェック
+        if (!accidentActive && nextAccidentTime > 0 && videoPlayer.time >= nextAccidentTime)
         {
-            AdjustSpeed(1); // 速度を上昇
-            // MovieDataLoader を取得
-            MovieDataLoader loader = FindObjectOfType<MovieDataLoader>();
-            if (loader == null)
-            {
-                Debug.LogError("MovieDataLoader が見つかりません！");
-                return;
-            }
-
-            // VideoPlayerController などから現在再生中の時間を取得
-            double currentTime = loader.GetComponent<UnityEngine.Video.VideoPlayer>()?.time ?? 0.0;
-
-            // 条件（ここでは例として true）
-            bool inputCondition = true;
-
-            bool result = loader.CheckMovieCondition((float)currentTime, inputCondition);
-
-            Debug.Log($"🎬 判定結果: {(result ? "成功" : "失敗")}");
-
-            if (result)
-            {
-                score += 3;
-                PlayerPrefs.SetInt("score", score);
-                PlayerPrefs.Save();
-            }
+            TriggerAccident();
+            accidentCount++;
         }
-        // ✅ 再生時間表示処理
+
+        // 再生時間の表示更新
         UpdateVideoTimeDisplay();
     }
 
-    /// <summary>
-    /// 再生速度を調整します。
-    /// </summary>
-    /// <param name="direction">速度変更の方向 (-1で低下, 1で上昇)</param>
-    private void AdjustSpeed(int direction)
-    {
-        currentSpeedIndex += direction;
-        // 速度インデックスを配列の範囲内に制限
-        currentSpeedIndex = Mathf.Clamp(currentSpeedIndex, 0, playbackSpeeds.Length - 1);
 
-        SetPlaybackSpeed(playbackSpeeds[currentSpeedIndex]);
+    private void TriggerAccident()
+    {
+        accidentActive = true;
+
+        float accidentSpeed = Random.value < 0.5f ? 0.5f : 1.5f;
+        string accidentType = accidentSpeed > 1f ? "SpeedUp" : "SpeedDown";
+
+        Debug.Log($"⚠️ アクシデント発生！ {(accidentType == "SpeedUp" ? "🚀【速度UP】" : "🐢【速度DOWN】")} x{accidentSpeed}");
+        SetPlaybackSpeed(accidentSpeed);
+
+        // 吹き出しを生成（正しく accidentType を渡す！）
+        BubbleSpawner.Instance.SpawnBubbles(accidentType);
     }
 
-    /// <summary>
-    /// VideoPlayerの再生速度を設定し、UIを更新します。
-    /// </summary>
-    /// <param name="speed">設定する再生速度</param>
-    public void SetPlaybackSpeed(float speed)
+
+    private void ScheduleNextAccident()
     {
-        if (videoPlayer != null)
+        if (accidentCount >= accidentTargetCount)
         {
-            videoPlayer.playbackSpeed = speed;
-            //Debug.Log($"再生速度が {speed}x に変更されました。");
-            UpdateSpeedDisplay(speed);
+            nextAccidentTime = -1;
+            return;
         }
+
+        double remainingTime = videoPlayer.length - videoPlayer.time;
+        if (remainingTime < 5.0) return;
+
+        double offset = Random.Range(3f, (float)(remainingTime - 1f));
+        nextAccidentTime = videoPlayer.time + offset;
+        Debug.Log($"📆 次のアクシデント予定時刻: {nextAccidentTime:F2} 秒");
     }
 
-    /// <summary>
-    /// UIに現在の再生速度を表示します。
-    /// </summary>
-    /// <param name="speed">表示する速度</param>
-    private void UpdateSpeedDisplay(float speed)
+    private void SetPlaybackSpeed(float speed)
     {
+        if (videoPlayer != null) videoPlayer.playbackSpeed = speed;
+
         if (speedDisplayText != null)
-        {
-            speedDisplayText.text = $"{speed.ToString("F2")}x"; // 小数点以下2桁まで表示
-        }
+            speedDisplayText.text = $"x{speed:0.0}";
     }
 
-    // 他のスクリプトから現在の再生時間を取得するためのメソッド
     public double GetVideoCurrentTime()
     {
         if (videoPlayer != null && videoPlayer.isPrepared)
@@ -214,22 +190,14 @@ public class VideoPlayerManager : MonoBehaviour
         }
         return 0.0;
     }
-    /// <summary>
-    /// 再生中の動画の現在時刻をUIに表示します。
-    /// </summary>
+
     private void UpdateVideoTimeDisplay()
     {
         if (videoPlayer != null && videoPlayer.isPrepared && videoTimeText != null)
         {
             double time = videoPlayer.time;
-            double duration = videoPlayer.length;
-
-            // 時間を mm:ss 形式にする
             int minutes = (int)(time / 60);
             int seconds = (int)(time % 60);
-            int totalMinutes = (int)(duration / 60);
-            int totalSeconds = (int)(duration % 60);
-
             videoTimeText.text = $"{minutes:D2}:{seconds:D2}";
         }
     }
