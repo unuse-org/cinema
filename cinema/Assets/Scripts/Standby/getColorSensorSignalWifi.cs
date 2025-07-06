@@ -1,143 +1,149 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*カラーセンサー処理プログラム
+/* カラーセンサー処理プログラム（ログ強化版）
 
-定義場所：スタンバイシーン
-内容：
-
-    色と対応した映画名をリスト型で定義
-    jsonファイルから、映画名を取得
-    カラーセンサーから値を常時取得し、認識している色を保存
-    GetSensorSignal.csから呼ばれた時、保存している色と対応する映画の色を比較し、比較内容を返す
-
+   - 色と対応した映画名を配列で定義
+   - JSON から曜日別の上映スケジュールをロード
+   - M5Stack から色信号を受信し lastSignal に保持
+   - CheckSchedule() で JSON のタイトルと現在検知しているタイトルを比較
 */
-public class getColorSensorSignalWifi : MonoBehaviour
+
+public class GetColorSensorSignalWifi : MonoBehaviour
 {
+    [Header("▼ Inspector 設定")]
     [SerializeField] private TextAsset jsonFile;
     [SerializeField] private GameObject M5_Color;
 
+    // ───────── 内部変数 ─────────
     private UdpReceiver colorSensor;
 
-    private string[] movieTitles = { "フクロウ仮面", "チョコミント","こえかけ","クリムゾン","鯨の声","サメ遊戯" };
-    private int lastSignal = -1;
-
-    private int index;
-    private int weekday;
+    private readonly string[] movieTitles =
+        { "フクロウ仮面", "チョコミント", "こえかけ", "クリムゾン", "鯨の声", "サメ遊戯" };
     
+    private int lastSignal = -1;   // センサー取得値 (0‑5)
+    private int index     = -1;    // 呼び出し側で設定される上映インデックス
+    private int weekday   = -1;    // PlayerPrefs から取得 (0=月 … 4=金)
 
-    [System.Serializable]
-    public class ScheduleItem
+    // ───────── JSON 用クラス ─────────
+    [System.Serializable] public class ScheduleItem { public int index; public string title; public string duration; public string start; }
+    [System.Serializable] public class DaySchedule
     {
-        public int index;
-        public string title;
-        public string duration;
-        public string start;
+        public List<ScheduleItem> 月, 火, 水, 木, 金;
     }
-
-    [System.Serializable]
-    public class DaySchedule
-    {
-        public List<ScheduleItem> 月;
-        public List<ScheduleItem> 火;
-        public List<ScheduleItem> 水;
-        public List<ScheduleItem> 木;
-        public List<ScheduleItem> 金;
-    }
-
     private DaySchedule scheduleData;
 
+    //============================================================
+    //                           Start
+    //============================================================
     void Start()
-    { 
-        weekday = PlayerPrefs.GetInt("weekday");
-        Debug.Log("もらった時weekday= "+weekday);
-        if (jsonFile != null)
+    {
+        // 1) 曜日読み込み（0〜4）
+        weekday = PlayerPrefs.GetInt("weekday", -1);
+        Debug.Log($"[Start]  weekday (PlayerPrefs) = {weekday}"); // 例：4 = 金曜日
+
+        // 1.5) index読み込み（各曜日の上映順）
+        index = PlayerPrefs.GetInt("index", -1);
+        Debug.Log($"[Start]  index (PlayerPrefs) = {index}");
+
+        // 2) JSON 読み込み
+        if (jsonFile == null)
         {
-            scheduleData = JsonUtility.FromJson<DaySchedule>(jsonFile.text);
+            Debug.LogError("[Start]  jsonFile が設定されていません！");
         }
         else
         {
-            //Debug.LogError("jsonFile が設定されていません。");
+            scheduleData = JsonUtility.FromJson<DaySchedule>(jsonFile.text);
+            Debug.Log($"[Start]  JSON 読込結果: " +
+                    $"月={scheduleData?.月?.Count ?? 0}, 火={scheduleData?.火?.Count ?? 0}, " +
+                    $"水={scheduleData?.水?.Count ?? 0}, 木={scheduleData?.木?.Count ?? 0}, 金={scheduleData?.金?.Count ?? 0}");
         }
 
-        if (M5_Color != null)
+
+        // 3) カラーセンサー取得
+        if (M5_Color == null)
+        {
+            Debug.LogError("[Start]  M5_Color オブジェクトが設定されていません！");
+        }
+        else
         {
             colorSensor = M5_Color.GetComponent<UdpReceiver>();
             if (colorSensor == null)
-            {
-                Debug.LogError("SR_Color コンポーネントが M5_Color オブジェクトに見つかりません.");
-            }
-        }
-        else
-        {
-            Debug.LogError("M5_Color オブジェクトが設定されていません．");
+                Debug.LogError("[Start]  UdpReceiver コンポーネントが見つかりません (M5_Color)");
         }
     }
 
-    void Update()
-    {
-        // //
-        if (Input.GetKeyDown(KeyCode.Alpha6)) lastSignal = 0;
-        else if (Input.GetKeyDown(KeyCode.Alpha7)) lastSignal = 1;
-        else if (Input.GetKeyDown(KeyCode.Alpha8)) lastSignal = 2;
-        else if (Input.GetKeyDown(KeyCode.Alpha9)) lastSignal = 3;
-        else if (Input.GetKeyDown(KeyCode.Alpha0)) lastSignal = 4;
-        // if(colorSensor != null)
-        // {
-        //     lastSignal = colorSensor.color; // カラーセンサーからの信号を取得
-        //     Debug.Log("カラーセンサーからの信号: " + lastSignal);
-        // }
-    }
-
+    //============================================================
+    //                 UpdateSensorSignal ― センサー取得
+    //============================================================
     public void UpdateSensorSignal()
     {
-        // if (colorSensor != null)
-        // {
-        //     lastSignal = colorSensor.color; // カラーセンサーからの信号を取得
-        //     Debug.Log("カラーセンサーからの信号: " + lastSignal);
-        // }
+        if (colorSensor == null) { Debug.LogWarning("[Signal] colorSensor が null"); return; }
+
+        lastSignal = colorSensor.color;
+        Debug.Log($"[Signal]  受信値 lastSignal = {lastSignal}");
     }
 
+    //============================================================
+    //                   CheckSchedule ― タイトル照合
+    //============================================================
     public bool CheckSchedule()
     {
-        //index番号とweekdayの番号から、曜日とシーン番号を参照し、タイトルを取得
-        List<ScheduleItem> selectedDay = null;
-        switch (weekday)
+        Debug.Log($"[Check]   参数 ==> weekday={weekday}, index={index}, lastSignal={lastSignal}");
+
+       List<ScheduleItem> selectedDay = weekday switch
         {
-            case 0: selectedDay = scheduleData.月; break; // 月曜日
-            case 1: selectedDay = scheduleData.火; break; // 火曜日
-            case 2: selectedDay = scheduleData.水; break; // 水曜日
-            case 3: selectedDay = scheduleData.木; break; // 木曜日
-            case 4: selectedDay = scheduleData.金; break; // 金曜日
-        }
+            0 => scheduleData?.月,
+            1 => scheduleData?.火,
+            2 => scheduleData?.水,
+            3 => scheduleData?.木,
+            4 => scheduleData?.金,
+            _ => null
+        };
 
-        Debug.Log($"selectedDay: {(selectedDay == null ? "null" : "OK")}");
-        Debug.Log($"index: {index}");
-        if (selectedDay != null) Debug.Log($"selectedDay.Count: {selectedDay.Count}");
-
-
-        if (selectedDay != null && index >= 0 && index < selectedDay.Count)
+        if (selectedDay == null)
         {
-            string jsonTitle = selectedDay[index].title; // インデックスに対応するタイトルを取得
-            //Debug.Log(jsonTitle);
-
-            string currentTitle = movieTitles[lastSignal];
-
-            Debug.Log($"比較: JSON = {jsonTitle}, 選択 = {currentTitle}");
-
-            // メイン関数用に、映画番号を保存
-            PlayerPrefs.SetInt("movie", lastSignal);
-            Debug.Log("movieIndex000" + lastSignal);
-            PlayerPrefs.Save();
-            //Debug.Log(lastSignal);
-
-            return jsonTitle == currentTitle;
-        }
-        else
-        {
-            Debug.LogWarning("無効な曜日またはインデックス");
+            Debug.LogWarning($"[Check]   曜日が無効 ({weekday}) もしくは JSON に該当リストなし");
             return false;
         }
-        
+
+        // 2) インデックス範囲チェック
+        if (index < 0 || index >= selectedDay.Count)
+        {
+            Debug.LogWarning($"[Check]   index が範囲外: index={index}, selectedDay.Count={selectedDay.Count}");
+            return false;
+        }
+
+        // 3) センサー値範囲チェック
+        if (lastSignal < 0 || lastSignal >= movieTitles.Length)
+        {
+            Debug.LogWarning($"[Check]   lastSignal が範囲外: {lastSignal}");
+            return false;
+        }
+
+        // 4) タイトル比較
+        string jsonTitle     = selectedDay[index].title;
+        string currentTitle  = movieTitles[lastSignal];
+        bool   isMatch       = jsonTitle == currentTitle;
+
+        Debug.Log($"[Check]   比較: JSON=\"{jsonTitle}\"  vs  Sensor=\"{currentTitle}\"  →  {isMatch}");
+
+        // 5) 成功時は PlayerPrefs に保存
+        if (isMatch)
+        {
+            PlayerPrefs.SetInt("movie", lastSignal);
+            PlayerPrefs.Save();
+            Debug.Log($"[Check]   成功: movie 番号 {lastSignal} を保存済み");
+        }
+        return isMatch;
+    }
+
+    //============================================================
+    //                 外部から index を設定する補助関数
+    //============================================================
+    public void SetIndex(int idx)
+    {
+        index = idx;
+        Debug.Log($"[SetIdx]  index を {index} に設定");
     }
 }

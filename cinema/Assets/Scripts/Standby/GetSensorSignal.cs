@@ -20,7 +20,7 @@ using System.Collections;
 public class GetSensorSignal : MonoBehaviour
 {
     // 現在の状態と直前の状態を保持
-    private int currentState = 0;
+    private int currentState;
     private int previousState = 0;
 
     // ステップ通過フラグ
@@ -29,13 +29,14 @@ public class GetSensorSignal : MonoBehaviour
 
     // 状態を表示するTextMeshProコンポーネント
     [SerializeField] private TMP_Text statusText;
+    public udp_receiver_imu imuReceiver; 
 
     // 現在動作中のフェードアウト用コルーチン
     private Coroutine fadeCoroutine;
 
     private int score;
     private int index;
-    public getColorSensorSignalWifi getColorSensorSignalWifi;
+    public GetColorSensorSignalWifi getColorSensorSignalWifi;
 
     private ChangeSceneManager changeSceneManager;
     //[SerializeField] private SceneChanger sceneChanger;
@@ -43,11 +44,11 @@ public class GetSensorSignal : MonoBehaviour
     // 各状態番号に対応するメッセージ（インデックス1〜5を使用）
     private string[] stateMessages = {
         "", // index 0は未使用
-        "逆転映写",    // 1
-        "逆転",                // 2
+        "映写",    // 1
+        "フィルムそう入",                // 2
         "停止",                  // 3
-        "フィルムそう入",             // 4
-        "映写"                // 5
+        "逆転",             // 4
+        "逆転映写"                // 5
     };
 
     void Start()
@@ -60,7 +61,25 @@ public class GetSensorSignal : MonoBehaviour
     // 毎フレーム実行
     void Update()
     {
-        GetInput();            // キー入力を取得
+        //UDPから取得
+        currentState = imuReceiver.senser;
+        // デバッグ用メッセージ出力
+        string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
+        //Debug.Log(message);
+        // テキストがアサインされている場合、状態名を表示
+        if (statusText != null)
+        {
+            statusText.text = stateMessages[currentState];
+            statusText.alpha = 1f;
+
+            // フェード中なら停止してから再スタート
+            if (fadeCoroutine != null)
+                StopCoroutine(fadeCoroutine);
+
+            fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
+        }
+        //GetInput();            // キー入力を取得
+        //Debug.Log("現在の入力： "+currentState);
         CheckStateSequence();  // ステップ判定処理
     }
 
@@ -93,18 +112,19 @@ public class GetSensorSignal : MonoBehaviour
                 }
             }
         }
+        
     }
 
     // 入力された状態が正しい順序かを確認し、ステップ進行またはリセット
     // ☑️太田「ここがメインシステム。ステップが完了次第mainシーンに移動する」
     void CheckStateSequence()
     {
-        // 不正な入力（ステップ1/2を飛ばすなど）でステップリセット
-        if ((step1Passed && currentState != 3 && currentState != 4 && currentState != 5) ||
-            (step2Passed && currentState != 4 && currentState != 5))
-        {
-            ResetSteps();
-        }
+        //不正な入力（ステップ1/2を飛ばすなど）でステップリセット
+        // if ((step1Passed && currentState != 3 && currentState != 4 && currentState != 5) ||
+        //     (step2Passed && currentState != 4 && currentState != 5))
+        // {
+        //     ResetSteps();
+        // }
 
         // ステップ1：Stop（3）が入力されたら通過
         if (currentState == 3)
@@ -114,14 +134,14 @@ public class GetSensorSignal : MonoBehaviour
             step1Passed = true;
         }
 
-        // ステップ2：Step1通過後にFilm Load（4）なら通過
-        if (step1Passed && !step2Passed && currentState == 4)
+        // ステップ2：Step1通過後にFilm Load（2）なら通過
+        if (step1Passed && !step2Passed && currentState == 2)
         {
             step2Passed = true;
         }
 
-        // ステップ3：Step1・2通過後にProject（5）で完了
-        if (step1Passed && step2Passed && currentState == 5)
+        // ステップ3：Step1・2通過後にProject（1）で完了
+        if (step1Passed && step2Passed && currentState == 1)
         {
             // 完了メッセージを表示
             if (statusText != null)
@@ -169,8 +189,7 @@ public class GetSensorSignal : MonoBehaviour
     {
         ResetSteps(); // ステップ状態を初期化
 
-        //☑️太田「ここで正しい映画がつけられているかを識別する」
-        getcolorsensorsignal sensorScript = GetComponent<getcolorsensorsignal>();
+        GetColorSensorSignalWifi sensorScript = GetComponent<GetColorSensorSignalWifi>();
         bool result = sensorScript.CheckSchedule();
         if (result)
         {
