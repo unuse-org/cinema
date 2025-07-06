@@ -20,7 +20,7 @@ uint32_t dispColor(uint8_t r, uint8_t g, uint8_t b) {
 const char *ssid = "TP-Link_B308";
 const char *password = "29640393";
 
-const int targetPort = 12346;
+const int targetPort = 12347;
 // ------------------------------------
 
 
@@ -60,15 +60,16 @@ void setup() {
 }
 
 // 加速度センサーのZ軸の値からデバイスの状態を判定する関数
-int getStatusFromAccel(float az) {
-  const float range_H_max = 0.90, range_H_min = 0.80;
-  const float range_L_max = 0.60, range_L_min = 0.40;
-
-  if (az < range_H_max && az > range_H_min) return 1;
-  else if (az < range_L_max && az > range_L_min) return 2;
-  else if (az > -range_L_max && az < -range_L_min) return 4;
-  else if (az > -range_H_max && az < -range_H_min) return 5;
-  else return 3;
+int getSpeedFromAccel(float ax)
+{
+  if (ax < 0.10 && ax > -0.10)
+    return 2; //MidSpeed
+  else if (ax < -0.95 && ax > -1.05)
+    return 1; //LowSpeed
+  else if (ax > -0.30 && ax < 0) 
+    return 3; //MaxSpeed
+  else
+    return 0; // NotSpeed
 }
 
 void loop() {
@@ -87,11 +88,11 @@ void loop() {
     
     Serial.printf("Accel: X=%.2f, Y=%.2f, Z=%.2f (g)\n", ax, ay, az);
 
-    int status = getStatusFromAccel(az);
-    Serial.printf("Status: %d\n", status);
+    int speed = getSpeedFromAccel(ax);
+    Serial.printf("Speed: %d\n", speed);
 
     char message[64];
-    sprintf(message, "%d", status);
+    sprintf(message, "%d", speed);
     
     // ブロードキャスト送信
     sendUdpBroadcast(targetPort, message);
