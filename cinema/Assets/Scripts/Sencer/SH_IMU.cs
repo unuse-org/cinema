@@ -11,7 +11,7 @@ public class SH_IMU : MonoBehaviour
     // シリアルポート名
     // ls /dev/tty* | grep usb
     // 真ん中のポート
-    private string port = "/dev/tty.usbmodem1201";
+    private string port = "/dev/tty.usbserial-58A70101701";
     public int baudRate = 115200; // ボーレート（通信速度）
 
     private SerialPort serialPort; // シリアルポートのインスタンス
