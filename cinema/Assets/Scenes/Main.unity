@@ -4550,11 +4550,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectId: human33
   stateDatabase: {fileID: 11400000, guid: 782ded7935d2d4b40bb28d34b42ec12f, type: 2}
---- !u!224 &703262639 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6507382884267166082, guid: 9749c613b226d4d88a90a6f1dba090b1, type: 3}
-  m_PrefabInstance: {fileID: 6825375225267949955}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -4813,7 +4808,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bubblePrefab: {fileID: 187221110}
-  uiCanvasParent: {fileID: 703262639}
   humans:
   - {fileID: 1885385557}
   - {fileID: 69875799}
@@ -9479,8 +9473,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Main
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
+  m_sharedMaterial: {fileID: 4647226082326723792, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -12672,8 +12666,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
+  m_sharedMaterial: {fileID: 4647226082326723792, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -13871,8 +13865,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7255fe0e11ea241849f4581e647bcbaa, type: 2}
-  m_sharedMaterial: {fileID: 2649369025821438962, guid: 7255fe0e11ea241849f4581e647bcbaa, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
+  m_sharedMaterial: {fileID: 4647226082326723792, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -15038,8 +15032,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Ender ositara susumur
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
+  m_sharedMaterial: {fileID: 4647226082326723792, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -15174,8 +15168,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7255fe0e11ea241849f4581e647bcbaa, type: 2}
-  m_sharedMaterial: {fileID: 2649369025821438962, guid: 7255fe0e11ea241849f4581e647bcbaa, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

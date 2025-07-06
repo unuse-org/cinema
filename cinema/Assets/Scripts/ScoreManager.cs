@@ -4,6 +4,13 @@ using TMPro;
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
+    // スコアを保存するメソッド
+    public void SaveScore(int score)
+    {
+        // PlayerPrefsにスコアを保存
+        PlayerPrefs.SetInt("score", score);
+        PlayerPrefs.Save();
+    }
 
     void Start()
     {
