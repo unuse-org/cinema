@@ -21,13 +21,14 @@ public class VideoPlayerManager : MonoBehaviour
     [Tooltip("再生時間を表示するUIテキスト (TextMeshPro) を設定してください。")]
     [SerializeField] private TextMeshProUGUI videoTimeText;
 
-    private int currentSpeedIndex = 1; // 現在の通常再生速度（等倍）
+    //private int currentSpeedIndex = 1; // 現在の通常再生速度（等倍）
 
     private int movieIndex;
     private int sceneIndex;
     private int score;
 
     private float accidentSpeed;
+    private int speed;
 
     [Header("アクシデント制御")]
     [Tooltip("1本の動画で発生する最小アクシデント回数")]
@@ -43,6 +44,8 @@ public class VideoPlayerManager : MonoBehaviour
     private double nextAccidentTime = -1;
     private bool accidentActive = false;
     private BubbleSpawner bubbleSpawner;
+
+    public udp_receiver_speed receiver_speed;
 
     void Awake()
     {
@@ -122,14 +125,15 @@ public class VideoPlayerManager : MonoBehaviour
 
     void Update()
     {
+        speed = receiver_speed.Speed;
         // アクシデントが発生しているときだけ判定
         if (!accidentActive) return;
 
         bool shouldRelease =
             // 速度が速い(>1) → 左矢印で解除
-            (accidentSpeed > 1f && Input.GetKeyDown(KeyCode.LeftArrow)) ||
+            (accidentSpeed > 1f && speed == 3) ||
             // 速度が遅い(<1) → 右矢印で解除
-            (accidentSpeed < 1f && Input.GetKeyDown(KeyCode.RightArrow));
+            (accidentSpeed < 1f && speed == 1);
 
         if (shouldRelease)
         {
