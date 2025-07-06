@@ -61,24 +61,24 @@ public class GetSensorSignal : MonoBehaviour
     // 毎フレーム実行
     void Update()
     {
-        //UDPから取得
-        currentState = imuReceiver.senser;
-        // デバッグ用メッセージ出力
-        string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
-        //Debug.Log(message);
-        // テキストがアサインされている場合、状態名を表示
-        if (statusText != null)
-        {
-            statusText.text = stateMessages[currentState];
-            statusText.alpha = 1f;
+        // //UDPから取得
+        // currentState = imuReceiver.senser;
+        // // デバッグ用メッセージ出力
+        // string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
+        // //Debug.Log(message);
+        // // テキストがアサインされている場合、状態名を表示
+        // if (statusText != null)
+        // {
+        //     statusText.text = stateMessages[currentState];
+        //     statusText.alpha = 1f;
 
-            // フェード中なら停止してから再スタート
-            if (fadeCoroutine != null)
-                StopCoroutine(fadeCoroutine);
+        //     // フェード中なら停止してから再スタート
+        //     if (fadeCoroutine != null)
+        //         StopCoroutine(fadeCoroutine);
 
-            fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
-        }
-        //GetInput();            // キー入力を取得
+        //     fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
+        // }
+        GetInput();            // キー入力を取得
         //Debug.Log("現在の入力： "+currentState);
         CheckStateSequence();  // ステップ判定処理
     }
