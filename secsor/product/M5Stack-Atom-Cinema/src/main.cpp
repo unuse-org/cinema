@@ -2,6 +2,15 @@
 #include <WiFi.h>
 #include "udp_sender.h"
 
+// UDPブロードキャスト送信用の関数を定義
+#include <WiFiUdp.h>
+void sendUdpBroadcast(int port, const char* message) {
+  WiFiUDP udp;
+  udp.beginPacket("255.255.255.255", port);
+  udp.write((const uint8_t*)message, strlen(message));
+  udp.endPacket();
+}
+
 // LEDマトリックスの色を指定しやすくするヘルパー関数
 uint32_t dispColor(uint8_t r, uint8_t g, uint8_t b) {
   return (r << 16) | (g << 8) | b;
@@ -10,12 +19,7 @@ uint32_t dispColor(uint8_t r, uint8_t g, uint8_t b) {
 // -------- ユーザー設定項目 --------
 const char *ssid = "TP-Link_B308";
 const char *password = "29640393";
-const IPAddress targetIPs[] = {
-  IPAddress(192, 168, 0, 140), //新美
-  IPAddress(192, 168, 0, 53), //新美
-  IPAddress(192, 168, 0, 99), //柴田
-  IPAddress(192, 168, 0, 26), //太田
-};
+
 const int targetPort = 12346;
 // ------------------------------------
 
@@ -89,12 +93,9 @@ void loop() {
     char message[64];
     sprintf(message, "%d", status);
     
-    // 送信先のIPアドレスとポート番号にメッセージを送信
-    for (int i = 0; i < 3; i++)
-    {
-      sendUdpMessage(targetIPs[i], targetPort, message);
-      delay(40);
-    }
+    // ブロードキャスト送信
+    sendUdpBroadcast(targetPort, message);
+
   }
 
   delay(500);
