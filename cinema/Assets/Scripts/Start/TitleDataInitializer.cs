@@ -19,7 +19,7 @@ public class TitleDataInitializer : MonoBehaviour
             // データがない場合、新規作成
             Debug.Log("PlayerPrefsにデータが存在しないため、新規作成します");
 
-            int weekday = Random.Range(1, 6);  // 1〜5の乱数
+            int weekday = Random.Range(0, 5);  // 0〜4の乱数
             int index = 1;
             int score = 15;
 

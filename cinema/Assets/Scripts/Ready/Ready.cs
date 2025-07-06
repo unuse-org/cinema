@@ -39,8 +39,8 @@ public class Ready : MonoBehaviour
         if (audioSource != null && !audioSource.isPlaying)
         {
             //1秒後に音楽を流す
-            audioSource.PlayDelayed(2.5f);
-            audioSource.Play();
+            //audioSource.PlayDelayed(2.5f);
+            //audioSource.Play();
         }
         else
         {

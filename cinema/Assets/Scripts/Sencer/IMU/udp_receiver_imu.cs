@@ -4,7 +4,7 @@ public class udp_receiver_imu : MonoBehaviour
 {
     
     public  udp_handler_imu udpHandlerIMU;
-    public int color;
+    public int senser;
 
     void Start()
     {
@@ -22,8 +22,9 @@ public class udp_receiver_imu : MonoBehaviour
     void OnDataReceived(string message)
     {
         message = message.Trim();  // 改行などを除去
-        color = int.Parse(message);
+        senser = int.Parse(message);
 
-        Debug.Log($"IMU Received: {message}");
+        //Debug.Log($"IMU Received: {message}");
+        //Debug.Log("senser: "+senser);
     }
 }
