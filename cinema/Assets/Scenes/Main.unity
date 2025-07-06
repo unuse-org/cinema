@@ -3394,6 +3394,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectId: human33
   stateDatabase: {fileID: 11400000, guid: 782ded7935d2d4b40bb28d34b42ec12f, type: 2}
+--- !u!224 &703262639 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6507382884267166082, guid: 9749c613b226d4d88a90a6f1dba090b1, type: 3}
+  m_PrefabInstance: {fileID: 6825375225267949955}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -3649,44 +3654,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e64ba7d6843148cea371dd86aabb11a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bubblePrefab: {fileID: 0}
-  uiCanvasParent: {fileID: 0}
+  bubblePrefab: {fileID: 187221110}
+  uiCanvasParent: {fileID: 703262639}
   humans:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1885385557}
+  - {fileID: 69875799}
+  - {fileID: 788974928}
+  - {fileID: 1900622865}
+  - {fileID: 1754498488}
+  - {fileID: 1472173838}
+  - {fileID: 1923454608}
+  - {fileID: 2000543702}
+  - {fileID: 1456286680}
+  - {fileID: 1102872680}
+  - {fileID: 1384837881}
+  - {fileID: 1361977318}
+  - {fileID: 1430803908}
+  - {fileID: 2123212047}
+  - {fileID: 10514680}
+  - {fileID: 506681919}
+  - {fileID: 472316193}
+  - {fileID: 2090884731}
+  - {fileID: 2104257579}
+  - {fileID: 2079276819}
+  - {fileID: 2106830526}
+  - {fileID: 1292470431}
+  - {fileID: 1808644382}
+  - {fileID: 1335438445}
+  - {fileID: 557989143}
+  - {fileID: 1024687672}
+  - {fileID: 496446698}
+  - {fileID: 2117210360}
+  - {fileID: 906320154}
+  - {fileID: 1171045659}
+  - {fileID: 1059818943}
+  - {fileID: 855592976}
+  - {fileID: 504215296}
+  - {fileID: 696935165}
+  - {fileID: 2060378880}
   maxBubbleCount: 3
 --- !u!1 &781272776
 GameObject:
