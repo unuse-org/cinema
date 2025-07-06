@@ -35,6 +35,7 @@ public class GetSensorSignal : MonoBehaviour
 
     private int score;
     private int index;
+    public getColorSensorSignalWifi getColorSensorSignalWifi;
 
     private ChangeSceneManager changeSceneManager;
     //[SerializeField] private SceneChanger sceneChanger;
@@ -108,6 +109,8 @@ public class GetSensorSignal : MonoBehaviour
         // ステップ1：Stop（3）が入力されたら通過
         if (currentState == 3)
         {
+            // ←★ここでセンサー値を更新
+            if (getColorSensorSignalWifi != null) getColorSensorSignalWifi.UpdateSensorSignal();
             step1Passed = true;
         }
 

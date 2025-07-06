@@ -19,11 +19,12 @@ public class getColorSensorSignalWifi : MonoBehaviour
 
     private UdpReceiver colorSensor;
 
-    private string[] movieTitles = { "フクロウ仮面", "チョコミント" };
+    private string[] movieTitles = { "フクロウ仮面", "チョコミント","こえかけ","クリムゾン","鯨の声","サメ遊戯" };
     private int lastSignal = -1;
 
     private int index;
     private int weekday;
+    
 
     [System.Serializable]
     public class ScheduleItem
@@ -47,9 +48,9 @@ public class getColorSensorSignalWifi : MonoBehaviour
     private DaySchedule scheduleData;
 
     void Start()
-    {
-        index = PlayerPrefs.GetInt("index");
+    { 
         weekday = PlayerPrefs.GetInt("weekday");
+        Debug.Log("もらった時weekday= "+weekday);
         if (jsonFile != null)
         {
             scheduleData = JsonUtility.FromJson<DaySchedule>(jsonFile.text);
@@ -58,6 +59,7 @@ public class getColorSensorSignalWifi : MonoBehaviour
         {
             //Debug.LogError("jsonFile が設定されていません。");
         }
+
         if (M5_Color != null)
         {
             colorSensor = M5_Color.GetComponent<UdpReceiver>();
@@ -75,16 +77,25 @@ public class getColorSensorSignalWifi : MonoBehaviour
     void Update()
     {
         // //
-        // if (Input.GetKeyDown(KeyCode.Alpha6)) lastSignal = 0;
-        // else if (Input.GetKeyDown(KeyCode.Alpha7)) lastSignal = 1;
-        // else if (Input.GetKeyDown(KeyCode.Alpha8)) lastSignal = 2;
-        // else if (Input.GetKeyDown(KeyCode.Alpha9)) lastSignal = 3;
-        // else if (Input.GetKeyDown(KeyCode.Alpha0)) lastSignal = 4;
-        if(colorSensor != null)
-        {
-            lastSignal = colorSensor.color; // カラーセンサーからの信号を取得
-            Debug.Log("カラーセンサーからの信号: " + lastSignal);
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha6)) lastSignal = 0;
+        else if (Input.GetKeyDown(KeyCode.Alpha7)) lastSignal = 1;
+        else if (Input.GetKeyDown(KeyCode.Alpha8)) lastSignal = 2;
+        else if (Input.GetKeyDown(KeyCode.Alpha9)) lastSignal = 3;
+        else if (Input.GetKeyDown(KeyCode.Alpha0)) lastSignal = 4;
+        // if(colorSensor != null)
+        // {
+        //     lastSignal = colorSensor.color; // カラーセンサーからの信号を取得
+        //     Debug.Log("カラーセンサーからの信号: " + lastSignal);
+        // }
+    }
+
+    public void UpdateSensorSignal()
+    {
+        // if (colorSensor != null)
+        // {
+        //     lastSignal = colorSensor.color; // カラーセンサーからの信号を取得
+        //     Debug.Log("カラーセンサーからの信号: " + lastSignal);
+        // }
     }
 
     public bool CheckSchedule()
@@ -99,6 +110,12 @@ public class getColorSensorSignalWifi : MonoBehaviour
             case 3: selectedDay = scheduleData.木; break; // 木曜日
             case 4: selectedDay = scheduleData.金; break; // 金曜日
         }
+
+        Debug.Log($"selectedDay: {(selectedDay == null ? "null" : "OK")}");
+        Debug.Log($"index: {index}");
+        if (selectedDay != null) Debug.Log($"selectedDay.Count: {selectedDay.Count}");
+
+
         if (selectedDay != null && index >= 0 && index < selectedDay.Count)
         {
             string jsonTitle = selectedDay[index].title; // インデックスに対応するタイトルを取得
@@ -110,7 +127,7 @@ public class getColorSensorSignalWifi : MonoBehaviour
 
             // メイン関数用に、映画番号を保存
             PlayerPrefs.SetInt("movie", lastSignal);
-            Debug.Log("movieIndex000"+lastSignal);
+            Debug.Log("movieIndex000" + lastSignal);
             PlayerPrefs.Save();
             //Debug.Log(lastSignal);
 
@@ -121,5 +138,6 @@ public class getColorSensorSignalWifi : MonoBehaviour
             Debug.LogWarning("無効な曜日またはインデックス");
             return false;
         }
+        
     }
 }

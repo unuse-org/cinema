@@ -27,6 +27,8 @@ public class VideoPlayerManager : MonoBehaviour
     private int sceneIndex;
     private int score;
 
+    private float accidentSpeed;
+
     [Header("アクシデント制御")]
     [Tooltip("1本の動画で発生する最小アクシデント回数")]
     [SerializeField] private int minAccidentCount = 1;
@@ -34,13 +36,21 @@ public class VideoPlayerManager : MonoBehaviour
     [Tooltip("1本の動画で発生する最大アクシデント回数")]
     [SerializeField] private int maxAccidentCount = 2;
 
+    [SerializeField] private SurpriseHumansManager surpriseManager;
+
     private int accidentTargetCount = 0;
     private int accidentCount = 0;
     private double nextAccidentTime = -1;
     private bool accidentActive = false;
+    private BubbleSpawner bubbleSpawner;
 
     void Awake()
     {
+        bubbleSpawner = FindObjectOfType<BubbleSpawner>();
+        if (bubbleSpawner == null)
+        {
+            Debug.LogError("❌ BubbleSpawner が見つかりません");
+        }
         videoPlayer = GetComponent<VideoPlayer>();
         if (videoPlayer == null)
         {
@@ -113,22 +123,51 @@ public class VideoPlayerManager : MonoBehaviour
     void Update()
     {
         // センサー入力再現（矢印キー）＋アクシデント解除
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             if (accidentActive)
             {
-                Debug.Log("🎮 センサー入力（デバッグ）：ユーザーが対処行動を実行");
+                if (accidentSpeed < 1)
+                {
+                    Debug.Log("🎮 センサー入力（デバッグ）：ユーザーが対処行動を実行");
 
-                accidentActive = false;
-                SetPlaybackSpeed(1f);
-                Debug.Log("✅ アクシデント解除：速度を通常（x1.0）に戻しました");
-                ScheduleNextAccident();
+                    accidentActive = false;
+                    SetPlaybackSpeed(1f);
+                    Debug.Log("✅ アクシデント解除：速度を通常（x1.0）に戻しました");
+                    score += 3;
+                    PlayerPrefs.SetInt("score", score);
+                    surpriseManager.SurpriseAllHumans();
+                    ScheduleNextAccident();
+                }
             }
-            else
+                else
+                {
+                    // アクシデントが発生していないのに入力された場合
+                    //Debug.Log("⚠️ センサー入力がありましたが、アクシデントは発生していません。無視します。");
+                }
+        }// センサー入力再現（矢印キー）-アクシデント解除
+        else if( Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if (accidentActive)
             {
-                // アクシデントが発生していないのに入力された場合
-                Debug.Log("⚠️ センサー入力がありましたが、アクシデントは発生していません。無視します。");
+                if (accidentSpeed > 1)
+                {
+                    Debug.Log("🎮 センサー入力（デバッグ）：ユーザーが対処行動を実行");
+
+                    accidentActive = false;
+                    SetPlaybackSpeed(1f);
+                    Debug.Log("✅ アクシデント解除：速度を通常（x1.0）に戻しました");
+                    score += 3;
+                    PlayerPrefs.SetInt("score", score);
+                    surpriseManager.SurpriseAllHumans();
+                    ScheduleNextAccident();
+                }
             }
+                else
+                {
+                    // アクシデントが発生していないのに入力された場合
+                    //Debug.Log("⚠️ センサー入力がありましたが、アクシデントは発生していません。無視します。");
+                }
         }
 
         // アクシデント発生チェック
@@ -153,8 +192,20 @@ public class VideoPlayerManager : MonoBehaviour
         Debug.Log($"⚠️ アクシデント発生！ {(accidentType == "SpeedUp" ? "🚀【速度UP】" : "🐢【速度DOWN】")} x{accidentSpeed}");
         SetPlaybackSpeed(accidentSpeed);
 
-        // 吹き出しを生成（正しく accidentType を渡す！）
-        BubbleSpawner.Instance.SpawnBubbles(accidentType);
+        if(accidentSpeed > 1)
+        {
+            // 速い状況になった瞬間
+            BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedUp);
+        }
+        else
+        {
+            // 遅い状況
+            BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedDown);
+        }
+       
+
+        
+
     }
 
 

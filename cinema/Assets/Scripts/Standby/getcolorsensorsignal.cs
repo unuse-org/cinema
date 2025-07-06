@@ -50,6 +50,7 @@ public class getcolorsensorsignal : MonoBehaviour
     {
         index = PlayerPrefs.GetInt("index");
         weekday = PlayerPrefs.GetInt("weekday");
+        Debug.Log("もらった時weekday= "+weekday);
         if (jsonFile != null)
         {
             scheduleData = JsonUtility.FromJson<DaySchedule>(jsonFile.text);
@@ -93,7 +94,7 @@ public class getcolorsensorsignal : MonoBehaviour
     {
         //index番号とweekdayの番号から、曜日とシーン番号を参照し、タイトルを取得
         List<ScheduleItem> selectedDay = null;
-        Debug.Log(weekday);
+        //Debug.Log(weekday);
         switch (weekday)
         {
             case 1: selectedDay = scheduleData.月; break; // 月曜日
