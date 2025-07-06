@@ -40,16 +40,16 @@ public class GetColorSensorSignalWifi : MonoBehaviour
     {
         // 1) 曜日読み込み（0〜4）
         weekday = PlayerPrefs.GetInt("weekday", -1);
-        Debug.Log($"[Start]  weekday (PlayerPrefs) = {weekday}"); // 例：4 = 金曜日
+        //Debug.Log($"[Start]  weekday (PlayerPrefs) = {weekday}"); // 例：4 = 金曜日
 
         // 1.5) index読み込み（各曜日の上映順）
         index = PlayerPrefs.GetInt("index", -1);
-        Debug.Log($"[Start]  index (PlayerPrefs) = {index}");
+        //Debug.Log($"[Start]  index (PlayerPrefs) = {index}");
 
         // 2) JSON 読み込み
         if (jsonFile == null)
         {
-            Debug.LogError("[Start]  jsonFile が設定されていません！");
+            //Debug.LogError("[Start]  jsonFile が設定されていません！");
         }
         else
         {
@@ -63,7 +63,7 @@ public class GetColorSensorSignalWifi : MonoBehaviour
         // 3) カラーセンサー取得
         if (M5_Color == null)
         {
-            Debug.LogError("[Start]  M5_Color オブジェクトが設定されていません！");
+            //Debug.LogError("[Start]  M5_Color オブジェクトが設定されていません！");
         }
         else
         {
@@ -81,7 +81,7 @@ public class GetColorSensorSignalWifi : MonoBehaviour
         if (colorSensor == null) { Debug.LogWarning("[Signal] colorSensor が null"); return; }
 
         lastSignal = colorSensor.color;
-        Debug.Log($"[Signal]  受信値 lastSignal = {lastSignal}");
+        //Debug.Log($"[Signal]  受信値 lastSignal = {lastSignal}");
     }
 
     //============================================================
@@ -89,7 +89,7 @@ public class GetColorSensorSignalWifi : MonoBehaviour
     //============================================================
     public bool CheckSchedule()
     {
-        Debug.Log($"[Check]   参数 ==> weekday={weekday}, index={index}, lastSignal={lastSignal}");
+        //Debug.Log($"[Check]   参数 ==> weekday={weekday}, index={index}, lastSignal={lastSignal}");
 
        List<ScheduleItem> selectedDay = weekday switch
         {
@@ -103,21 +103,21 @@ public class GetColorSensorSignalWifi : MonoBehaviour
 
         if (selectedDay == null)
         {
-            Debug.LogWarning($"[Check]   曜日が無効 ({weekday}) もしくは JSON に該当リストなし");
+            //Debug.LogWarning($"[Check]   曜日が無効 ({weekday}) もしくは JSON に該当リストなし");
             return false;
         }
 
         // 2) インデックス範囲チェック
         if (index < 0 || index >= selectedDay.Count)
         {
-            Debug.LogWarning($"[Check]   index が範囲外: index={index}, selectedDay.Count={selectedDay.Count}");
+            //Debug.LogWarning($"[Check]   index が範囲外: index={index}, selectedDay.Count={selectedDay.Count}");
             return false;
         }
 
         // 3) センサー値範囲チェック
         if (lastSignal < 0 || lastSignal >= movieTitles.Length)
         {
-            Debug.LogWarning($"[Check]   lastSignal が範囲外: {lastSignal}");
+            //Debug.LogWarning($"[Check]   lastSignal が範囲外: {lastSignal}");
             return false;
         }
 
@@ -126,14 +126,14 @@ public class GetColorSensorSignalWifi : MonoBehaviour
         string currentTitle  = movieTitles[lastSignal];
         bool   isMatch       = jsonTitle == currentTitle;
 
-        Debug.Log($"[Check]   比較: JSON=\"{jsonTitle}\"  vs  Sensor=\"{currentTitle}\"  →  {isMatch}");
+        //Debug.Log($"[Check]   比較: JSON=\"{jsonTitle}\"  vs  Sensor=\"{currentTitle}\"  →  {isMatch}");
 
         // 5) 成功時は PlayerPrefs に保存
         if (isMatch)
         {
             PlayerPrefs.SetInt("movie", lastSignal);
             PlayerPrefs.Save();
-            Debug.Log($"[Check]   成功: movie 番号 {lastSignal} を保存済み");
+            //Debug.Log($"[Check]   成功: movie 番号 {lastSignal} を保存済み");
         }
         return isMatch;
     }
@@ -144,6 +144,6 @@ public class GetColorSensorSignalWifi : MonoBehaviour
     public void SetIndex(int idx)
     {
         index = idx;
-        Debug.Log($"[SetIdx]  index を {index} に設定");
+        //Debug.Log($"[SetIdx]  index を {index} に設定");
     }
 }
