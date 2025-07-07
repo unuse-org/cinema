@@ -3310,8 +3310,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u6708\u66DC\u65E5"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7255fe0e11ea241849f4581e647bcbaa, type: 2}
-  m_sharedMaterial: {fileID: 2649369025821438962, guid: 7255fe0e11ea241849f4581e647bcbaa, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
+  m_sharedMaterial: {fileID: 2649369025821438962, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
