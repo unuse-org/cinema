@@ -35,7 +35,7 @@ public class SceneBObjectStateManager : MonoBehaviour
         ApplyDiffBasedActivation();
     }
 
-    void ApplyDiffBasedActivation()
+    public void ApplyDiffBasedActivation()
     {
         int people = PlayerPrefs.GetInt("people", 0);
 

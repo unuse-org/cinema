@@ -110,7 +110,7 @@ public class BubbleSpawner : MonoBehaviour
                 spriteRenderer.sprite = sp;  // スプライトを設定
             }
 
-            Debug.Log($"💬 吹き出し生成: {sp.name} @ {target.name}");
+            //Debug.Log($"💬 吹き出し生成: {sp.name} @ {target.name}");
 
             //Destroy(bubble, 5.5f); // 2.5 秒後に自動破棄
         }

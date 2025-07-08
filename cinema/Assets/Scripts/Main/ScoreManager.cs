@@ -21,7 +21,7 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        
+        score = PlayerPrefs.GetInt("score", score);
     }
     void Update()
     {

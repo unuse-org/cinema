@@ -19,7 +19,7 @@ public class GetColorSensorSignalWifi : MonoBehaviour
     private UdpReceiver colorSensor;
 
     private readonly string[] movieTitles =
-        { "フクロウ仮面", "チョコミント", "こえかけ", "クリムゾン", "鯨の声", "サメ遊戯" };
+        { "フクロウ仮面", "チョコミント", "こえかけさん", "クリムゾン", "鯨の声", "サメ遊戯" };
     
     private int lastSignal = -1;   // センサー取得値 (0‑5)
     private int index     = -1;    // 呼び出し側で設定される上映インデックス
@@ -54,9 +54,9 @@ public class GetColorSensorSignalWifi : MonoBehaviour
         else
         {
             scheduleData = JsonUtility.FromJson<DaySchedule>(jsonFile.text);
-            Debug.Log($"[Start]  JSON 読込結果: " +
-                    $"月={scheduleData?.月?.Count ?? 0}, 火={scheduleData?.火?.Count ?? 0}, " +
-                    $"水={scheduleData?.水?.Count ?? 0}, 木={scheduleData?.木?.Count ?? 0}, 金={scheduleData?.金?.Count ?? 0}");
+            // Debug.Log($"[Start]  JSON 読込結果: " +
+            //         $"月={scheduleData?.月?.Count ?? 0}, 火={scheduleData?.火?.Count ?? 0}, " +
+            //         $"水={scheduleData?.水?.Count ?? 0}, 木={scheduleData?.木?.Count ?? 0}, 金={scheduleData?.金?.Count ?? 0}");
         }
 
 
@@ -136,6 +136,12 @@ public class GetColorSensorSignalWifi : MonoBehaviour
             //Debug.LogWarning($"[Check]   曜日が無効 ({weekday}) もしくは JSON に該当リストなし");
             return false;
         }
+
+        // 曜日名の表示用
+        string[] weekdayNames = { "月", "火", "水", "木", "金" };
+        string currentWeekdayName = (weekday >= 0 && weekday <= 4) ? weekdayNames[weekday] : "不明";
+
+        Debug.Log($"[Check] ▶️ 現在チェック中：{currentWeekdayName}曜日 の index={index}");
 
         // 2) インデックス範囲チェック
         if (index < 0 || index >= selectedDay.Count)

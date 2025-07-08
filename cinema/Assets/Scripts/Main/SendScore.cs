@@ -19,7 +19,7 @@ public class SendScore : MonoBehaviour
             if (receiveScore != null)
             {
                 receiveScore.AddScore(baseScore);
-                Debug.Log($"📤 スコア {baseScore} を送信しました");
+                //Debug.Log($"📤 スコア {baseScore} を送信しました");
             }
             else
             {

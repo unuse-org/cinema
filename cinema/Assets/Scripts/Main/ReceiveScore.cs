@@ -19,7 +19,7 @@ public class ReceiveScore : MonoBehaviour
     public void AddScore(int scoreToAdd)
     {
         currentScore += scoreToAdd;
-        Debug.Log($"スコア加算: {scoreToAdd} → 現在のスコア: {currentScore}");
+        //Debug.Log($"スコア加算: {scoreToAdd} → 現在のスコア: {currentScore}");
     }
 
     // シーンがアンロードされるときに保存

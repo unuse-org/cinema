@@ -196,12 +196,12 @@ public class GetSensorSignal : MonoBehaviour
         if (result)
         {
             Debug.Log("✅ スケジュールが一致しました！");
-            people += 3;
+            people += 2;
         }
         else
         {
             Debug.Log("❌ スケジュールが一致しません！");
-            people -= 3;
+            people -= 2;
         }
         //スコア計算処理＆index関数の更新
         index += 1;
