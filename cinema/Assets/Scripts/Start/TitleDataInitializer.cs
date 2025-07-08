@@ -21,12 +21,14 @@ public class TitleDataInitializer : MonoBehaviour
 
             int weekday = Random.Range(0, 5);  // 0〜4の乱数
             int index = 1;
-            int score = 15;
+            int score = 0;
+            int people = 15;
 
             // PlayerPrefsにデータを保存
             PlayerPrefs.SetInt("weekday", weekday);
             PlayerPrefs.SetInt("index", index);
             PlayerPrefs.SetInt("score", score);
+            PlayerPrefs.SetInt("score", people);
 
             // 保存を確定
             PlayerPrefs.Save();

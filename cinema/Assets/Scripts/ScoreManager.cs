@@ -4,6 +4,13 @@ using TMPro;
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
+
+    [Header("スコアを受け取る側のスクリプト")]
+    [SerializeField] private ReceiveScore receiveScore;
+
+    private int score;
+
+    
     // スコアを保存するメソッド
     public void SaveScore(int score)
     {
@@ -14,10 +21,21 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        // PlayerPrefsから"score"を取得（なければ0）
-        int score = PlayerPrefs.GetInt("score", 0);
+        
+    }
+    void Update()
+    {
+        try
+        {
+            score = receiveScore.currentScore;
+        }
+        catch (System.NullReferenceException e)
+        {
+            //Debug.LogError($"❌ receiveScore が null、または currentScore にアクセスできません: {e.Message}");
+        }
 
         // UIに表示
-        scoreText.text = "人数" + score.ToString();
+        scoreText.text = "スコア" + score.ToString();
     }
+
 }

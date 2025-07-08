@@ -34,7 +34,7 @@ public class GetSensorSignal : MonoBehaviour
     // 現在動作中のフェードアウト用コルーチン
     private Coroutine fadeCoroutine;
 
-    private int score;
+    private int people;
     private int index;
     public GetColorSensorSignalWifi getColorSensorSignalWifi;
 
@@ -53,7 +53,7 @@ public class GetSensorSignal : MonoBehaviour
 
     void Start()
     {
-        score = PlayerPrefs.GetInt("score");       // デフォルト値を0
+        people = PlayerPrefs.GetInt("people");       // デフォルト値を0
         index = PlayerPrefs.GetInt("index");
         //Debug.Log("シーン読み込み時"+index);
     }
@@ -196,19 +196,17 @@ public class GetSensorSignal : MonoBehaviour
         if (result)
         {
             Debug.Log("✅ スケジュールが一致しました！");
-            score += 3;
-            //Debug.Log(score);
+            people += 3;
         }
         else
         {
             Debug.Log("❌ スケジュールが一致しません！");
-            score -= 3;
-            //Debug.Log(score);
+            people -= 3;
         }
         //スコア計算処理＆index関数の更新
         index += 1;
         PlayerPrefs.SetInt("index", index);
-        PlayerPrefs.SetInt("score", score);
+        PlayerPrefs.SetInt("people", people);
         PlayerPrefs.Save();
         //Debug.Log("移動前"+index);
 

@@ -32,9 +32,7 @@ public class ObjectStateManager : MonoBehaviour
 
     void InitializeObjectStates()
     {
-        int score = PlayerPrefs.GetInt("score", 0);
-
-        //int score = 15;
+        int people = PlayerPrefs.GetInt("people", 0);
         
         managedObjects = new List<GameObject>();  // managedObjects が null であれば初期化
 
@@ -69,8 +67,7 @@ public class ObjectStateManager : MonoBehaviour
 
         // 差分がある場合のみランダムに非アクティブ化
         int currentActive = activeIndices.Count;
-        int diff = currentActive - score;
-        //Debug.Log($"[検証] score = {score}, アクティブなHuman数 = {currentActive}, 差分 = {diff}");
+        int diff = currentActive - people;
 
         if (diff > 0)
         {
@@ -133,7 +130,7 @@ public class ObjectStateManager : MonoBehaviour
     // スコアとの差分に応じてオブジェクトの状態を変更
     void ApplyDiffBasedActivation()
     {
-        int score = PlayerPrefs.GetInt("score", 0);
+        int people = PlayerPrefs.GetInt("people", 0);
         List<int> activeIndices = new();
         List<int> inactiveIndices = new();
 
@@ -147,10 +144,7 @@ public class ObjectStateManager : MonoBehaviour
         }
 
         int currentActiveCount = activeIndices.Count;
-        int diff = score - currentActiveCount;
-
-        //Debug.Log($"[Debug] 現在アクティブな数（差分処理前）: {currentActiveCount}");
-        //Debug.Log($"[Debug] スコア = {score}, 差分 = {diff}");
+        int diff = people - currentActiveCount;
 
         // アクティブにするオブジェクト数が足りない場合
         if (diff > 0)
