@@ -21,12 +21,19 @@ public class TitleDataInitializer : MonoBehaviour
 
             int weekday = Random.Range(0, 5);  // 0〜4の乱数
             int index = 1;
-            int score = 15;
+            int score = 0;
+            int people = 2;
+
+            Debug.Log("weekday: "+weekday);
+            Debug.Log("index: "+index);
+            Debug.Log("score: "+score);
+            Debug.Log("people: "+people);
 
             // PlayerPrefsにデータを保存
             PlayerPrefs.SetInt("weekday", weekday);
             PlayerPrefs.SetInt("index", index);
             PlayerPrefs.SetInt("score", score);
+            PlayerPrefs.SetInt("people", people);
 
             // 保存を確定
             PlayerPrefs.Save();
@@ -36,17 +43,23 @@ public class TitleDataInitializer : MonoBehaviour
         else
         {
             // PlayerPrefsが既に存在している場合、中身を空にして再初期化
-            //Debug.Log("PlayerPrefsは既に存在しています。中身を初期化します");
+            Debug.Log("これは初期設定Bです");
 
             int weekday = Random.Range(0, 5);  // 1〜5の乱数
             int index = 1;
-            int score = 15;
+            int score = 0;
+            int people = 2;
+
+            Debug.Log("weekday: "+weekday);
+            Debug.Log("index: "+index);
+            Debug.Log("score: "+score);
+            Debug.Log("people: "+people);
 
             // 中身を初期化して再設定
             PlayerPrefs.SetInt("weekday", weekday);
             PlayerPrefs.SetInt("index", index);
             PlayerPrefs.SetInt("score", score);
-            // Debug.Log(score);
+            PlayerPrefs.SetInt("people", people);
 
             // 保存を確定
             PlayerPrefs.Save();

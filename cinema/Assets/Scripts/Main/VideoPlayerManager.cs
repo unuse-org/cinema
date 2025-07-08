@@ -3,6 +3,8 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections.Generic;
+
 
 public class VideoPlayerManager : MonoBehaviour
 {
@@ -23,17 +25,17 @@ public class VideoPlayerManager : MonoBehaviour
 
     private int movieIndex;
     private int sceneIndex;
-    private int score;
+    private int people;
 
     private float accidentSpeed;
     private int speed;
 
-    [Header("アクシデント制御")]
-    [Tooltip("1本の動画で発生する最小アクシデント回数")]
-    [SerializeField] private int minAccidentCount = 1;
+    //[Header("アクシデント制御")]
+    //[Tooltip("1本の動画で発生する最小アクシデント回数")]
+    //[SerializeField] private int minAccidentCount = 1;
 
-    [Tooltip("1本の動画で発生する最大アクシデント回数")]
-    [SerializeField] private int maxAccidentCount = 2;
+    // [Tooltip("1本の動画で発生する最大アクシデント回数")]
+    // [SerializeField] private int maxAccidentCount = 2;
 
     [SerializeField] private SurpriseHumansManager surpriseManager;
 
@@ -45,7 +47,14 @@ public class VideoPlayerManager : MonoBehaviour
 
     public udp_receiver_speed receiver_speed;
 
+    [SerializeField] SceneBObjectStateManager  sceneBObjectStateManager; 
+
     private int  sensor = 0; 
+    private Queue<double> accidentScheduleQueue = new Queue<double>();
+
+    private bool allAccidentsScheduled = false;  // 全てのアクシデントがスケジュール済みかどうかを管理
+
+
 
     void Awake()
     {
@@ -75,9 +84,9 @@ public class VideoPlayerManager : MonoBehaviour
 
         movieIndex = PlayerPrefs.GetInt("movie", 0);
         sceneIndex = PlayerPrefs.GetInt("index", 0);
-        score = PlayerPrefs.GetInt("score", 0);
+        people = PlayerPrefs.GetInt("people", 0);
 
-        Debug.Log($"Loaded movieIndex: {movieIndex}, sceneIndex: {sceneIndex}");
+        Debug.Log("sceneIndex: "+sceneIndex);
 
         int clipToPlayIndex = Mathf.Clamp(movieIndex, 0, videoClips.Length - 1);
 
@@ -105,15 +114,25 @@ public class VideoPlayerManager : MonoBehaviour
     {
         videoPlayer.Play();
 
-        accidentTargetCount = Random.Range(minAccidentCount, maxAccidentCount + 1);
-        accidentCount = 0;
-        ScheduleNextAccident();
+        if (!allAccidentsScheduled)
+        {
+            accidentTargetCount = Mathf.RoundToInt(Mathf.Lerp(2, 20, Mathf.Clamp01(people / 35f)));
+            Debug.Log($"🎯 アクシデント発生目標回数: {accidentTargetCount} （観客: {people}人）");
+
+            accidentCount = 0;
+            ScheduleAllAccidents();  // アクシデントをスケジュール
+
+            allAccidentsScheduled = true;  // アクシデントのスケジュールが完了したことを記録
+        }
     }
+
+
+
 
     void OnVideoFinished(VideoPlayer vp)
     {
-        Debug.Log("動画の再生が終了しました（movie: " + movieIndex + "）");
-        if (sceneIndex == 5)
+        //Debug.Log("動画の再生が終了しました（movie: " + movieIndex + "）");
+        if (sceneIndex == 6)
         {
             SceneManager.LoadScene("End");
         }
@@ -127,50 +146,48 @@ public class VideoPlayerManager : MonoBehaviour
     {
         UpdateVideoTimeDisplay();
 
-        if (!accidentActive && nextAccidentTime >= 0 &&
-            videoPlayer.isPrepared && videoPlayer.time >= nextAccidentTime)
+        if (!accidentActive && accidentScheduleQueue.Count > 0 &&
+            videoPlayer.isPrepared && videoPlayer.time >= accidentScheduleQueue.Peek())
         {
+            accidentScheduleQueue.Dequeue();
             TriggerAccident();
             accidentCount++;
-            ScheduleNextAccident();
         }
 
         if (accidentActive && receiver_speed != null)
         {
-            //デバッグ用にコメントアウト
-            //int sensor = receiver_speed.Speed;
+            //センサー処理
+            int sensor = receiver_speed.Speed;
 
-            
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                sensor = 1;
-                Debug.Log("← 左矢印キー入力 → sensor = 1");
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                sensor = 3;
-                Debug.Log("→ 右矢印キー入力 → sensor = 3");
-            }
+
+            //デバッグ用キー入力処理
+            // if (Input.GetKeyDown(KeyCode.LeftArrow))
+            // {
+            //     sensor = 1;
+            //     //Debug.Log("← 左矢印キー入力 → sensor = 1");
+            // }
+            // else if (Input.GetKeyDown(KeyCode.RightArrow))
+            // {
+            //     sensor = 3;
+            //     //Debug.Log("→ 右矢印キー入力 → sensor = 3");
+            // }
 
             bool shouldRelease =
-                (accidentSpeed > 1f && sensor == 3) ||
-                (accidentSpeed < 1f && sensor == 1);
-
-
+                (accidentSpeed > 1f && sensor == 1) ||
+                (accidentSpeed < 1f && sensor == 3);
 
             if (shouldRelease) ReleaseAccident();
-
-
-
+            sensor = 2;
         }
     }
+
 
     private void TriggerAccident()
     {
         accidentActive = true;
 
         // ✅ 修正箇所：ローカル変数にせず、フィールドに代入
-        accidentSpeed = Random.value < 0.5f ? 0.5f : 1.5f;
+        accidentSpeed = Random.value < 0.75f ? 0.5f : 1.2f;
         string accidentType = accidentSpeed > 1f ? "SpeedUp" : "SpeedDown";
 
         Debug.Log($"⚠️ アクシデント発生！ {(accidentType == "SpeedUp" ? "🚀【速度UP】" : "🐢【速度DOWN】")} x{accidentSpeed}");
@@ -178,27 +195,33 @@ public class VideoPlayerManager : MonoBehaviour
 
         if (accidentSpeed > 1)
         {
-            BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedUp);
+            BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedDown);
         }
         else
         {
-            BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedDown);
+            BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedUp);
         }
     }
 
     private void ReleaseAccident()
     {
-        Debug.Log("🎮 センサー入力（デバッグ）：ユーザーが対処行動を実行");
+        //Debug.Log("🎮 センサー入力（デバッグ）：ユーザーが対処行動を実行");
 
         accidentActive = false;
         SetPlaybackSpeed(1f);
         Debug.Log("✅ アクシデント解除：速度を通常（x1.0）に戻しました");
 
-        score += 3;
-        PlayerPrefs.SetInt("score", score);
+        people += 1;
+        PlayerPrefs.SetInt("people", people);
+        sceneBObjectStateManager.ApplyDiffBasedActivation();
 
         surpriseManager.SurpriseAllHumans();
-        ScheduleNextAccident();
+
+        // 既にアクシデントスケジュールが完了していれば再スケジュールは行わない
+        if (!allAccidentsScheduled)
+        {
+            ScheduleAllAccidents();
+        }
 
         // ✅ BubbleImage という名前の GameObject をすべて探して削除
         GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
@@ -211,20 +234,38 @@ public class VideoPlayerManager : MonoBehaviour
         }
     }
 
-    private void ScheduleNextAccident()
+
+
+    //private bool allAccidentsScheduled = false;  // アクシデントのスケジュールが一度だけ実行されるかを管理するフラグ
+
+    private void ScheduleAllAccidents()
     {
-        if (accidentCount >= accidentTargetCount)
+        if (allAccidentsScheduled) return;  // すでにアクシデントがスケジュールされている場合は何もしない
+
+        accidentScheduleQueue.Clear();
+
+        double duration = videoPlayer.length;
+        if (duration < 5.0) return;
+
+        double start = 3.0;
+        double end = duration - 3.0;
+
+        // accidentTargetCount の値が大きすぎないように制御
+        int targetAccidentCount = Mathf.Clamp(accidentTargetCount, 2, 20); // 目標回数を2から20の範囲で調整
+
+        double interval = (end - start) / targetAccidentCount;
+
+        for (int i = 0; i < targetAccidentCount; i++)
         {
-            nextAccidentTime = -1;
-            return;
+            double randomOffset = Random.Range(-1f, 1f);
+            double time = start + interval * i + randomOffset;
+            time = Mathf.Clamp((float)time, (float)start, (float)end);
+            accidentScheduleQueue.Enqueue(time);
         }
 
-        double remainingTime = videoPlayer.length - videoPlayer.time;
-        if (remainingTime < 5.0) return;
+        Debug.Log($"📆 {targetAccidentCount}個のアクシデントをスケジュール済み");
 
-        double offset = Random.Range(3f, (float)(remainingTime - 1f));
-        nextAccidentTime = videoPlayer.time + offset;
-        Debug.Log($"📆 次のアクシデント予定時刻: {nextAccidentTime:F2} 秒");
+        allAccidentsScheduled = true;  // スケジュール完了フラグを立てる
     }
 
     private void SetPlaybackSpeed(float speed)

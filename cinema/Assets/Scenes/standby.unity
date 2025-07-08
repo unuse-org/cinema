@@ -908,7 +908,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u4EBA\u6570"
+  m_text: "\u30B9\u30B3\u30A2"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
   m_sharedMaterial: {fileID: 2649369025821438962, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
@@ -2111,7 +2111,7 @@ MonoBehaviour:
   timeText: {fileID: 374084238}
   weekday: "\u6708"
   index: 1
-  score: 0
+  people: 0
   realSecondsUntilStart: 20
 --- !u!1001 &379478132
 PrefabInstance:
@@ -6535,6 +6535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 174309537}
+  receiveScore: {fileID: 0}
 --- !u!4 &1053862750
 Transform:
   m_ObjectHideFlags: 0
@@ -11135,7 +11136,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30D5\u30A3\u30EB\u30E0\u305D\u3046\u5165"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
   m_sharedMaterial: {fileID: 2649369025821438962, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}

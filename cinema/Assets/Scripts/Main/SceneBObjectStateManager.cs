@@ -35,11 +35,9 @@ public class SceneBObjectStateManager : MonoBehaviour
         ApplyDiffBasedActivation();
     }
 
-    void ApplyDiffBasedActivation()
+    public void ApplyDiffBasedActivation()
     {
-        int score = PlayerPrefs.GetInt("score", 0);
-
-        // int score = 18;
+        int people = PlayerPrefs.GetInt("people", 0);
 
         List<int> activeIndices = new();
         List<int> inactiveIndices = new();
@@ -53,9 +51,7 @@ public class SceneBObjectStateManager : MonoBehaviour
         }
 
         int currentActive = activeIndices.Count;
-        int diff = score - currentActive;
-
-        //Debug.Log($"[SceneB] score = {score}, 現在アクティブ = {currentActive}, 差分 = {diff}");
+        int diff = people - currentActive;
 
         if (diff > 0)
         {
