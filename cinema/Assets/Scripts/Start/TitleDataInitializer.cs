@@ -38,7 +38,7 @@ public class TitleDataInitializer : MonoBehaviour
             // PlayerPrefsが既に存在している場合、中身を空にして再初期化
             //Debug.Log("PlayerPrefsは既に存在しています。中身を初期化します");
 
-            int weekday = Random.Range(1, 6);  // 1〜5の乱数
+            int weekday = Random.Range(0, 5);  // 1〜5の乱数
             int index = 1;
             int score = 15;
 

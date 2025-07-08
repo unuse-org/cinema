@@ -24,6 +24,6 @@ public class udp_receiver_speed : MonoBehaviour
         message = message.Trim();  // 改行などを除去
         Speed = int.Parse(message);
 
-        Debug.Log($"Speed Received: {message}");
+        //Debug.Log($"Speed Received: {message}");
     }
 }

@@ -78,10 +78,40 @@ public class GetColorSensorSignalWifi : MonoBehaviour
     //============================================================
     public void UpdateSensorSignal()
     {
-        if (colorSensor == null) { Debug.LogWarning("[Signal] colorSensor が null"); return; }
+        // if (colorSensor == null) { Debug.LogWarning("[Signal] colorSensor が null"); return; }
 
-        lastSignal = colorSensor.color;
+        // lastSignal = colorSensor.color;
         //Debug.Log($"[Signal]  受信値 lastSignal = {lastSignal}");
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            lastSignal = 0;
+            Debug.Log("A pressed → lastSignal = 1");
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            lastSignal = 1;
+            Debug.Log("S pressed → lastSignal = 2");
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            lastSignal = 2;
+            Debug.Log("D pressed → lastSignal = 3");
+        }
+        else if (Input.GetKeyDown(KeyCode.F))
+        {
+            lastSignal = 3;
+            Debug.Log("F pressed → lastSignal = 4");
+        }
+        else if (Input.GetKeyDown(KeyCode.G))
+        {
+            lastSignal = 4;
+            Debug.Log("G pressed → lastSignal = 5");
+        }
+        else if (Input.GetKeyDown(KeyCode.H))
+        {
+            lastSignal = 5;
+            Debug.Log("H pressed → lastSignal = 6");
+        }
     }
 
     //============================================================
@@ -126,15 +156,12 @@ public class GetColorSensorSignalWifi : MonoBehaviour
         string currentTitle  = movieTitles[lastSignal];
         bool   isMatch       = jsonTitle == currentTitle;
 
-        //Debug.Log($"[Check]   比較: JSON=\"{jsonTitle}\"  vs  Sensor=\"{currentTitle}\"  →  {isMatch}");
+        Debug.Log($"[Check]   比較: JSON=\"{jsonTitle}\"  vs  Sensor=\"{currentTitle}\"  →  {isMatch}");
 
-        // 5) 成功時は PlayerPrefs に保存
-        if (isMatch)
-        {
-            PlayerPrefs.SetInt("movie", lastSignal);
-            PlayerPrefs.Save();
-            //Debug.Log($"[Check]   成功: movie 番号 {lastSignal} を保存済み");
-        }
+        //成功失敗に関わらず保存
+        PlayerPrefs.SetInt("movie", lastSignal);
+        PlayerPrefs.Save();
+        //Debug.Log($"[Check]   成功: movie 番号 {lastSignal} を保存済み");
         return isMatch;
     }
 

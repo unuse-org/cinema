@@ -21,8 +21,6 @@ public class VideoPlayerManager : MonoBehaviour
     [Tooltip("再生時間を表示するUIテキスト (TextMeshPro) を設定してください。")]
     [SerializeField] private TextMeshProUGUI videoTimeText;
 
-    //private int currentSpeedIndex = 1; // 現在の通常再生速度（等倍）
-
     private int movieIndex;
     private int sceneIndex;
     private int score;
@@ -47,6 +45,8 @@ public class VideoPlayerManager : MonoBehaviour
 
     public udp_receiver_speed receiver_speed;
 
+    private int  sensor = 0; 
+
     void Awake()
     {
         bubbleSpawner = FindObjectOfType<BubbleSpawner>();
@@ -54,6 +54,7 @@ public class VideoPlayerManager : MonoBehaviour
         {
             Debug.LogError("❌ BubbleSpawner が見つかりません");
         }
+
         videoPlayer = GetComponent<VideoPlayer>();
         if (videoPlayer == null)
         {
@@ -104,7 +105,6 @@ public class VideoPlayerManager : MonoBehaviour
     {
         videoPlayer.Play();
 
-        // アクシデント回数を決定（1～2回）
         accidentTargetCount = Random.Range(minAccidentCount, maxAccidentCount + 1);
         accidentCount = 0;
         ScheduleNextAccident();
@@ -125,26 +125,68 @@ public class VideoPlayerManager : MonoBehaviour
 
     void Update()
     {
-        speed = receiver_speed.Speed;
-        // アクシデントが発生しているときだけ判定
-        if (!accidentActive) return;
+        UpdateVideoTimeDisplay();
 
-        bool shouldRelease =
-            // 速度が速い(>1) → 左矢印で解除
-            (accidentSpeed > 1f && speed == 3) ||
-            // 速度が遅い(<1) → 右矢印で解除
-            (accidentSpeed < 1f && speed == 1);
-
-        if (shouldRelease)
+        if (!accidentActive && nextAccidentTime >= 0 &&
+            videoPlayer.isPrepared && videoPlayer.time >= nextAccidentTime)
         {
-            ReleaseAccident();
+            TriggerAccident();
+            accidentCount++;
+            ScheduleNextAccident();
+        }
+
+        if (accidentActive && receiver_speed != null)
+        {
+            //デバッグ用にコメントアウト
+            //int sensor = receiver_speed.Speed;
+
+            
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                sensor = 1;
+                Debug.Log("← 左矢印キー入力 → sensor = 1");
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                sensor = 3;
+                Debug.Log("→ 右矢印キー入力 → sensor = 3");
+            }
+
+            bool shouldRelease =
+                (accidentSpeed > 1f && sensor == 3) ||
+                (accidentSpeed < 1f && sensor == 1);
+
+
+
+            if (shouldRelease) ReleaseAccident();
+
+
+
         }
     }
-    
-    /// <summary>
-    /// アクシデントを解除して再生速度とスコアをリセットする
-    /// </summary>
-    void ReleaseAccident()
+
+    private void TriggerAccident()
+    {
+        accidentActive = true;
+
+        // ✅ 修正箇所：ローカル変数にせず、フィールドに代入
+        accidentSpeed = Random.value < 0.5f ? 0.5f : 1.5f;
+        string accidentType = accidentSpeed > 1f ? "SpeedUp" : "SpeedDown";
+
+        Debug.Log($"⚠️ アクシデント発生！ {(accidentType == "SpeedUp" ? "🚀【速度UP】" : "🐢【速度DOWN】")} x{accidentSpeed}");
+        SetPlaybackSpeed(accidentSpeed);
+
+        if (accidentSpeed > 1)
+        {
+            BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedUp);
+        }
+        else
+        {
+            BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedDown);
+        }
+    }
+
+    private void ReleaseAccident()
     {
         Debug.Log("🎮 センサー入力（デバッグ）：ユーザーが対処行動を実行");
 
@@ -157,35 +199,17 @@ public class VideoPlayerManager : MonoBehaviour
 
         surpriseManager.SurpriseAllHumans();
         ScheduleNextAccident();
-    }
 
-
-    private void TriggerAccident()
-    {
-        accidentActive = true;
-
-        float accidentSpeed = Random.value < 0.5f ? 0.5f : 1.5f;
-        string accidentType = accidentSpeed > 1f ? "SpeedUp" : "SpeedDown";
-
-        Debug.Log($"⚠️ アクシデント発生！ {(accidentType == "SpeedUp" ? "🚀【速度UP】" : "🐢【速度DOWN】")} x{accidentSpeed}");
-        SetPlaybackSpeed(accidentSpeed);
-
-        if (accidentSpeed > 1)
+        // ✅ BubbleImage という名前の GameObject をすべて探して削除
+        GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
+        foreach (GameObject obj in allObjects)
         {
-            // 速い状況になった瞬間
-            BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedUp);
+            if (obj.name == "BubbleImage")
+            {
+                Destroy(obj);
+            }
         }
-        else
-        {
-            // 遅い状況
-            BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedDown);
-        }
-
-
-
-
     }
-
 
     private void ScheduleNextAccident()
     {

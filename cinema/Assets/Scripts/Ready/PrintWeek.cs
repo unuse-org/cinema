@@ -13,11 +13,11 @@ public class PrintWeek : MonoBehaviour
         
         switch (weekday)
         {
-            case 1: text.text = "月曜日"; break;
-            case 2: text.text = "火曜日"; break;
-            case 3: text.text = "水曜日"; break;
-            case 4: text.text = "木曜日"; break;
-            case 5: text.text = "金曜日"; break;
+            case 0: text.text = "月曜日"; break;
+            case 1: text.text = "火曜日"; break;
+            case 2: text.text = "水曜日"; break;
+            case 3: text.text = "木曜日"; break;
+            case 4: text.text = "金曜日"; break;
             default: text.text = "不明な曜日"; break;
         }
         // 最初は完全に表示される状態に
