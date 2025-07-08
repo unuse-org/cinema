@@ -45,6 +45,8 @@ public class VideoPlayerManager : MonoBehaviour
 
     public udp_receiver_speed receiver_speed;
 
+    private int  sensor = 0; 
+
     void Awake()
     {
         bubbleSpawner = FindObjectOfType<BubbleSpawner>();
@@ -135,12 +137,31 @@ public class VideoPlayerManager : MonoBehaviour
 
         if (accidentActive && receiver_speed != null)
         {
-            int sensor = receiver_speed.Speed;
+            //デバッグ用にコメントアウト
+            //int sensor = receiver_speed.Speed;
+
+            
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                sensor = 1;
+                Debug.Log("← 左矢印キー入力 → sensor = 1");
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                sensor = 3;
+                Debug.Log("→ 右矢印キー入力 → sensor = 3");
+            }
+
             bool shouldRelease =
                 (accidentSpeed > 1f && sensor == 3) ||
                 (accidentSpeed < 1f && sensor == 1);
 
+
+
             if (shouldRelease) ReleaseAccident();
+
+
+
         }
     }
 
