@@ -3079,12 +3079,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rawImage: {fileID: 416602898}
   videoClips:
-  - {fileID: 32900000, guid: c5418b45ebbf341dc960165635cbf997, type: 3}
+  - {fileID: 32900000, guid: 32c68bc9edcb54c0ea7846b364336ce5, type: 3}
   - {fileID: 32900000, guid: 2f66618cdd03f4895a0661c3de72583a, type: 3}
   - {fileID: 32900000, guid: 0f3862d73c6664c42b460b877d678c45, type: 3}
   - {fileID: 32900000, guid: 4c62faf3af10042fba301363e6b86f62, type: 3}
-  - {fileID: 32900000, guid: 4a5541fd6c2b84f0fb25ab30461dc905, type: 3}
-  - {fileID: 32900000, guid: 6b076a05eec0d4a8f9cc0ea86f8f2114, type: 3}
+  - {fileID: 32900000, guid: d1fafc8f47f294bbebe9c1f9039e9838, type: 3}
+  - {fileID: 32900000, guid: c4fa91634329947a79aaaacab534f381, type: 3}
   speedDisplayText: {fileID: 2039014578}
   videoTimeText: {fileID: 374084238}
   minAccidentCount: 1
@@ -7300,7 +7300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1641010718
 MonoBehaviour:
   m_ObjectHideFlags: 0
