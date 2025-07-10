@@ -59,17 +59,14 @@ void setup() {
   Serial.println("IMU (BMI270) ready.");
 }
 
-// 加速度センサーのZ軸の値からデバイスの状態を判定する関数
 int getSpeedFromAccel(float ax)
 {
-  if (ax < 0.10 && ax > -0.10)
-    return 2; //MidSpeed
-  else if (ax < -0.95 && ax > -1.05)
-    return 1; //LowSpeed
-  else if (ax > -0.30 && ax < 0) 
-    return 3; //MaxSpeed
-  else
-    return 0; // NotSpeed
+  if (ax < -0.90)
+    return 3; // 高速
+  else if (-0.22 < ax && -0.18 > ax)
+    return 1; // 低速
+  else 
+    return 2; // 中速
 }
 
 void loop() {

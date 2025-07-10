@@ -125,9 +125,23 @@ void loop() {
 
   // 色の判定
   flag = -1;
-  if (r_value > 240) flag = 0;
-  if (g_value > 240) flag = 1;
-  if (b_value > 240) flag = 2;
+
+  // r_valueの範囲で色を判定
+  if (r_value > 20 && r_value < 40) {
+    flag = 5; // 青
+  } else if (r_value > 60 && r_value < 80) {
+    flag = 4; // 紫
+  } else if (r_value > 80 && r_value < 100) {
+    flag = 0; // 灰
+  } else if (r_value > 100 && r_value < 120) {
+    flag = 2; // 黒
+  } else if (r_value > 120 && r_value < 140) {
+    flag = 1; // 緑
+  } else if (r_value > 220 && r_value < 240) {
+    flag = 3; // 赤
+  } else {
+    flag = -1; // その他の色
+  }
 
    // 表示と出力
   drawRGBValues(r_value, g_value, b_value);
@@ -139,7 +153,10 @@ void loop() {
   switch (flag) {
     case 0: Serial.println("0"); break;
     case 1: Serial.println("1"); break;
-    // case 2: Serial.println("2"); break;
+    case 2: Serial.println("2"); break;
+    case 3: Serial.println("3"); break;
+    case 4: Serial.println("4"); break;
+    case 5: Serial.println("5"); break;
     default: Serial.println("flag: NONE");
   }
 
@@ -156,7 +173,5 @@ void loop() {
     delay(30);
   }
   
-
-
   delay(500); // 0.5秒ごとに送信
 }
