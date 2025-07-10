@@ -45,7 +45,7 @@ public class VideoPlayerManager : MonoBehaviour
     private bool accidentActive = false;
     private BubbleSpawner bubbleSpawner;
 
-    public udp_receiver_speed receiver_speed;
+    private udp_receiver_speed receiver_speed;
 
     [SerializeField] SceneBObjectStateManager  sceneBObjectStateManager; 
 
@@ -58,6 +58,20 @@ public class VideoPlayerManager : MonoBehaviour
 
     void Awake()
     {
+        GameObject imuObject = GameObject.Find("M5_IMU_Speed_Wifi");
+        if (imuObject != null)
+        {
+            receiver_speed = imuObject.GetComponent<udp_receiver_speed>();
+            if (receiver_speed == null)
+            {
+                Debug.LogError("udp_receiver_speed スクリプトが M5_IMU_Speed_Wifi にアタッチされていません。");
+            }
+        }
+        else
+        {
+            Debug.LogError("M5_IMU_Speed_Wifi オブジェクトが見つかりません。");
+        }
+
         bubbleSpawner = FindObjectOfType<BubbleSpawner>();
         if (bubbleSpawner == null)
         {

@@ -25,6 +25,8 @@ public class GetColorSensorSignalWifi : MonoBehaviour
     private int index     = -1;    // 呼び出し側で設定される上映インデックス
     private int weekday   = -1;    // PlayerPrefs から取得 (0=月 … 4=金)
 
+    private UdpReceiver receiver;
+
     // ───────── JSON 用クラス ─────────
     [System.Serializable] public class ScheduleItem { public int index; public string title; public string duration; public string start; }
     [System.Serializable] public class DaySchedule
@@ -32,6 +34,19 @@ public class GetColorSensorSignalWifi : MonoBehaviour
         public List<ScheduleItem> 月, 火, 水, 木, 金;
     }
     private DaySchedule scheduleData;
+
+    void Awake()
+    {
+        GameObject imuObject = GameObject.Find("M5_Color_Wifi");
+        if (imuObject != null)
+        {
+            receiver = imuObject.GetComponent<UdpReceiver>();
+            if (receiver == null)
+            {
+                Debug.LogError("M5_Color_Wifi スクリプトが M5_IMU_Speed_Wifi にアタッチされていません。");
+            }
+        }
+    }
 
     //============================================================
     //                           Start
@@ -78,40 +93,40 @@ public class GetColorSensorSignalWifi : MonoBehaviour
     //============================================================
     public void UpdateSensorSignal()
     {
-        // if (colorSensor == null) { Debug.LogWarning("[Signal] colorSensor が null"); return; }
+        if (receiver == null) { Debug.LogWarning("[Signal] colorSensor が null"); return; }
 
-        // lastSignal = colorSensor.color;
+        lastSignal = receiver.color;
         //Debug.Log($"[Signal]  受信値 lastSignal = {lastSignal}");
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            lastSignal = 0;
-            Debug.Log("A pressed → lastSignal = 1");
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            lastSignal = 1;
-            Debug.Log("S pressed → lastSignal = 2");
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            lastSignal = 2;
-            Debug.Log("D pressed → lastSignal = 3");
-        }
-        else if (Input.GetKeyDown(KeyCode.F))
-        {
-            lastSignal = 3;
-            Debug.Log("F pressed → lastSignal = 4");
-        }
-        else if (Input.GetKeyDown(KeyCode.G))
-        {
-            lastSignal = 4;
-            Debug.Log("G pressed → lastSignal = 5");
-        }
-        else if (Input.GetKeyDown(KeyCode.H))
-        {
-            lastSignal = 5;
-            Debug.Log("H pressed → lastSignal = 6");
-        }
+        // if (Input.GetKeyDown(KeyCode.A))
+        // {
+        //     lastSignal = 0;
+        //     Debug.Log("A pressed → lastSignal = 1");
+        // }
+        // else if (Input.GetKeyDown(KeyCode.S))
+        // {
+        //     lastSignal = 1;
+        //     Debug.Log("S pressed → lastSignal = 2");
+        // }
+        // else if (Input.GetKeyDown(KeyCode.D))
+        // {
+        //     lastSignal = 2;
+        //     Debug.Log("D pressed → lastSignal = 3");
+        // }
+        // else if (Input.GetKeyDown(KeyCode.F))
+        // {
+        //     lastSignal = 3;
+        //     Debug.Log("F pressed → lastSignal = 4");
+        // }
+        // else if (Input.GetKeyDown(KeyCode.G))
+        // {
+        //     lastSignal = 4;
+        //     Debug.Log("G pressed → lastSignal = 5");
+        // }
+        // else if (Input.GetKeyDown(KeyCode.H))
+        // {
+        //     lastSignal = 5;
+        //     Debug.Log("H pressed → lastSignal = 6");
+        // }
     }
 
     //============================================================

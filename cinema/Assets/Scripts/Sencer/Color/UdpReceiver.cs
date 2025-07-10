@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -29,6 +28,6 @@ public class UdpReceiver : MonoBehaviour
         message = message.Trim();  // 改行などを除去
         color = int.Parse(message);
 
-        //Debug.Log($"Color Received: {message}");
+        Debug.Log($"Color Received: {message}");
     }
 }

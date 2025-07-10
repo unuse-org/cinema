@@ -41,6 +41,8 @@ public class GetSensorSignal : MonoBehaviour
     private ChangeSceneManager changeSceneManager;
     //[SerializeField] private SceneChanger sceneChanger;
 
+    private udp_receiver_imu receiver_imu;
+
     // 各状態番号に対応するメッセージ（インデックス1〜5を使用）
     private string[] stateMessages = {
         "", // index 0は未使用
@@ -50,6 +52,19 @@ public class GetSensorSignal : MonoBehaviour
         "逆転",             // 4
         "逆転映写"                // 5
     };
+
+    void Awake()
+    {
+        GameObject imuObject = GameObject.Find("M5_IMU_Wifi");
+        if (imuObject != null)
+        {
+            receiver_imu = imuObject.GetComponent<udp_receiver_imu>();
+            if (receiver_imu == null)
+            {
+                Debug.LogError("udp_receiver_imu スクリプトが M5_IMU_Speed_Wifi にアタッチされていません。");
+            }
+        }
+    }
 
     void Start()
     {
@@ -61,26 +76,25 @@ public class GetSensorSignal : MonoBehaviour
     // 毎フレーム実行
     void Update()
     {
-        //デバッグのため、一旦削除
-        // //UDPから取得
-        // currentState = imuReceiver.senser;
-        // // デバッグ用メッセージ出力
-        // string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
-        // //Debug.Log(message);
-        // // テキストがアサインされている場合、状態名を表示
-        // if (statusText != null)
-        // {
-        //     statusText.text = stateMessages[currentState];
-        //     statusText.alpha = 1f;
+        //UDPから取得
+        currentState = receiver_imu.senser;
+        // デバッグ用メッセージ出力
+        string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
+        //Debug.Log(message);
+        // テキストがアサインされている場合、状態名を表示
+        if (statusText != null)
+        {
+            statusText.text = stateMessages[currentState];
+            statusText.alpha = 1f;
 
-        //     // フェード中なら停止してから再スタート
-        //     if (fadeCoroutine != null)
-        //         StopCoroutine(fadeCoroutine);
+            // フェード中なら停止してから再スタート
+            if (fadeCoroutine != null)
+                StopCoroutine(fadeCoroutine);
 
-        //     fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
-        // }
+            fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
+        }
 
-        GetInput();            // キー入力を取得
+        //GetInput();            // キー入力を取得
         //Debug.Log("現在の入力： "+currentState);
         CheckStateSequence();  // ステップ判定処理
     }
