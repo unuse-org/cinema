@@ -19,13 +19,14 @@ public class UdpHandler : MonoBehaviour
     private UdpClient client;
     private bool isRunning = false;
     private readonly ConcurrentQueue<string> receivedMessages = new ConcurrentQueue<string>();
+    public static UdpHandler instance;
 
     private void Awake()
     {
-        Open();
+        CheckInstance();
     }
 
-    private void OnDestroy()
+    private void OnApplicationQuit()
     {
         Close();
     }
@@ -96,6 +97,20 @@ public class UdpHandler : MonoBehaviour
                     Debug.LogWarning($"データ受信エラー: {e.Message}");
                 }
             }
+        }
+    }
+
+    void CheckInstance()
+    {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            Open();
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 }

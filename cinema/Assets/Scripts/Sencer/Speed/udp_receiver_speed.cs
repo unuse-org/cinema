@@ -1,12 +1,17 @@
 using UnityEngine;
+using TMPro;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
 
 public class udp_receiver_speed : MonoBehaviour
 {
     
     public  udp_handle_speed udp_handle_speed; // udp_handle_speedのインスタンス
     public int Speed;
+    public TextMeshProUGUI speedText;  // インスペクタで設定する
 
-    void Start()
+    void Awake()
     {
         udp_handle_speed.OnDataReceived += OnDataReceived; // データ受信イベントにハンドラを登録
     }
@@ -24,6 +29,8 @@ public class udp_receiver_speed : MonoBehaviour
         message = message.Trim();  // 改行などを除去
         Speed = int.Parse(message);
 
-        Debug.Log($"Speed Received: {message}");
+        string displayMessage = $"Speed Received: {message}";
+
+        //Debug.Log(displayMessage);
     }
 }

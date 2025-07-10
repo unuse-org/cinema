@@ -24,7 +24,7 @@ public class udp_receiver_imu : MonoBehaviour
         message = message.Trim();  // 改行などを除去
         senser = int.Parse(message);
 
-        Debug.Log($"IMU Received: {message}");
+        //Debug.Log($"IMU Received: {message}");
         //Debug.Log("senser: "+senser);
     }
 }

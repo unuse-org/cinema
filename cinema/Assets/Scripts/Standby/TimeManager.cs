@@ -44,9 +44,9 @@ public class TimeManager : MonoBehaviour
     public TMP_Text timeText; // 現在時刻を表示するテキストUI
 
     [Header("設定")]
-    public string weekday = "月"; // 対象の曜日（例：月）
-    public int index = 1;     // 対象のインデックス（例：1）
-    public int people;
+    private string weekday = "月"; // 対象の曜日（例：月）
+    private int index;     // 対象のインデックス（例：1）
+    private int people;
 
 
     [Header("進行スピード（秒で開始時間になる）")]
