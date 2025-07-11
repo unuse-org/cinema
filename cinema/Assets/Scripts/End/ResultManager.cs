@@ -14,7 +14,7 @@ public class ResultManager : MonoBehaviour
         int finalScore = PlayerPrefs.GetInt("score", 0);
         
         // UIに最終スコアを表示
-        resultScoreText.text = "最終スコア: " + finalScore.ToString();
+        resultScoreText.text = "あなたの得点: " + finalScore.ToString() + "点";
 
         // --- ここから追加 ---
         // RankingManagerが見つかれば、スコアを保存する

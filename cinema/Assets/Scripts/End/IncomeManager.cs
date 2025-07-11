@@ -2,24 +2,25 @@ using UnityEngine;
 using TMPro;
 using System.Text; 
 
-public class RankingViewer : MonoBehaviour
+public class IncomeManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI rankingText; 
+    [SerializeField] private TextMeshProUGUI IncomeText; 
     [SerializeField] private RankingManager rankingManager;
+    private int totalScore = 0;
 
     void Start()
     {
-        DisplayRanking();
+        DisplayIncome();
     }
 
-    private void DisplayRanking()
+    private void DisplayIncome()
     {
         // RankingManagerからランキングデータを読み込む
         Ranking rankingData = rankingManager.LoadRanking();
 
         if (rankingData.ranking.Count == 0)
         {
-            rankingText.text = "まだスコアがありません";
+            IncomeText.text = "まだスコアがありません";
             return;
         }
 
@@ -28,12 +29,12 @@ public class RankingViewer : MonoBehaviour
 
         for (int i = 0; i < rankingData.ranking.Count; i++)
         {
-            int rank = i + 1;
-            int score = rankingData.ranking[i].score;
-            builder.AppendLine($"{rank}位: {score} 点");
+            totalScore += rankingData.ranking[i].score;
         }
 
+        builder.AppendLine($"本日の興行収入 {totalScore} 点");
+
         // 最終的な文字列をテキストに設定
-        rankingText.text = builder.ToString();
+        IncomeText.text = builder.ToString();
     }
 }
