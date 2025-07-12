@@ -93,40 +93,39 @@ public class GetColorSensorSignalWifi : MonoBehaviour
     //============================================================
     public void UpdateSensorSignal()
     {
-        if (receiver == null) { Debug.LogWarning("[Signal] colorSensor が null"); return; }
+        // if (receiver == null) { Debug.LogWarning("[Signal] colorSensor が null"); return; }
+        // lastSignal = receiver.color;
 
-        lastSignal = receiver.color;
-        //Debug.Log($"[Signal]  受信値 lastSignal = {lastSignal}");
-        // if (Input.GetKeyDown(KeyCode.A))
-        // {
-        //     lastSignal = 0;
-        //     Debug.Log("A pressed → lastSignal = 1");
-        // }
-        // else if (Input.GetKeyDown(KeyCode.S))
-        // {
-        //     lastSignal = 1;
-        //     Debug.Log("S pressed → lastSignal = 2");
-        // }
-        // else if (Input.GetKeyDown(KeyCode.D))
-        // {
-        //     lastSignal = 2;
-        //     Debug.Log("D pressed → lastSignal = 3");
-        // }
-        // else if (Input.GetKeyDown(KeyCode.F))
-        // {
-        //     lastSignal = 3;
-        //     Debug.Log("F pressed → lastSignal = 4");
-        // }
-        // else if (Input.GetKeyDown(KeyCode.G))
-        // {
-        //     lastSignal = 4;
-        //     Debug.Log("G pressed → lastSignal = 5");
-        // }
-        // else if (Input.GetKeyDown(KeyCode.H))
-        // {
-        //     lastSignal = 5;
-        //     Debug.Log("H pressed → lastSignal = 6");
-        // }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            lastSignal = 0;
+            Debug.Log("A pressed → lastSignal = 1");
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            lastSignal = 1;
+            Debug.Log("S pressed → lastSignal = 2");
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            lastSignal = 2;
+            Debug.Log("D pressed → lastSignal = 3");
+        }
+        else if (Input.GetKeyDown(KeyCode.F))
+        {
+            lastSignal = 3;
+            Debug.Log("F pressed → lastSignal = 4");
+        }
+        else if (Input.GetKeyDown(KeyCode.G))
+        {
+            lastSignal = 4;
+            Debug.Log("G pressed → lastSignal = 5");
+        }
+        else if (Input.GetKeyDown(KeyCode.H))
+        {
+            lastSignal = 5;
+            Debug.Log("H pressed → lastSignal = 6");
+        }
     }
 
     //============================================================

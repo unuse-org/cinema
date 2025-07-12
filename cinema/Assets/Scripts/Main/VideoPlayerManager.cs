@@ -171,20 +171,20 @@ public class VideoPlayerManager : MonoBehaviour
         if (accidentActive && receiver_speed != null)
         {
             //センサー処理
-            int sensor = receiver_speed.Speed;
+            //int sensor = receiver_speed.Speed;
 
 
             //デバッグ用キー入力処理
-            // if (Input.GetKeyDown(KeyCode.LeftArrow))
-            // {
-            //     sensor = 1;
-            //     //Debug.Log("← 左矢印キー入力 → sensor = 1");
-            // }
-            // else if (Input.GetKeyDown(KeyCode.RightArrow))
-            // {
-            //     sensor = 3;
-            //     //Debug.Log("→ 右矢印キー入力 → sensor = 3");
-            // }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                sensor = 1;
+                //Debug.Log("← 左矢印キー入力 → sensor = 1");
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                sensor = 3;
+                //Debug.Log("→ 右矢印キー入力 → sensor = 3");
+            }
 
             bool shouldRelease =
                 (accidentSpeed > 1f && sensor == 1) ||
