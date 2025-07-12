@@ -3232,7 +3232,6 @@ MonoBehaviour:
   speedDisplayText: {fileID: 2039014578}
   videoTimeText: {fileID: 374084238}
   surpriseManager: {fileID: 751573907}
-  receiver_speed: {fileID: 53362987}
   sceneBObjectStateManager: {fileID: 1219561503}
 --- !u!114 &751573906
 MonoBehaviour:
@@ -5881,7 +5880,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1310609948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6405,7 +6404,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1398281808
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9908,7 +9907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2030593844
 RectTransform:
   m_ObjectHideFlags: 0
