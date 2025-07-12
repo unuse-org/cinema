@@ -63,7 +63,7 @@ int getSpeedFromAccel(float ax)
 {
   if (ax < -0.90)
     return 3; // 高速
-  else if (-0.22 < ax && -0.18 > ax)
+  else if (-0.30 < ax && -0.10 > ax)
     return 1; // 低速
   else 
     return 2; // 中速

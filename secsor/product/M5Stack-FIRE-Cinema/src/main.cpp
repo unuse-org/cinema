@@ -127,21 +127,13 @@ void loop() {
   flag = -1;
 
   // r_valueの範囲で色を判定
-  if (r_value > 20 && r_value < 40) {
-    flag = 5; // 青
-  } else if (r_value > 60 && r_value < 80) {
-    flag = 4; // 紫
-  } else if (r_value > 80 && r_value < 100) {
-    flag = 0; // 灰
-  } else if (r_value > 100 && r_value < 120) {
-    flag = 2; // 黒
-  } else if (r_value > 120 && r_value < 140) {
-    flag = 1; // 緑
-  } else if (r_value > 220 && r_value < 240) {
-    flag = 3; // 赤
-  } else {
-    flag = -1; // その他の色
-  }
+  if (r_value > 20 && r_value < 40)        flag = 5; // 青
+  else if (r_value > 60 && r_value < 80)   flag = 4; // 紫
+  else if (r_value > 90 && r_value < 110)  flag = 0; // 灰
+  else if (r_value > 110 && r_value < 130) flag = 2; // 黒
+  else if (r_value > 120 && r_value < 140) flag = 1; // 緑
+  else if (r_value > 240 && r_value < 260) flag = 3; // 赤
+  else                                     flag = -1; // その他の色
 
    // 表示と出力
   drawRGBValues(r_value, g_value, b_value);
