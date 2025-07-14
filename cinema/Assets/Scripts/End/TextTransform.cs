@@ -13,7 +13,7 @@ public class TextTransform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetComponent<RectTransform>().position.y < 30f)
+        if (GetComponent<RectTransform>().position.y < 50f)
         {
             GetComponent<RectTransform>().position += Vector3.up * Time.deltaTime * 2f;
         }

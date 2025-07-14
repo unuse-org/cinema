@@ -6,6 +6,9 @@ public class ReceiveScore : MonoBehaviour
     public int currentScore = 0;
     private int accumulatedScore = 0; // 1.5秒間で蓄積するスコア
 
+    [Header("VideoPlayerManager 参照")]
+    [SerializeField] private VideoPlayerManager videoPlayerManager; // VideoPlayerManager を参照する
+
     private void Start()
     {
         // 保存されたスコアを取得
@@ -19,7 +22,11 @@ public class ReceiveScore : MonoBehaviour
     // 外部からスコアを加算するメソッド
     public void AddScore(int scoreToAdd)
     {
-        accumulatedScore += scoreToAdd;
+        // 動画が再生中かつ accidentActive が true の時のみ加算
+        if (videoPlayerManager != null && !videoPlayerManager.accidentActive && videoPlayerManager.isVideoPlaying)
+        {
+            accumulatedScore += scoreToAdd;
+        }
     }
 
     // ScoreManager が1.5秒ごとに呼ぶ：蓄積されたスコアを取得して currentScore に加算
@@ -50,6 +57,6 @@ public class ReceiveScore : MonoBehaviour
     private void SaveScore()
     {
         PlayerPrefs.SetInt("score", currentScore);
-        Debug.Log($"💾 スコア保存: {currentScore}");
+        //Debug.Log($"💾 スコア保存: {currentScore}");
     }
 }

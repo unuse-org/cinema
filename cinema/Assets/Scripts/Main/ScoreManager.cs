@@ -1,9 +1,12 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI PopUpText;
+    [SerializeField] private CanvasGroup PopUpCanvasGroup;  // CanvasGroupを追加
 
     [Header("スコアを受け取る側のスクリプト")]
     [SerializeField] private ReceiveScore receiveScore;
@@ -22,6 +25,12 @@ public class ScoreManager : MonoBehaviour
     {
         score = PlayerPrefs.GetInt("score", 0);
         UpdateScoreText();
+        
+        // 初期設定で透明度を1にしておく
+        if (PopUpCanvasGroup != null)
+        {
+            PopUpCanvasGroup.alpha = 1f;
+        }
     }
 
     void Update()
@@ -50,6 +59,8 @@ public class ScoreManager : MonoBehaviour
                     seAudioSource.PlayOneShot(seClip);
                 }
 
+                pupup(accumulatedScore);
+
                 // リセット
                 accumulatedScore = 0;
             }
@@ -60,7 +71,8 @@ public class ScoreManager : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = "スコア " + score.ToString();
+            scoreText.text = "<sprite name=\"coin\">"+score.ToString() +"円";
+            scoreText.characterSpacing = -2f; 
         }
     }
 
@@ -68,6 +80,49 @@ public class ScoreManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("score", score);
         PlayerPrefs.Save();
+    }
+
+   private void pupup(int accumulatedScore)
+    {
+        // ポップアップテキストを設定
+        PopUpText.text = "+" + "<sprite name=\"coin\">" + accumulatedScore + "円";
+
+        // 透明度を元に戻す（新しいポップアップ時）
+        if (PopUpCanvasGroup != null)
+        {
+            PopUpCanvasGroup.alpha = 1f;
+        }
+
+        // フェードアウトを実行
+        StartFadeOut();
+    }
+
+    private void StartFadeOut()
+    {
+        if (PopUpCanvasGroup != null)
+        {
+            // フェードアウトを毎フレーム処理する
+            StartCoroutine(FadeOut());
+        }
+    }
+    private IEnumerator FadeOut()
+    {
+        
+        float elapsedTime = 0f;
+        float startAlpha = PopUpCanvasGroup.alpha;
+        float endAlpha = 0f;
+        float fadeSpeed = 2f;
+
+        // 透明度を徐々に下げる
+        while (elapsedTime < 1f)  // 1秒以内で透明度を下げる
+        {
+            elapsedTime += Time.deltaTime * fadeSpeed;
+            PopUpCanvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime);
+            yield return null;
+        }
+
+        // 完全に透明に設定
+        PopUpCanvasGroup.alpha = endAlpha;
     }
 }
 

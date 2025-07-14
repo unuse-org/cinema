@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections.Generic;
 
-
 public class VideoPlayerManager : MonoBehaviour
 {
     [Header("必須参照")]
@@ -30,34 +29,38 @@ public class VideoPlayerManager : MonoBehaviour
     private float accidentSpeed;
     private int speed;
 
-    //[Header("アクシデント制御")]
-    //[Tooltip("1本の動画で発生する最小アクシデント回数")]
-    //[SerializeField] private int minAccidentCount = 1;
-
-    // [Tooltip("1本の動画で発生する最大アクシデント回数")]
-    // [SerializeField] private int maxAccidentCount = 2;
-
     [SerializeField] private SurpriseHumansManager surpriseManager;
 
     private int accidentTargetCount = 0;
     private int accidentCount = 0;
     private double nextAccidentTime = -1;
-    private bool accidentActive = false;
+    public bool accidentActive = false;
     private BubbleSpawner bubbleSpawner;
 
     private udp_receiver_speed receiver_speed;
 
-    [SerializeField] SceneBObjectStateManager  sceneBObjectStateManager; 
+    [SerializeField] SceneBObjectStateManager sceneBObjectStateManager;
 
-    private int  sensor = 0; 
+    private int sensor = 0;
     private Queue<double> accidentScheduleQueue = new Queue<double>();
 
     private bool allAccidentsScheduled = false;  // 全てのアクシデントがスケジュール済みかどうかを管理
 
+    private udp_receiver_imu receiver_imu;
 
+    public bool isVideoPlaying = false; // 動画が再生中かどうかのフラグ
 
     void Awake()
     {
+        GameObject imuObject1 = GameObject.Find("M5_IMU_Wifi");
+        if (imuObject1 != null)
+        {
+            receiver_imu = imuObject1.GetComponent<udp_receiver_imu>();
+            if (receiver_imu == null)
+            {
+                Debug.LogError("udp_receiver_imu スクリプトが M5_IMU_Speed_Wifi にアタッチされていません。");
+            }
+        }
         GameObject imuObject = GameObject.Find("M5_IMU_Speed_Wifi");
         if (imuObject != null)
         {
@@ -66,10 +69,6 @@ public class VideoPlayerManager : MonoBehaviour
             {
                 Debug.LogError("udp_receiver_speed スクリプトが M5_IMU_Speed_Wifi にアタッチされていません。");
             }
-        }
-        else
-        {
-            Debug.LogError("M5_IMU_Speed_Wifi オブジェクトが見つかりません。");
         }
 
         bubbleSpawner = FindObjectOfType<BubbleSpawner>();
@@ -100,7 +99,7 @@ public class VideoPlayerManager : MonoBehaviour
         sceneIndex = PlayerPrefs.GetInt("index", 0);
         people = PlayerPrefs.GetInt("people", 0);
 
-        Debug.Log("sceneIndex: "+sceneIndex);
+        Debug.Log("sceneIndex: " + sceneIndex);
 
         int clipToPlayIndex = Mathf.Clamp(movieIndex, 0, videoClips.Length - 1);
 
@@ -127,6 +126,7 @@ public class VideoPlayerManager : MonoBehaviour
     void OnVideoPrepared(VideoPlayer vp)
     {
         videoPlayer.Play();
+        isVideoPlaying = true; // 動画の再生が開始されたら、キーボード入力を受け付けない
 
         if (!allAccidentsScheduled)
         {
@@ -140,25 +140,33 @@ public class VideoPlayerManager : MonoBehaviour
         }
     }
 
-
-
-
     void OnVideoFinished(VideoPlayer vp)
     {
-        //Debug.Log("動画の再生が終了しました（movie: " + movieIndex + "）");
-        if (sceneIndex == 6)
+        isVideoPlaying = false; // 動画が終了したら、キーボード入力を受け付けるように
+    }
+
+    private void CheckForManualSceneSkip()
+    {
+        if (isVideoPlaying) return; // 動画再生中は入力を受け付けない
+
+        //☑️太田メモ  ここにセンサー処理追加
+        if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SceneManager.LoadScene("End");
-        }
-        else
-        {
-            SceneManager.LoadScene("standby");
+            if (sceneIndex == 6)
+            {
+                SceneManager.LoadScene("End");
+            }
+            else
+            {
+                SceneManager.LoadScene("standby");
+            }
         }
     }
 
     void Update()
     {
         UpdateVideoTimeDisplay();
+        CheckForManualSceneSkip();
 
         if (!accidentActive && accidentScheduleQueue.Count > 0 &&
             videoPlayer.isPrepared && videoPlayer.time >= accidentScheduleQueue.Peek())
@@ -172,7 +180,6 @@ public class VideoPlayerManager : MonoBehaviour
         {
             //センサー処理
             //int sensor = receiver_speed.Speed;
-
 
             //デバッグ用キー入力処理
             if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -194,7 +201,6 @@ public class VideoPlayerManager : MonoBehaviour
             sensor = 2;
         }
     }
-
 
     private void TriggerAccident()
     {
@@ -246,11 +252,9 @@ public class VideoPlayerManager : MonoBehaviour
                 Destroy(obj);
             }
         }
+
+        //BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.Success);
     }
-
-
-
-    //private bool allAccidentsScheduled = false;  // アクシデントのスケジュールが一度だけ実行されるかを管理するフラグ
 
     private void ScheduleAllAccidents()
     {
