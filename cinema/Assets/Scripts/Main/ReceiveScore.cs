@@ -50,6 +50,6 @@ public class ReceiveScore : MonoBehaviour
     private void SaveScore()
     {
         PlayerPrefs.SetInt("score", currentScore);
-        Debug.Log($"💾 スコア保存: {currentScore}");
+        //Debug.Log($"💾 スコア保存: {currentScore}");
     }
 }

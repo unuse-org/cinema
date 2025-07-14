@@ -50,13 +50,11 @@ public class BubbleSpawner : MonoBehaviour
                 tex,
                 new Rect(0, 0, tex.width, tex.height),
                 new Vector2(0.5f, 0.5f),
-                100f); // 任意の PixelPerUnit
+                100f); 
         }
         return sprites;
     }
 
-    // ──────────────────────────────── 吹き出し生成
-    /// <summary>指定状況の PNG をすべて生成</summary>
     public void SpawnBubbles(Situation situation)
     {
         // プレハブ & Canvas チェック
@@ -85,34 +83,32 @@ public class BubbleSpawner : MonoBehaviour
         }
 
         // 吹き出し生成処理
+        // 吹き出し生成処理
         foreach (Sprite sp in sprites)
         {
-            // ランダム Human を選択
             GameObject target = allHumans[Random.Range(0, allHumans.Count)];
-
             if (target == null)
             {
                 Debug.LogWarning("⚠️ target が null です");
                 continue;
             }
 
-            // Human 左上オフセット
-            Vector3 worldPos  = target.transform.position + new Vector3(-0.5f, 5.6f, 0f);
+            Vector3 worldPos = target.transform.position + new Vector3(-0.5f, 5.6f, 0f);
 
-            // GameObject 作成 (SpriteRenderer を使うため)
             GameObject bubble = new GameObject("BubbleImage");
-            bubble.transform.position = worldPos; // ワールド座標で配置
+            bubble.transform.position = worldPos;
 
-            // SpriteRendererを追加してスプライト設定
             SpriteRenderer spriteRenderer = bubble.AddComponent<SpriteRenderer>();
             if (spriteRenderer != null)
             {
-                spriteRenderer.sprite = sp;  // スプライトを設定
+                spriteRenderer.sprite = sp;
+
+                // ✅ 半透明化
+                Color color = spriteRenderer.color;
+                color.a = 0.2f; 
+                spriteRenderer.color = color;
             }
-
-            //Debug.Log($"💬 吹き出し生成: {sp.name} @ {target.name}");
-
-            //Destroy(bubble, 5.5f); // 2.5 秒後に自動破棄
         }
+
     }
 }

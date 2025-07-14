@@ -30,13 +30,6 @@ public class VideoPlayerManager : MonoBehaviour
     private float accidentSpeed;
     private int speed;
 
-    //[Header("アクシデント制御")]
-    //[Tooltip("1本の動画で発生する最小アクシデント回数")]
-    //[SerializeField] private int minAccidentCount = 1;
-
-    // [Tooltip("1本の動画で発生する最大アクシデント回数")]
-    // [SerializeField] private int maxAccidentCount = 2;
-
     [SerializeField] private SurpriseHumansManager surpriseManager;
 
     private int accidentTargetCount = 0;
@@ -247,10 +240,6 @@ public class VideoPlayerManager : MonoBehaviour
             }
         }
     }
-
-
-
-    //private bool allAccidentsScheduled = false;  // アクシデントのスケジュールが一度だけ実行されるかを管理するフラグ
 
     private void ScheduleAllAccidents()
     {
