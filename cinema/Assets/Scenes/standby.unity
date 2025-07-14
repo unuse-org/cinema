@@ -859,7 +859,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 11400000, guid: 4e64a330729614b579d71c510b33a58c, type: 2}
+  m_spriteAsset: {fileID: 11400000, guid: 201c8a2f1df69446e853d7a3ef092264, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -5995,6 +5995,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 174309537}
+  PopUpText: {fileID: 0}
+  PopUpCanvasGroup: {fileID: 0}
   receiveScore: {fileID: 0}
   seAudioSource: {fileID: 0}
   seClip: {fileID: 0}
@@ -7420,7 +7422,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -268, y: 175}
+  m_AnchoredPosition: {x: -300, y: 199}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1398281809
@@ -7443,7 +7445,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: standby
+  m_text: "\u6708"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
   m_sharedMaterial: {fileID: 2649369025821438962, guid: 44215391292084f63987f1af3dbbbd7e, type: 2}
@@ -7452,8 +7454,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4286085240
+  m_fontColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7470,14 +7472,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -7508,7 +7510,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 99.04364, w: -30.251492}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7535,6 +7537,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weekdayText: {fileID: 1398281809}
+  mondayMaterial: {fileID: 2100000, guid: 5d0bc7f465146431aa4fd5db2d84e576, type: 2}
+  tuesdayMaterial: {fileID: 2100000, guid: 5173b5569ca98411e85347f64cd125bd, type: 2}
+  wednesdayMaterial: {fileID: 2100000, guid: 1bef0c10e5498412f93976521b310ebb, type: 2}
+  thursdayMaterial: {fileID: 2100000, guid: cde5559d491194f0c9e70d0527d680b9, type: 2}
+  fridayMaterial: {fileID: 2100000, guid: f4d867f4b07544121a0e5848747d973f, type: 2}
 --- !u!1001 &1435528837
 PrefabInstance:
   m_ObjectHideFlags: 0

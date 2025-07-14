@@ -61,8 +61,23 @@ public class BubbleSpawner : MonoBehaviour
         if (bubblePrefab == null) return;
 
         // スプライト配列取得
-        if (!spriteDict.TryGetValue(situation, out Sprite[] sprites) ||
-            sprites == null || sprites.Length == 0)
+        Sprite[] sprites = null;
+
+        if (situation == Situation.SpeedUp)
+        {
+            sprites = spriteDict[Situation.SpeedUp];
+        }
+        else if (situation == Situation.SpeedDown)
+        {
+            sprites = spriteDict[Situation.SpeedDown];
+        }
+        else if (situation == Situation.Success)
+        {
+            sprites = spriteDict[Situation.Success];
+        }
+
+        // スプライトが取得できない場合、エラー
+        if (sprites == null || sprites.Length == 0)
         {
             Debug.LogError($"❌ {situation} 用のスプライトが設定されていません");
             return;
@@ -82,7 +97,6 @@ public class BubbleSpawner : MonoBehaviour
             return;
         }
 
-        // 吹き出し生成処理
         // 吹き出し生成処理
         foreach (Sprite sp in sprites)
         {
@@ -105,10 +119,15 @@ public class BubbleSpawner : MonoBehaviour
 
                 // ✅ 半透明化
                 Color color = spriteRenderer.color;
-                color.a = 0.2f; 
+                color.a = 0.2f;
                 spriteRenderer.color = color;
             }
+            // ✅ success のときだけ 1秒後に削除
+            if (situation == Situation.Success)
+            {
+                Destroy(bubble, 1f);
+            }
         }
-
     }
+
 }

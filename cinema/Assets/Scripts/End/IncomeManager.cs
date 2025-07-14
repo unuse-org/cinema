@@ -32,7 +32,7 @@ public class IncomeManager : MonoBehaviour
             totalScore += rankingData.ranking[i].score;
         }
 
-        builder.AppendLine($"本日の興行収入 {totalScore} 点");
+        builder.AppendLine($"本日の興行収入 {totalScore} 円");
 
         // 最終的な文字列をテキストに設定
         IncomeText.text = builder.ToString();

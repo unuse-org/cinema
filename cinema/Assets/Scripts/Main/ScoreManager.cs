@@ -71,7 +71,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = "<sprite name=\"money_satsutaba\">"+score.ToString();
+            scoreText.text = "<sprite name=\"coin\">"+score.ToString() +"円";
             scoreText.characterSpacing = -2f; 
         }
     }
@@ -85,7 +85,7 @@ public class ScoreManager : MonoBehaviour
    private void pupup(int accumulatedScore)
     {
         // ポップアップテキストを設定
-        PopUpText.text = "+" + "<sprite name=\"money_satsutaba\">" + accumulatedScore;
+        PopUpText.text = "+" + "<sprite name=\"coin\">" + accumulatedScore + "円";
 
         // 透明度を元に戻す（新しいポップアップ時）
         if (PopUpCanvasGroup != null)

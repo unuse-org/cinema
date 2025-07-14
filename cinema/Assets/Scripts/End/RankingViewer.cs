@@ -30,7 +30,7 @@ public class RankingViewer : MonoBehaviour
         {
             int rank = i + 1;
             int score = rankingData.ranking[i].score;
-            builder.AppendLine($"{rank}位: {score} 点");
+            builder.AppendLine($"{rank}位: {score} 円");
         }
 
         // 最終的な文字列をテキストに設定
