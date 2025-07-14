@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class ReceiveScore : MonoBehaviour
 {
     public int currentScore = 0;
+    private int accumulatedScore = 0; // 1.5秒間で蓄積するスコア
 
     private void Start()
     {
@@ -18,26 +19,37 @@ public class ReceiveScore : MonoBehaviour
     // 外部からスコアを加算するメソッド
     public void AddScore(int scoreToAdd)
     {
-        currentScore += scoreToAdd;
-        //Debug.Log($"スコア加算: {scoreToAdd} → 現在のスコア: {currentScore}");
+        accumulatedScore += scoreToAdd;
+    }
+
+    // ScoreManager が1.5秒ごとに呼ぶ：蓄積されたスコアを取得して currentScore に加算
+    public int FetchAccumulatedScore()
+    {
+        int delta = accumulatedScore;
+        accumulatedScore = 0;
+        currentScore += delta;
+        return delta;
     }
 
     // シーンがアンロードされるときに保存
     private void OnSceneUnloaded(Scene current)
     {
-        PlayerPrefs.SetInt("score", currentScore);
-        Debug.Log($"💾 スコア保存: {currentScore}");
+        SaveScore();
     }
 
     private void OnDestroy()
     {
-        // 念のためスコアを保存
-        PlayerPrefs.SetInt("score", currentScore);
+        SaveScore();
     }
 
     private void OnDisable()
     {
-        // 念のためスコアを保存
+        SaveScore();
+    }
+
+    private void SaveScore()
+    {
         PlayerPrefs.SetInt("score", currentScore);
+        Debug.Log($"💾 スコア保存: {currentScore}");
     }
 }
