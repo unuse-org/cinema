@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class ConfettiController : MonoBehaviour
 {
+<<<<<<< HEAD
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+=======
+>>>>>>> main
     public ParticleSystem[] confettiSystems;  // 6つのParticleSystemをここに登録
 
     public void PlayOnce()
@@ -25,6 +29,8 @@ public class ConfettiController : MonoBehaviour
         ps.Stop();
     }
 
+<<<<<<< HEAD
+=======
     // // 再生する
     // public void PlayConfetti()
     // {
@@ -52,4 +58,5 @@ public class ConfettiController : MonoBehaviour
     //         main.loop = isLooping;
     //     }
     // }
+>>>>>>> main
 }
