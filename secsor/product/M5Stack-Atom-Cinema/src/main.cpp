@@ -61,13 +61,7 @@ void setup() {
 
 // 加速度センサーのZ軸の値からデバイスの状態を判定する関数
 int getStatusFromAccel(float az) {
-  const float range_H_max = 0.90, range_H_min = 0.80;
-  const float range_L_max = 0.60, range_L_min = 0.40;
-
-  if (az < range_H_max && az > range_H_min) return 1;
-  else if (az < range_L_max && az > range_L_min) return 2;
-  else if (az > -range_L_max && az < -range_L_min) return 4;
-  else if (az > -range_H_max && az < -range_H_min) return 5;
+  if (az > 0.80) return 1;
   else return 3;
 }
 
