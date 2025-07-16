@@ -130,7 +130,7 @@ void loop() {
   if (r_value > 20 && r_value < 40)        flag = 5; // 青
   else if (r_value > 60 && r_value < 80)   flag = 4; // 紫
   else if (r_value > 90 && r_value < 110)  flag = 0; // 灰
-  else if (r_value > 110 && r_value < 130) flag = 2; // 黒
+  else if (r_value > 110 && r_value < 120) flag = 2; // 黒
   else if (r_value > 120 && r_value < 140) flag = 1; // 緑
   else if (r_value > 240 && r_value < 260) flag = 3; // 赤
   else                                     flag = -1; // その他の色
