@@ -26,6 +26,7 @@ public class GetSensorSignal : MonoBehaviour
     // ステップ通過フラグ
     private bool step1Passed = false;
     private bool step2Passed = false;
+    private float step2Timer = 0f;
 
     // 状態を表示するTextMeshProコンポーネント
     [SerializeField] private TMP_Text statusText;
@@ -77,24 +78,24 @@ public class GetSensorSignal : MonoBehaviour
     void Update()
     {
         //UDPから取得
-        // currentState = receiver_imu.senser;
-        // // デバッグ用メッセージ出力
-        // string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
-        // //Debug.Log(message);
-        // // テキストがアサインされている場合、状態名を表示
-        // if (statusText != null)
-        // {
-        //     statusText.text = stateMessages[currentState];
-        //     statusText.alpha = 1f;
+        currentState = receiver_imu.senser;
+        // デバッグ用メッセージ出力
+        string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
+        //Debug.Log(message);
+        // テキストがアサインされている場合、状態名を表示
+        if (statusText != null)
+        {
+            statusText.text = stateMessages[currentState];
+            statusText.alpha = 1f;
 
-        //     // フェード中なら停止してから再スタート
-        //     if (fadeCoroutine != null)
-        //         StopCoroutine(fadeCoroutine);
+            // フェード中なら停止してから再スタート
+            if (fadeCoroutine != null)
+                StopCoroutine(fadeCoroutine);
 
-        //     fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
-        // }
+            fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
+        }
 
-        GetInput();            // キー入力を取得
+        //GetInput();            // キー入力を取得
         //Debug.Log("現在の入力： "+currentState);
         CheckStateSequence();  // ステップ判定処理
     }
@@ -135,44 +136,47 @@ public class GetSensorSignal : MonoBehaviour
     // ☑️太田「ここがメインシステム。ステップが完了次第mainシーンに移動する」
     void CheckStateSequence()
     {
-        //不正な入力（ステップ1/2を飛ばすなど）でステップリセット
-        // if ((step1Passed && currentState != 3 && currentState != 4 && currentState != 5) ||
-        //     (step2Passed && currentState != 4 && currentState != 5))
-        // {
-        //     ResetSteps();
-        // }
-
         // ステップ1：Stop（3）が入力されたら通過
-        if (currentState == 3)
+        if (!step1Passed && currentState == 3)
         {
-            // ←★ここでセンサー値を更新
-            if (getColorSensorSignalWifi != null) getColorSensorSignalWifi.UpdateSensorSignal();
+            if (getColorSensorSignalWifi != null)
+                getColorSensorSignalWifi.UpdateSensorSignal();
+
             step1Passed = true;
         }
 
-        // ステップ2：Step1通過後にFilm Load（2）なら通過
-        if (step1Passed && !step2Passed && currentState == 2)
+        // ステップ2：1が1秒間入力され続けたら通過
+        if (step1Passed && !step2Passed)
         {
-            step2Passed = true;
-        }
-
-        // ステップ3：Step1・2通過後にProject（1）で完了
-        if (step1Passed && step2Passed && currentState == 1)
-        {
-            // 完了メッセージを表示
-            if (statusText != null)
+            if (currentState == 1)
             {
-                statusText.text = "Completed!";
-                statusText.alpha = 1f;
+                step2Timer += Time.deltaTime;
 
-                // フェードアウト処理を再スタート
-                if (fadeCoroutine != null)
-                    StopCoroutine(fadeCoroutine);
+                if (step2Timer >= 1f)
+                {
+                    step2Passed = true;
 
-                fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f));
+                    // 完了メッセージを表示
+                    if (statusText != null)
+                    {
+                        statusText.text = "Completed!";
+                        statusText.alpha = 1f;
+
+                        if (fadeCoroutine != null)
+                            StopCoroutine(fadeCoroutine);
+
+                        fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f));
+                    }
+
+                    // ☑️太田スコア計算関数へ移動
+                    scorecount();
+                }
             }
-            // ☑️太田スコア計算関数へ移動
-            scorecount();
+            else
+            {
+                // 1以外が入ったらタイマーをリセット
+                step2Timer = 0f;
+            }
         }
     }
 
@@ -222,7 +226,6 @@ public class GetSensorSignal : MonoBehaviour
         PlayerPrefs.SetInt("index", index);
         PlayerPrefs.SetInt("people", people);
         PlayerPrefs.Save();
-        //Debug.Log("移動前"+index);
 
         // シーン内にあるSceneManagerという名前のオブジェクトを探して、SceneChangerコンポーネントを取得
         GameObject sceneManagerObj = GameObject.Find("SceneManager");

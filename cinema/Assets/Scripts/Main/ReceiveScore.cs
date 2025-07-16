@@ -13,7 +13,7 @@ public class ReceiveScore : MonoBehaviour
     {
         // 保存されたスコアを取得
         currentScore = PlayerPrefs.GetInt("score", 0);
-        Debug.Log($"🟢 スタート時スコア: {currentScore}");
+        //Debug.Log($"🟢 スタート時スコア: {currentScore}");
 
         // シーン変更時のイベント登録
         SceneManager.sceneUnloaded += OnSceneUnloaded;

@@ -50,6 +50,13 @@ public class VideoPlayerManager : MonoBehaviour
 
     public bool isVideoPlaying = false; // 動画が再生中かどうかのフラグ
 
+    [SerializeField] private GameObject noisePrefab; // ← シリアライズで定義（Inspectorで設定）
+
+    private GameObject noiseInstance; // 生成したノイズオブジェクトを保持
+
+
+
+
     void Awake()
     {
         GameObject imuObject1 = GameObject.Find("M5_IMU_Wifi");
@@ -99,7 +106,7 @@ public class VideoPlayerManager : MonoBehaviour
         sceneIndex = PlayerPrefs.GetInt("index", 0);
         people = PlayerPrefs.GetInt("people", 0);
 
-        Debug.Log("sceneIndex: " + sceneIndex);
+        Debug.Log("sceneIndexはここを確認 " + sceneIndex);
 
         int clipToPlayIndex = Mathf.Clamp(movieIndex, 0, videoClips.Length - 1);
 
@@ -131,7 +138,7 @@ public class VideoPlayerManager : MonoBehaviour
         if (!allAccidentsScheduled)
         {
             accidentTargetCount = Mathf.RoundToInt(Mathf.Lerp(2, 20, Mathf.Clamp01(people / 35f)));
-            Debug.Log($"🎯 アクシデント発生目標回数: {accidentTargetCount} （観客: {people}人）");
+            //Debug.Log($"🎯 アクシデント発生目標回数: {accidentTargetCount} （観客: {people}人）");
 
             accidentCount = 0;
             ScheduleAllAccidents();  // アクシデントをスケジュール
@@ -149,10 +156,24 @@ public class VideoPlayerManager : MonoBehaviour
     {
         if (isVideoPlaying) return; // 動画再生中は入力を受け付けない
 
-        //☑️太田メモ  ここにセンサー処理追加
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        //☑️太田メモ  デバッグ用処理
+        // if (Input.GetKeyDown(KeyCode.Alpha3))
+        // {
+        //     if (sceneIndex == 4)
+        //     {
+        //         SceneManager.LoadScene("End");
+        //     }
+        //     else
+        //     {
+        //         SceneManager.LoadScene("standby");
+        //     }
+        // }
+
+        //UDPから取得
+        int currentState = receiver_imu.senser;
+        if (currentState == 3)
         {
-            if (sceneIndex == 6)
+            if (sceneIndex == 4)
             {
                 SceneManager.LoadScene("End");
             }
@@ -179,19 +200,19 @@ public class VideoPlayerManager : MonoBehaviour
         if (accidentActive && receiver_speed != null)
         {
             //センサー処理
-            //int sensor = receiver_speed.Speed;
+            int sensor = receiver_speed.Speed;
 
             //デバッグ用キー入力処理
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                sensor = 1;
-                //Debug.Log("← 左矢印キー入力 → sensor = 1");
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                sensor = 3;
-                //Debug.Log("→ 右矢印キー入力 → sensor = 3");
-            }
+            // if (Input.GetKeyDown(KeyCode.LeftArrow))
+            // {
+            //     sensor = 1;
+            //     //Debug.Log("← 左矢印キー入力 → sensor = 1");
+            // }
+            // else if (Input.GetKeyDown(KeyCode.RightArrow))
+            // {
+            //     sensor = 3;
+            //     //Debug.Log("→ 右矢印キー入力 → sensor = 3");
+            // }
 
             bool shouldRelease =
                 (accidentSpeed > 1f && sensor == 1) ||
@@ -210,7 +231,7 @@ public class VideoPlayerManager : MonoBehaviour
         accidentSpeed = Random.value < 0.75f ? 0.5f : 1.2f;
         string accidentType = accidentSpeed > 1f ? "SpeedUp" : "SpeedDown";
 
-        Debug.Log($"⚠️ アクシデント発生！ {(accidentType == "SpeedUp" ? "🚀【速度UP】" : "🐢【速度DOWN】")} x{accidentSpeed}");
+        //Debug.Log($"⚠️ アクシデント発生！ {(accidentType == "SpeedUp" ? "🚀【速度UP】" : "🐢【速度DOWN】")} x{accidentSpeed}");
         SetPlaybackSpeed(accidentSpeed);
 
         if (accidentSpeed > 1)
@@ -221,6 +242,17 @@ public class VideoPlayerManager : MonoBehaviour
         {
             BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.SpeedUp);
         }
+
+        if (noisePrefab != null)
+        {
+            Vector3 spawnPosition = new Vector3(0.51f, 7.34f, 11.42f);
+            Quaternion spawnRotation = Quaternion.Euler(-90f, 0f, 0f);
+            noiseInstance = Instantiate(noisePrefab, spawnPosition, spawnRotation);
+        }
+        else
+        {
+            Debug.LogWarning("❗ noisePrefab が設定されていません！");
+        }
     }
 
     private void ReleaseAccident()
@@ -229,7 +261,7 @@ public class VideoPlayerManager : MonoBehaviour
 
         accidentActive = false;
         SetPlaybackSpeed(1f);
-        Debug.Log("✅ アクシデント解除：速度を通常（x1.0）に戻しました");
+        //Debug.Log("✅ アクシデント解除：速度を通常（x1.0）に戻しました");
 
         people += 1;
         PlayerPrefs.SetInt("people", people);
@@ -243,6 +275,13 @@ public class VideoPlayerManager : MonoBehaviour
             ScheduleAllAccidents();
         }
 
+        // ✅ ノイズオブジェクトの削除
+        if (noiseInstance != null)
+        {
+            Destroy(noiseInstance);
+            noiseInstance = null; // 念のため参照もクリア
+        }
+
         // ✅ BubbleImage という名前の GameObject をすべて探して削除
         GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
         foreach (GameObject obj in allObjects)
@@ -252,8 +291,6 @@ public class VideoPlayerManager : MonoBehaviour
                 Destroy(obj);
             }
         }
-
-        //BubbleSpawner.Instance.SpawnBubbles(BubbleSpawner.Situation.Success);
     }
 
     private void ScheduleAllAccidents()
@@ -281,7 +318,7 @@ public class VideoPlayerManager : MonoBehaviour
             accidentScheduleQueue.Enqueue(time);
         }
 
-        Debug.Log($"📆 {targetAccidentCount}個のアクシデントをスケジュール済み");
+        //Debug.Log($"📆 {targetAccidentCount}個のアクシデントをスケジュール済み");
 
         allAccidentsScheduled = true;  // スケジュール完了フラグを立てる
     }
