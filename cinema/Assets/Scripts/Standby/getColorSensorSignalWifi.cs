@@ -95,6 +95,7 @@ public class GetColorSensorSignalWifi : MonoBehaviour
     {
         // if (receiver == null) { Debug.LogWarning("[Signal] colorSensor が null"); return; }
         // lastSignal = receiver.color;
+        //Debug.Log("格納値："+lastSignal);
 
         if (Input.GetKeyDown(KeyCode.A))
         {

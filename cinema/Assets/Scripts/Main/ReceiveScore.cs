@@ -12,8 +12,8 @@ public class ReceiveScore : MonoBehaviour
     private void Start()
     {
         // 保存されたスコアを取得
-        currentScore = PlayerPrefs.GetInt("score", 0);
-        Debug.Log($"🟢 スタート時スコア: {currentScore}");
+        currentScore = PlayerPrefs.GetInt("Game_Score_Current", 0);
+        //Debug.Log($"🟢 スタート時スコア: {currentScore}");
 
         // シーン変更時のイベント登録
         SceneManager.sceneUnloaded += OnSceneUnloaded;
@@ -56,7 +56,7 @@ public class ReceiveScore : MonoBehaviour
 
     private void SaveScore()
     {
-        PlayerPrefs.SetInt("score", currentScore);
+        PlayerPrefs.SetInt("Game_Score_Current", currentScore);
         //Debug.Log($"💾 スコア保存: {currentScore}");
     }
 }

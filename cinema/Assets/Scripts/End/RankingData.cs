@@ -4,11 +4,11 @@ using System.Collections.Generic;
 [Serializable]
 public class ScoreData
 {
-    public int score;
+    public int scores;
 
-    public ScoreData(int score)
+    public ScoreData(int scores)
     {
-        this.score = score;
+        this.scores = scores;
     }
 }
 

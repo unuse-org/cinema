@@ -16,6 +16,7 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private AudioClip seClip; // 加算時のSE
 
     private int score = 0;
+    private int index;
     private int accumulatedScore = 0; // 1.5秒間の合計スコア
 
     private float timer = 0f;
@@ -23,7 +24,19 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        score = PlayerPrefs.GetInt("score", 0);
+        // index = PlayerPrefs.GetInt("index", 0);
+        // if (index == 1)
+        // {
+        //     score = 0;
+        // }
+        // else
+        // {
+        //     score = PlayerPrefs.GetInt("score", 0);
+        // }
+
+        score = PlayerPrefs.GetInt("Game_Score_Current", 0);
+        
+        
         UpdateScoreText();
         
         // 初期設定で透明度を1にしておく
@@ -76,9 +89,9 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    public void SaveScore(int score)
+    private void SaveScore(int score)
     {
-        PlayerPrefs.SetInt("score", score);
+        PlayerPrefs.SetInt("Game_Score_Current", score);
         PlayerPrefs.Save();
     }
 

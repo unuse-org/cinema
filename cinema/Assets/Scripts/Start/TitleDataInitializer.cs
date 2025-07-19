@@ -11,60 +11,30 @@ using UnityEngine;
 */
 public class TitleDataInitializer : MonoBehaviour
 {
+    void Awake()
+    {
+        // PlayerPrefs.DeleteKey("weekday");
+        // PlayerPrefs.DeleteKey("index");
+        // PlayerPrefs.DeleteKey("score");
+        // PlayerPrefs.DeleteKey("people");
+
+        // PlayerPrefs.Save();
+    }
+
     void Start()
     {
-        // PlayerPrefsで保存されているデータを確認
-        if (!PlayerPrefs.HasKey("weekday"))
-        {
-            // データがない場合、新規作成
-            Debug.Log("PlayerPrefsにデータが存在しないため、新規作成します");
+        int weekday = Random.Range(0, 5);  // 1〜5の乱数
+        int index = 1;
+        int score = 0;
+        int people = 2;
 
-            int weekday = Random.Range(0, 5);  // 0〜4の乱数
-            int index = 1;
-            int score = 0;
-            int people = 2;
+        // 中身を初期化して再設定
+        PlayerPrefs.SetInt("weekday", weekday);
+        PlayerPrefs.SetInt("index", index);
+        PlayerPrefs.SetInt("Game_Score_Current", score);
+        PlayerPrefs.SetInt("people", people);
 
-            Debug.Log("weekday: "+weekday);
-            Debug.Log("index: "+index);
-            Debug.Log("score: "+score);
-            Debug.Log("people: "+people);
-
-            // PlayerPrefsにデータを保存
-            PlayerPrefs.SetInt("weekday", weekday);
-            PlayerPrefs.SetInt("index", index);
-            PlayerPrefs.SetInt("score", score);
-            PlayerPrefs.SetInt("people", people);
-
-            // 保存を確定
-            PlayerPrefs.Save();
-
-            //Debug.Log("PlayerPrefs初期化完了");
-        }
-        else
-        {
-            // PlayerPrefsが既に存在している場合、中身を空にして再初期化
-            Debug.Log("これは初期設定Bです");
-
-            int weekday = Random.Range(0, 5);  // 1〜5の乱数
-            int index = 1;
-            int score = 0;
-            int people = 2;
-
-            Debug.Log("weekday: "+weekday);
-            Debug.Log("index: "+index);
-            Debug.Log("score: "+score);
-            Debug.Log("people: "+people);
-
-            // 中身を初期化して再設定
-            PlayerPrefs.SetInt("weekday", weekday);
-            PlayerPrefs.SetInt("index", index);
-            PlayerPrefs.SetInt("score", score);
-            PlayerPrefs.SetInt("people", people);
-
-            // 保存を確定
-            PlayerPrefs.Save();
-
-            //Debug.Log("PlayerPrefsの中身を初期化しました");
-        }
+        Debug.Log("スコア初期化後" + PlayerPrefs.GetInt("Game_Score_Current"));
+        PlayerPrefs.Save();       
     }
 }
