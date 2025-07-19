@@ -59,11 +59,11 @@ void setup() {
   Serial.println("IMU (BMI270) ready.");
 }
 
-int getSpeedFromAccel(float ax)
+int getSpeedFromAccel(float ax, float ay)
 {
-  if (ax < -0.90)
+  if (0.30 > ax && ay < 0.1)
     return 3; // 高速
-  else if (-0.30 < ax && -0.10 > ax)
+  else if (-0.0 > ax && -0.40 < ax && ay > 0)
     return 1; // 低速
   else 
     return 2; // 中速
@@ -85,7 +85,7 @@ void loop() {
     
     Serial.printf("Accel: X=%.2f, Y=%.2f, Z=%.2f (g)\n", ax, ay, az);
 
-    int speed = getSpeedFromAccel(ax);
+    int speed = getSpeedFromAccel(ax, ay);
     Serial.printf("Speed: %d\n", speed);
 
     char message[64];
@@ -96,5 +96,5 @@ void loop() {
 
   }
 
-  delay(500);
+  delay(100);
 }
