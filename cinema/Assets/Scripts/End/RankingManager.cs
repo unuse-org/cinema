@@ -16,7 +16,7 @@ public class RankingManager : MonoBehaviour
         ranking.ranking.Add(new ScoreData(newScore));
 
         // 3. スコアの高い順に並べ替え（降順ソート）
-        ranking.ranking = ranking.ranking.OrderByDescending(data => data.score).ToList();
+        ranking.ranking = ranking.ranking.OrderByDescending(data => data.scores).ToList();
 
         // 4. 最大保存数を超えていたら、古いデータを削除
         if (ranking.ranking.Count > MaxRankingCount)
@@ -29,7 +29,7 @@ public class RankingManager : MonoBehaviour
         PlayerPrefs.SetString(RankingKey, json);
         PlayerPrefs.Save();
         
-        Debug.Log("Ranking saved!");
+        //Debug.Log("Ranking saved!");
     }
 
     // 保存されているランキングを読み込むメソッド

@@ -1,6 +1,6 @@
-using UnityEngine;               // ← これが必要！
-using UnityEngine.Video;         // ← これが必要！
-using UnityEngine.UI;            // ← RawImageはこの中にある
+using UnityEngine;              
+using UnityEngine.Video;       
+using UnityEngine.UI;        
 
 public class StartVideo : MonoBehaviour
 {

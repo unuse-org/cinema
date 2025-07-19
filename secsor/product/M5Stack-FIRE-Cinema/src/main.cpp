@@ -126,7 +126,7 @@ void loop() {
   // 色の判定
   flag = -1;
 
-  // r_valueの範囲で色を判定
+  // r_valueの範囲で色を判定（赤色のみ）
   if (r_value > 20 && r_value < 40)        flag = 5; // 青
   else if (r_value > 60 && r_value < 80)   flag = 4; // 紫
   else if (r_value > 90 && r_value < 110)  flag = 0; // 灰
@@ -141,6 +141,7 @@ void loop() {
   // 送信するメッセージをJSON形式で作成
   char message[128];
 
+  // デバッグする時はここで出力を見る
   // Serial.printf("R:%3d G:%3d B:%3d => ", r_value, g_value, b_value);
   switch (flag) {
     case 0: Serial.println("0"); break;

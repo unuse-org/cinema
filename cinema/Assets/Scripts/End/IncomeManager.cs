@@ -29,7 +29,7 @@ public class IncomeManager : MonoBehaviour
 
         for (int i = 0; i < rankingData.ranking.Count; i++)
         {
-            totalScore += rankingData.ranking[i].score;
+            totalScore += rankingData.ranking[i].scores;
         }
 
         builder.AppendLine($"本日の興行収入 {totalScore} 円");

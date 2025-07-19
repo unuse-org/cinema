@@ -71,31 +71,30 @@ public class GetSensorSignal : MonoBehaviour
     {
         people = PlayerPrefs.GetInt("people");       // デフォルト値を0
         index = PlayerPrefs.GetInt("index");
-        //Debug.Log("シーン読み込み時"+index);
     }
 
     // 毎フレーム実行
     void Update()
     {
         //UDPから取得
-        currentState = receiver_imu.senser;
-        // デバッグ用メッセージ出力
-        string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
-        //Debug.Log(message);
-        // テキストがアサインされている場合、状態名を表示
-        if (statusText != null)
-        {
-            statusText.text = stateMessages[currentState];
-            statusText.alpha = 1f;
+        // currentState = receiver_imu.senser;
+        // // デバッグ用メッセージ出力
+        // string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
+        // //Debug.Log(message);
+        // // テキストがアサインされている場合、状態名を表示
+        // if (statusText != null)
+        // {
+        //     statusText.text = stateMessages[currentState];
+        //     statusText.alpha = 1f;
 
-            // フェード中なら停止してから再スタート
-            if (fadeCoroutine != null)
-                StopCoroutine(fadeCoroutine);
+        //     // フェード中なら停止してから再スタート
+        //     if (fadeCoroutine != null)
+        //         StopCoroutine(fadeCoroutine);
 
-            fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
-        }
+        //     fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
+        // }
 
-        //GetInput();            // キー入力を取得
+        GetInput();            // キー入力を取得
         //Debug.Log("現在の入力： "+currentState);
         CheckStateSequence();  // ステップ判定処理
     }
@@ -136,12 +135,13 @@ public class GetSensorSignal : MonoBehaviour
     // ☑️太田「ここがメインシステム。ステップが完了次第mainシーンに移動する」
     void CheckStateSequence()
     {
+
+        getColorSensorSignalWifi.UpdateSensorSignal();
+
+
         // ステップ1：Stop（3）が入力されたら通過
         if (!step1Passed && currentState == 3)
         {
-            if (getColorSensorSignalWifi != null)
-                getColorSensorSignalWifi.UpdateSensorSignal();
-
             step1Passed = true;
         }
 
@@ -159,7 +159,7 @@ public class GetSensorSignal : MonoBehaviour
                     // 完了メッセージを表示
                     if (statusText != null)
                     {
-                        statusText.text = "Completed!";
+                        //statusText.text = "Completed!";
                         statusText.alpha = 1f;
 
                         if (fadeCoroutine != null)

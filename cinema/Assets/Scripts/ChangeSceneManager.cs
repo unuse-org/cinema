@@ -3,20 +3,18 @@ using UnityEngine.SceneManagement;
 
 public class ChangeSceneManager : MonoBehaviour
 {
+
+    void Awake()
+    {
+        Debug.Log(SceneManager.GetActiveScene().name + PlayerPrefs.GetInt("Game_Score_Current"));
+        Debug.Log("index:" +SceneManager.GetActiveScene().name + PlayerPrefs.GetInt("weekday"));
+    }
     private void Update()
     {
+        //リターンを押してシーン移動
         if (Input.GetKeyDown(KeyCode.Return))
         {
             ChangeScene();
-        }
-        if (SceneManager.GetActiveScene().name == "Ready")
-        {
-            Ready ready = FindObjectOfType<Ready>();
-            if (ready != null && ready.changeSceneFlag == 1)
-            {
-                ChangeScene();
-                ready.changeSceneFlag = 0; // シーン変更フラグをリセット
-            }
         }
     }
 
@@ -37,10 +35,16 @@ public class ChangeSceneManager : MonoBehaviour
         }else if (SceneManager.GetActiveScene().name == "Ready")
         {
             LoadScene();
-        }else if (SceneManager.GetActiveScene().name == "Main")
+        }
+        else if (SceneManager.GetActiveScene().name == "standby")
+        {
+            SceneManager.LoadScene("Main");
+        }
+        else if (SceneManager.GetActiveScene().name == "Main")
         {
             LoadScene();
-        }else if (SceneManager.GetActiveScene().name == "End")
+        }
+        else if (SceneManager.GetActiveScene().name == "End")
         {
             LoadScene();
         }

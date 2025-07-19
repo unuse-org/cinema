@@ -4,20 +4,17 @@ using TMPro;
 public class ResultManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI resultScoreText;
-    
-    // RankingManagerへの参照を追加
     [SerializeField] private RankingManager rankingManager;
 
     void Start()
     {
         // PlayerPrefsから今回のスコアを読み込む
-        int finalScore = PlayerPrefs.GetInt("score", 0);
-        
+        int finalScore = PlayerPrefs.GetInt("Game_Score_Current", 0);
+
         // UIに最終スコアを表示
         resultScoreText.text = "あなたの得点: " + finalScore.ToString() + "円";
 
-        // --- ここから追加 ---
-        // RankingManagerが見つかれば、スコアを保存する
+        // RankingManagerが見つかればスコアを保存する
         if (rankingManager != null)
         {
             rankingManager.SaveScore(finalScore);
@@ -26,9 +23,14 @@ public class ResultManager : MonoBehaviour
         {
             Debug.LogError("RankingManagerが設定されていません！");
         }
-        // --- ここまで追加 ---
-        
-        // 一度使ったキーは削除しておく
-        PlayerPrefs.DeleteKey("score");
+
+        //次回必要な値を削除
+        PlayerPrefs.DeleteKey("weekday");
+        PlayerPrefs.DeleteKey("index");
+        PlayerPrefs.DeleteKey("Game_Score_Current");
+        PlayerPrefs.DeleteKey("people");
+
+        Debug.Log("データ削除後" + PlayerPrefs.GetInt("Game_Score_Current"));
+        PlayerPrefs.Save();
     }
 }

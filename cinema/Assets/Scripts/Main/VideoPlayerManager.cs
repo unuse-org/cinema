@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections.Generic;
 
+
 public class VideoPlayerManager : MonoBehaviour
 {
     [Header("必須参照")]
@@ -54,11 +55,18 @@ public class VideoPlayerManager : MonoBehaviour
 
     private GameObject noiseInstance; // 生成したノイズオブジェクトを保持
 
+    [SerializeField] private AudioClip SEClip; // Inspectorで設定できるBGM
+
+    [SerializeField] private AudioSource audioSource;
+
+    private float step2Timer;
+
 
 
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>(); 
         GameObject imuObject1 = GameObject.Find("M5_IMU_Wifi");
         if (imuObject1 != null)
         {
@@ -106,7 +114,7 @@ public class VideoPlayerManager : MonoBehaviour
         sceneIndex = PlayerPrefs.GetInt("index", 0);
         people = PlayerPrefs.GetInt("people", 0);
 
-        Debug.Log("sceneIndexはここを確認 " + sceneIndex);
+        //Debug.Log("sceneIndexはここを確認 " + sceneIndex);
 
         int clipToPlayIndex = Mathf.Clamp(movieIndex, 0, videoClips.Length - 1);
 
@@ -156,30 +164,33 @@ public class VideoPlayerManager : MonoBehaviour
     {
         if (isVideoPlaying) return; // 動画再生中は入力を受け付けない
 
-        //☑️太田メモ  デバッグ用処理
-        // if (Input.GetKeyDown(KeyCode.Alpha3))
-        // {
-        //     if (sceneIndex == 4)
-        //     {
-        //         SceneManager.LoadScene("End");
-        //     }
-        //     else
-        //     {
-        //         SceneManager.LoadScene("standby");
-        //     }
-        // }
-
         //UDPから取得
-        int currentState = receiver_imu.senser;
+        //int currentState = receiver_imu.senser;
+
+
+        int currentState = 0;
+        for (int i = 1; i <= 5; i++)
+        {
+            if (Input.GetKeyDown(i.ToString()))
+            {
+                currentState = i;
+            }
+        }
+
         if (currentState == 3)
         {
-            if (sceneIndex == 4)
+            step2Timer += Time.deltaTime;
+
+            if (step2Timer >= 1f)
             {
-                SceneManager.LoadScene("End");
-            }
-            else
-            {
-                SceneManager.LoadScene("standby");
+                if (sceneIndex == 4)
+                {
+                    SceneManager.LoadScene("End");
+                }
+                else
+                {
+                    SceneManager.LoadScene("standby");
+                }
             }
         }
     }
@@ -200,19 +211,19 @@ public class VideoPlayerManager : MonoBehaviour
         if (accidentActive && receiver_speed != null)
         {
             //センサー処理
-            int sensor = receiver_speed.Speed;
+            //int sensor = receiver_speed.Speed;
 
             //デバッグ用キー入力処理
-            // if (Input.GetKeyDown(KeyCode.LeftArrow))
-            // {
-            //     sensor = 1;
-            //     //Debug.Log("← 左矢印キー入力 → sensor = 1");
-            // }
-            // else if (Input.GetKeyDown(KeyCode.RightArrow))
-            // {
-            //     sensor = 3;
-            //     //Debug.Log("→ 右矢印キー入力 → sensor = 3");
-            // }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                sensor = 1;
+                //Debug.Log("← 左矢印キー入力 → sensor = 1");
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                sensor = 3;
+                //Debug.Log("→ 右矢印キー入力 → sensor = 3");
+            }
 
             bool shouldRelease =
                 (accidentSpeed > 1f && sensor == 1) ||
@@ -291,6 +302,9 @@ public class VideoPlayerManager : MonoBehaviour
                 Destroy(obj);
             }
         }
+
+        audioSource.clip = SEClip;
+        audioSource.Play();
     }
 
     private void ScheduleAllAccidents()

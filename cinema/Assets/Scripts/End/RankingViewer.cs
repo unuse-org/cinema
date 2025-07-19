@@ -29,8 +29,8 @@ public class RankingViewer : MonoBehaviour
         for (int i = 0; i < rankingData.ranking.Count; i++)
         {
             int rank = i + 1;
-            int score = rankingData.ranking[i].score;
-            builder.AppendLine($"{rank}位: {score} 円");
+            int scoreA = rankingData.ranking[i].scores;
+            builder.AppendLine($"{rank}位: {scoreA} 円");
         }
 
         // 最終的な文字列をテキストに設定
