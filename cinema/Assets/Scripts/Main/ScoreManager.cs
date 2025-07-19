@@ -22,7 +22,7 @@ public class ScoreManager : MonoBehaviour
     private float timer = 0f;
     private const float interval = 1.5f;
 
-    void Start()
+    void Awake()
     {
         // index = PlayerPrefs.GetInt("index", 0);
         // if (index == 1)
@@ -35,8 +35,7 @@ public class ScoreManager : MonoBehaviour
         // }
 
         score = PlayerPrefs.GetInt("Game_Score_Current", 0);
-        
-        
+
         UpdateScoreText();
         
         // 初期設定で透明度を1にしておく

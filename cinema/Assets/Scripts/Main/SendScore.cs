@@ -6,7 +6,7 @@ public class SendScore : MonoBehaviour
     [SerializeField] private ReceiveScore receiveScore;
 
     [Header("VideoPlayerManager 参照")]
-    [SerializeField] private VideoPlayerManager videoPlayerManager; // VideoPlayerManager を参照する
+    [SerializeField] private VideoPlayerManager videoPlayerManager;
 
     private int baseScore = 100;
 
@@ -16,14 +16,12 @@ public class SendScore : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        // 動画が再生されており、accidentActive が true のときだけスコアを加算
         if (timer >= 1f && videoPlayerManager != null && !videoPlayerManager.accidentActive && videoPlayerManager.isVideoPlaying)
         {
             timer = 0f;
             if (receiveScore != null)
             {
                 receiveScore.AddScore(baseScore);
-                //Debug.Log($"📤 スコア {baseScore} を送信しました");
             }
             else
             {
