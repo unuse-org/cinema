@@ -6,8 +6,8 @@ public class ChangeSceneManager : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log(SceneManager.GetActiveScene().name + PlayerPrefs.GetInt("Game_Score_Current"));
-        Debug.Log("index:" +SceneManager.GetActiveScene().name + PlayerPrefs.GetInt("weekday"));
+        Debug.Log("Game_Score_Current:"+SceneManager.GetActiveScene().name + PlayerPrefs.GetInt("Game_Score_Current"));
+        //Debug.Log("index:" +SceneManager.GetActiveScene().name + PlayerPrefs.GetInt("weekday"));
     }
     private void Update()
     {
