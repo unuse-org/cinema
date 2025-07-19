@@ -3,18 +3,28 @@
 #include "Adafruit_TCS34725.h"
 #include "udp_sender.h"
 
+// UDPブロードキャスト送信用の関数を定義
+#include <WiFiUdp.h>
+void sendUdpBroadcast(int port, const char* message) {
+  WiFiUDP udp;
+  udp.beginPacket("255.255.255.255", port);
+  udp.write((const uint8_t*)message, strlen(message));
+  udp.endPacket();
+}
+
+
 // -------- ユーザー設定項目 --------
 // 接続するWi-FiのSSIDとパスワード
 const char *ssid = "TP-Link_B308";
 const char *password = "29640393";
 
-// 送信先のIPアドレスとポート番号
-// const IPAddress targetIP(192, 168, 0, 140); // 受信側PCのIPアドレス
-const IPAddress targetIPs[] = {
-  IPAddress(192, 168, 0, 140),
-  IPAddress(192, 168, 0, 26),
-  IPAddress(192, 168, 0, 99),
-};
+// // 送信先のIPアドレスとポート番号
+// // const IPAddress targetIP(192, 168, 0, 140); // 受信側PCのIPアドレス
+// const IPAddress targetIPs[] = {
+//   IPAddress(192, 168, 0, 140),
+//   IPAddress(192, 168, 0, 26),
+//   IPAddress(192, 168, 0, 99),
+// };
 
 const int targetPort = 12345;
 // ------------------------------------
@@ -159,11 +169,14 @@ void loop() {
   snprintf(message, sizeof(message), "%c", flagChar);
   // 送信先のIPアドレスとポート番号にメッセージを送信
   // sendUdpMessage(targetIPs[0], targetPort, message);
-  for (int i = 0; i < 3; i++)
-  {
-    sendUdpMessage(targetIPs[i], targetPort, message);
-    delay(30);
-  }
+  // for (int i = 0; i < 3; i++)
+  // {
+  //   sendUdpMessage(targetIPs[i], targetPort, message);
+  //   delay(30);
+  // }
+
+  // ブロードキャスト送信
+  sendUdpBroadcast(targetPort, message);
   
   delay(500); // 0.5秒ごとに送信
 }
