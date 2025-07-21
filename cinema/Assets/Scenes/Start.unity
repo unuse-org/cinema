@@ -175,7 +175,6 @@ GameObject:
   m_Component:
   - component: {fileID: 623276764}
   - component: {fileID: 623276763}
-  - component: {fileID: 623276762}
   m_Layer: 0
   m_Name: BGM
   m_TagString: Untagged
@@ -183,19 +182,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &623276762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 623276761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b1e3c7925bc54b60a379722a7b27385, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bgmClip: {fileID: 8300000, guid: 40e192c426d1041bdb306ee177547ee7, type: 3}
 --- !u!82 &623276763
 AudioSource:
   m_ObjectHideFlags: 0
@@ -211,7 +197,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
