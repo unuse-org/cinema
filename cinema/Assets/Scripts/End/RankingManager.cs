@@ -4,7 +4,7 @@ using System.Linq;
 public class RankingManager : MonoBehaviour
 {
     private const string RankingKey = "rankingData"; // PlayerPrefsのキー
-    private const int MaxRankingCount = 5; // ランキングの最大保存数
+    private const int MaxRankingCount = 100; // ランキングの最大保存数
 
     // 新しいスコアをランキングに追加するメソッド
     public void SaveScore(int newScore)

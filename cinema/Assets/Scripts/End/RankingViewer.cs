@@ -26,7 +26,7 @@ public class RankingViewer : MonoBehaviour
         // StringBuilderを使って効率的に文字列を結合する
         StringBuilder builder = new StringBuilder();
 
-        for (int i = 0; i < rankingData.ranking.Count; i++)
+        for (int i = 0; i < 5; i++)
         {
             int rank = i + 1;
             int scoreA = rankingData.ranking[i].scores;
