@@ -23,7 +23,7 @@ public class ChangeSceneManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Start")
         {
             WipeCircleController wipeController = FindObjectOfType<WipeCircleController>();
-            if (wipeController != null)
+            if (wipeController != null) 
             {
                 wipeController.StartWipe();
                 Invoke("LoadScene", 3f);
