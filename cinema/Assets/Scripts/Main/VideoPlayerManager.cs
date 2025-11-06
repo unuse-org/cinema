@@ -61,6 +61,8 @@ public class VideoPlayerManager : MonoBehaviour
 
     private float step2Timer;
 
+    [SerializeField] private AnimationManager animationManager; // AnimationManagerを参照
+
 
 
 
@@ -157,7 +159,8 @@ public class VideoPlayerManager : MonoBehaviour
 
     void OnVideoFinished(VideoPlayer vp)
     {
-        isVideoPlaying = false; // 動画が終了したら、キーボード入力を受け付けるように
+        animationManager.PlayFullAnimation();
+        isVideoPlaying = false; // 動画が終了したら、入力を受け付けるように
     }
 
     private void CheckForManualSceneSkip()
