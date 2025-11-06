@@ -44,6 +44,9 @@ public class GetSensorSignal : MonoBehaviour
 
     private udp_receiver_imu receiver_imu;
 
+    //アニメーション再生用
+    [SerializeField] private AnimationManager animationManager; // AnimationManagerを参照
+
     // 各状態番号に対応するメッセージ（インデックス1〜5を使用）
     private string[] stateMessages = {
         "", // index 0は未使用
@@ -53,6 +56,8 @@ public class GetSensorSignal : MonoBehaviour
         "逆転",             // 4
         "逆転映写"                // 5
     };
+
+
 
     void Awake()
     {
@@ -244,7 +249,10 @@ public class GetSensorSignal : MonoBehaviour
     {
         Debug.Log("暗転開始...");
 
+        animationManager.PlayFullAnimation();
+
         LightDimmer dimmer = FindObjectOfType<LightDimmer>();
+
         if (dimmer != null)
         {
             // dimmingが終わるまで処理を待つ
