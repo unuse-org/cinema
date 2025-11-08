@@ -81,8 +81,11 @@ public class GetSensorSignal : MonoBehaviour
     // 毎フレーム実行
     void Update()
     {
+
+        GetInput();            // キー入力を取得
+
         //UDPから取得
-        currentState = receiver_imu.senser;
+        //currentState = receiver_imu.senser;
         // デバッグ用メッセージ出力
         string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
         //Debug.Log(message);
@@ -99,8 +102,6 @@ public class GetSensorSignal : MonoBehaviour
             fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
         }
 
-        //GetInput();            // キー入力を取得
-        //Debug.Log("現在の入力： "+currentState);
         CheckStateSequence();  // ステップ判定処理
     }
 

@@ -63,6 +63,8 @@ public class VideoPlayerManager : MonoBehaviour
 
     [SerializeField] private AnimationManager animationManager; // AnimationManagerを参照
 
+    private int currentState;
+
 
 
 
@@ -168,7 +170,12 @@ public class VideoPlayerManager : MonoBehaviour
         if (isVideoPlaying) return; // 動画再生中は入力を受け付けない
 
         //UDPから取得
-        int currentState = receiver_imu.senser;
+        //int currentState = receiver_imu.senser;
+
+        //デバッグ用処理でキー入力の受付
+        if (Input.GetKeyDown("3".ToString())){
+            currentState = 3;
+        }
 
         if (currentState == 3)
         {
@@ -185,7 +192,8 @@ public class VideoPlayerManager : MonoBehaviour
                     SceneManager.LoadScene("standby");
                 }
             }
-        }     
+        }
+
     }
 
     void Update()
@@ -207,16 +215,16 @@ public class VideoPlayerManager : MonoBehaviour
             int sensor = receiver_speed.Speed;
 
             //デバッグ用キー入力処理
-            // if (Input.GetKeyDown(KeyCode.LeftArrow))
-            // {
-            //     sensor = 1;
-            //     //Debug.Log("← 左矢印キー入力 → sensor = 1");
-            // }
-            // else if (Input.GetKeyDown(KeyCode.RightArrow))
-            // {
-            //     sensor = 3;
-            //     //Debug.Log("→ 右矢印キー入力 → sensor = 3");
-            // }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                sensor = 1;
+                //Debug.Log("← 左矢印キー入力 → sensor = 1");
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                sensor = 3;
+                //Debug.Log("→ 右矢印キー入力 → sensor = 3");
+            }
 
             bool shouldRelease =
                 (accidentSpeed > 1f && sensor == 1) ||
