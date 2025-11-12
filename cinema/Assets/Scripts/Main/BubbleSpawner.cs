@@ -119,7 +119,7 @@ public class BubbleSpawner : MonoBehaviour
 
                 // ✅ 半透明化
                 Color color = spriteRenderer.color;
-                color.a = 0.2f;
+                color.a = 0.8f;
                 spriteRenderer.color = color;
             }
             // ✅ success のときだけ 1秒後に削除

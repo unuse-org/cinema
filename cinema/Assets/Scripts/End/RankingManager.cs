@@ -3,7 +3,7 @@ using System.Linq;
 
 public class RankingManager : MonoBehaviour
 {
-    private const string RankingKey = "rankingData"; // PlayerPrefsのキー
+    private const string RankingKey = "rankingData11/9"; // PlayerPrefsのキー
     private const int MaxRankingCount = 100; // ランキングの最大保存数
 
     // 新しいスコアをランキングに追加するメソッド

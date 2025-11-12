@@ -16,4 +16,13 @@ public class ScoreData
 public class Ranking
 {
     public List<ScoreData> ranking = new List<ScoreData>();
+
+    // コンストラクタで初期化
+    public Ranking()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            ranking.Add(new ScoreData(0));
+        }
+    }
 }

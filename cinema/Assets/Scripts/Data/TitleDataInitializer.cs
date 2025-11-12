@@ -14,9 +14,6 @@ public class TitleDataInitializer : MonoBehaviour
     void Start()
     {
         int weekday = Random.Range(0, 5);  // 1〜5の乱数
-        // int index = 1;
-        // int score = 0;
-        // int people = 2;
 
         // 中身を初期化して再設定
         PlayerPrefs.SetInt("weekday", weekday);
@@ -25,6 +22,6 @@ public class TitleDataInitializer : MonoBehaviour
         PlayerPrefs.SetInt("people", 2);
 
         Debug.Log("スコア初期化後" + PlayerPrefs.GetInt("Game_Score_Current"));
-        PlayerPrefs.Save();       
+        PlayerPrefs.Save();
     }
 }
