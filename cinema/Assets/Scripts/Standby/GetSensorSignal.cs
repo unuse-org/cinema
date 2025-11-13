@@ -82,10 +82,10 @@ public class GetSensorSignal : MonoBehaviour
     void Update()
     {
 
-        //GetInput();            // キー入力を取得
+        GetInput();            // キー入力を取得
 
         //UDPから取得
-        currentState = receiver_imu.senser;
+        //currentState = receiver_imu.senser;
 
         
         // デバッグ用メッセージ出力
@@ -109,35 +109,35 @@ public class GetSensorSignal : MonoBehaviour
 
     // キー入力（1〜5）を受け取り、現在の状態を更新
     // ☑️太田「デバッグ用なのでセンサー処理でき次第変更」
-    // void GetInput()
-    // {
-    //     for (int i = 1; i <= 5; i++)
-    //     {
-    //         if (Input.GetKeyDown(i.ToString()))
-    //         {
-    //             previousState = currentState;
-    //             currentState = i;
+    void GetInput()
+    {
+        for (int i = 1; i <= 5; i++)
+        {
+            if (Input.GetKeyDown(i.ToString()))
+            {
+                previousState = currentState;
+                currentState = i;
 
-    //             // デバッグ用メッセージ出力
-    //             string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
-    //             Debug.Log(message);
+                // デバッグ用メッセージ出力
+                string message = $"[Input] State: {currentState} - {stateMessages[currentState]}";
+                Debug.Log(message);
 
-    //             // テキストがアサインされている場合、状態名を表示
-    //             if (statusText != null)
-    //             {
-    //                 statusText.text = stateMessages[currentState];
-    //                 statusText.alpha = 1f;
+                // テキストがアサインされている場合、状態名を表示
+                if (statusText != null)
+                {
+                    statusText.text = stateMessages[currentState];
+                    statusText.alpha = 1f;
 
-    //                 // フェード中なら停止してから再スタート
-    //                 if (fadeCoroutine != null)
-    //                     StopCoroutine(fadeCoroutine);
+                    // フェード中なら停止してから再スタート
+                    if (fadeCoroutine != null)
+                        StopCoroutine(fadeCoroutine);
 
-    //                 fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
-    //             }
-    //         }
-    //     }
+                    fadeCoroutine = StartCoroutine(FadeOutText(statusText, 2f)); // 2秒かけてフェードアウト
+                }
+            }
+        }
         
-    // }
+    }
 
     // 入力された状態が正しい順序かを確認し、ステップ進行またはリセット
     // ☑️太田「ここがメインシステム。ステップが完了次第mainシーンに移動する」
