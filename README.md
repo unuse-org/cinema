@@ -54,13 +54,3 @@
 </p>
 
 ---
-
-## ▶ 実行方法(未完成)
-```bash
-git clone https://github.com/ユーザー名/リポジトリ名
-
-[twitter](https://twitter.com/Kotabrog)
-
-## Licence
-
-[MIT](https://......)
